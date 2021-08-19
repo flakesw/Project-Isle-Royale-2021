@@ -1,0 +1,22 @@
+LandisData "Dynamic Ungulate Population"
+
+
+R		
+<<Min	Max
+<<---	---
+  0.15	0.25	
+
+Mortality
+<<Min	Max
+<<---	---
+  0.0	0.1
+
+Predation
+<<Min	Max
+<<---	---
+  0.07	0.15
+
+Harvest
+<<Min	Max
+<<---	---
+  0.0	0.0

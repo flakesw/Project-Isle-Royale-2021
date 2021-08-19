@@ -1,0 +1,14 @@
+LandisData "Output Biomass Reclass"
+
+Timestep 10
+
+ReclassMaps
+>> Map Name	Forest Type		Species
+>> --------	-----------		-------
+reclass1    ->	BorealHardwoods		QA PB -SM -YB 
+		Lowland			BA BS NWC
+		NDConifer		JP BS
+		NorthernHardwoods	RO RM YB SM NWC 
+		SpruceFir		WS BF BS 
+
+MapFileNames   output/bio-{reclass-map-name}-{timestep}.img
