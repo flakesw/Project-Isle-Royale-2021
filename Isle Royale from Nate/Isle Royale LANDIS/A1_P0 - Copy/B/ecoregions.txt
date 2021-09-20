@@ -1,0 +1,10 @@
+LandisData  Ecoregions
+
+>>         Map
+>> Active  Code  Name   Description
+>> ------  ----  -----  -----------
+      no     0   eco0   "nonforest"
+      yes    2   eco2   "Glacial"
+      yes    4   eco3   "Alluvial"      
+      yes    5   eco1   "Bedrock"
+    

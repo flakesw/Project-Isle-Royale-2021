@@ -1,0 +1,76 @@
+LandisData  "Biomass Harvest"
+
+
+>>----------------
+>> REQUIRED INPUTS
+>>-----------------
+Timestep		1
+
+ManagementAreas 	./biomass-harvest_Management_s2e1.gis
+
+Stands     		./biomass-harvest_Stand_s2e1.gis
+
+
+
+>> -------------------------
+>> HARVESTING PRESCRIPTIONS
+>> -------------------------
+
+>>---- PRESCRIPTION_1 ---------------------------------------
+Prescription Inundate
+    StandRanking 	MaxCohortAge
+    SiteSelection 	Complete
+    CohortsRemoved 	ClearCut
+
+>>Less selective, more harvest
+Prescription BeaverForageClose
+    StandRanking	MaxCohortAge
+    MinimumAge  	1
+    SiteSelection 	Complete 
+	MinTimeSinceDamage	0
+
+    CohortsRemoved SpeciesList 
+
+	AbieConc	1-300(99%)
+	PinuJeff	1-300(99%)
+
+>>Less harvest, more selective
+Prescription BeaverForageFar
+    StandRanking	MaxCohortAge
+    MinimumAge  	1
+    SiteSelection 	Complete 
+	MinTimeSinceDamage	0
+
+    CohortsRemoved SpeciesList 
+
+	AbieConc	1-300(99%)
+	PinuJeff	1-300(99%)
+
+
+>> ----------------------------------
+>> HARVESTING IMPLEMENTATION 
+>> ---------------------------------
+
+    HarvestImplementations
+>>	Mgmt Area	Prescription		Harvest Area	BeginTime	EndTime
+>> 	---------   	------------   		------------   	---------- 	--------
+	1		Inundation			0.5%	0	   	140
+	1		BeaverForageClose		2%	0		140
+	2		BeaverForageCLose		1%	0	   	140
+	3		BeaverForageFar			0.3%	0		140
+			
+
+
+	
+>> ------------
+>> OUTPUTS
+>> ----------
+
+PrescriptionMaps    harvest/biomass-harvest-prescripts-{timestep}.img
+BiomassMaps         harvest/biomass-removed-{timestep}.img
+EventLog            harvest/biomass-harvest-event-log.csv
+SummaryLog	    harvest/biomass-harvest-summary-log.csv
+
+
+
+

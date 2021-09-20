@@ -1,0 +1,75 @@
+LandisData  "Biomass Succession"
+
+Timestep  1
+
+SeedingAlgorithm  WardSeedDispersal
+
+InitialCommunities    "./init_comm_30_2018.txt"
+InitialCommunitiesMap "./init_comm_052318.img"
+
+CalibrateMode no <<optional parameter
+
+SpinupMortalityFraction 0.001 <<optional parameter
+
+>> ********************************
+   MinRelativeBiomass
+
+>> Shade	Percent Max Biomass << 
+>> Class	by Ecoregions       <<              
+>> ----------	-------------------
+	        eco1 	eco2	eco3			
+
+	1	10% 	10%  	10%  	  	
+	2	15% 	15%  	15%  	  	
+	3	30% 	30%  	30%   	 	
+	4	40% 	40%  	40%    	  	
+	5	50% 	50%  	50%   	  	
+	
+
+
+>> ************************************************************
+   SufficientLight
+>> Spp Shade	Probability
+>> Class	by Actual Shade
+>> -----------  -----------------------------------------------
+>>		0	1	2	3	4	5
+   1 		1.0 	0 	0 	0 	0.0 	0.0
+   2 		1.0 	1.0 	0 	0 	0 	0.0
+   3 		1.0 	1.0 	1.0 	0 	0 	0.0
+   4 		1.0 	1.0 	1.0 	1.0 	0 	0
+   5 		0.0 	0.5 	1.0 	1.0 	1.0 	1.0
+
+>> ************************************************************
+SpeciesParameters
+
+>> Species	Leaf		Woody Biomass	Mortality Curve	Growth	Leaf
+>>		Longevity	Decay Rate	Shape Parameter	Curve	Lignin%
+BF		4		  0.1	        10              1       0.3
+WS		4                 0.1	        10              1       0.3
+BS              4                 0.1	        10              1       0.3
+JP	        4                 0.1	        10              1       0.3
+NWC             4                 0.1	        10              1       0.3
+SM		1		  0.1	        10		0.7	0.1
+PB		1		  0.1	        10		0.7	0.1
+BA		1		  0.1	        10		1	0.1
+QA		1		  0.1	        10		0.7	0.1
+YB		1		  0.1	        10		0.7	0.1
+S		1		  0.1	        10		0.7	0.1
+
+
+>> *****************************
+   EcoregionParameters
+>>		AET
+>>		mm
+   eco1		350
+   eco2		400
+   eco3		450	
+
+>> *****************************
+   
+
+
+DynamicInputFile	pnet_2_landis_a1_isro_2.txt
+
+AgeOnlyDisturbances:BiomassParameters  ageonlydisturbances.txt
+

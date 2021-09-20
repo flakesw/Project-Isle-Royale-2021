@@ -1,0 +1,26 @@
+LandisData "Biomass Output"
+
+Timestep 10
+
+MakeTable yes
+
+Species BF
+	SM
+	YB
+	PB
+	WS
+	JP
+	QA
+	NWC
+	S
+	BA
+	BS
+        RO
+        RM
+        EWP
+
+MapNames output_20/bio2-{species}-{timestep}.img
+
+>>DeadPools non-woody
+
+>>MapNames  deadoutput_20/{pool}-{timestep}.img

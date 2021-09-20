@@ -1,0 +1,8 @@
+﻿Drainage_class,drain_coef
+Excessively drained,1
+Somewhat excessively drained,0.83
+Well drained,0.66
+Moderately well drained,0.5
+Somewhat poorly drained,0.33
+Poorly drained,0.167
+Very poorly drained,0

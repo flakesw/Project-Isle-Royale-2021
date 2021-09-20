@@ -1,6 +1,35 @@
-2021-08-04 13:31:00,522 - LANDIS-II 7.0 (7)
-2021-08-04 13:31:00,536 - 
-2021-08-04 13:31:00,692 - Loading scenario from file "Scenario.txt" ...
-2021-08-04 13:31:00,747 - Error at line 19 of file "Scenario.txt":
-  Error reading input value for Extension:
-    No extension with the name "Biomass Succession vBrowse".
+2021-09-16 11:42:37,061 - LANDIS-II 6.2 (official release)
+2021-09-16 11:42:37,082 - 
+2021-09-16 11:42:37,776 - Loading scenario from file "Scenario.txt" ...
+2021-09-16 11:42:37,894 - Initialized random number generator with seed = 2,052,328,653
+2021-09-16 11:42:37,894 - Loading species data from file "species.txt" ...
+2021-09-16 11:42:37,938 - Loading ecoregions from file "./ecoregions.txt" ...
+2021-09-16 11:42:37,979 - Initializing landscape from ecoregions map "./ecoregions_051718.img" ...
+2021-09-16 11:42:38,078 - Cell length = 50 m, cell area = 0.25 ha
+2021-09-16 11:42:38,081 - Map dimensions: 1,182 rows by 1,867 columns = 2,206,794 cells
+2021-09-16 11:42:38,219 - Sites: 187,928 active (8.5 %), 2,018,866 inactive (91.5 %)
+2021-09-16 11:42:38,469 - Loading Biomass Succession vBrowse extension ...
+2021-09-16 11:42:38,775 -    Registering Data:  Succession.BiomassCohorts.
+2021-09-16 11:42:38,776 -    Registering Data:  Succession.AgeCohorts.
+2021-09-16 11:42:38,776 -    Registering Data:  Succession.WoodyDebris.
+2021-09-16 11:42:38,776 -    Registering Data:  Succession.Litter.
+2021-09-16 11:42:38,777 -    Registering Data:  Succession.EcoregionMaxBiomass.
+2021-09-16 11:42:38,920 -    Loading dynamic input data from file "pnet_2_landis_a1_isro_2.txt" ...
+2021-09-16 11:42:38,932 -   Dynamic Input Parser:  Add new year = 0.
+2021-09-16 11:42:38,934 -   Dynamic Input Parser:  Add new year = 20.
+2021-09-16 11:42:38,934 -   Dynamic Input Parser:  Add new year = 40.
+2021-09-16 11:42:38,934 -   Dynamic Input Parser:  Add new year = 60.
+2021-09-16 11:42:38,935 -   Dynamic Input Parser:  Add new year = 80.
+2021-09-16 11:42:38,935 -   Dynamic Input Parser:  Add new year = 100.
+2021-09-16 11:42:38,935 -   Dynamic Input Parser:  Add new year = 120.
+2021-09-16 11:42:38,936 -   Dynamic Input Parser:  Add new year = 140.
+2021-09-16 11:42:39,008 -    Opening Biomass-succession log file "Biomass-succession-v3-log.csv" ...
+2021-09-16 11:42:39,018 -    Registering Data:  TimeOfLastSuccession.
+2021-09-16 11:42:39,018 -    Registering Data:  Shade.
+2021-09-16 11:42:39,022 -    Creating Dispersal Neighborhood List.
+2021-09-16 11:42:39,025 -    Dispersal:  NeighborRadius=5025, CellLength=50, numCellRadius=100
+2021-09-16 11:42:39,255 -    Loading biomass parameters for age-only disturbances from file "ageonlydisturbances.txt" ...
+2021-09-16 11:42:39,272 -    Age-only-disturbances:  reading CohortBiomassReductions.
+2021-09-16 11:42:39,274 -    Age-only-disturbances:  reading DeadBiomassReductions.
+2021-09-16 11:42:39,282 -    Loading initial communities from file "./init_comm_30_2018.txt" ...
+2021-09-16 11:42:39,334 -    Reading initial communities map "./init_comm_052318.img" ...
