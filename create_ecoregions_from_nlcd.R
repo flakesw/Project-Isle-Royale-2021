@@ -1,4 +1,5 @@
 #add ecoregreions for water, herbaceous wetlands, woody wetlands
+# ecoregions for biomass succession
 
 library("raster")
 library("tidyverse")

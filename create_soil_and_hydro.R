@@ -7,6 +7,7 @@
 # gSSURGO from July 2020 update
 # shapefile of study area provided by NPS (and other geospatial information) available here https://www.nps.gov/im/vmi-isro.htm
 # additional geology data: https://irma.nps.gov/DataStore/Reference/Profile/2165823
+# soil carbon and nitrogen layers form soilgrids.org
 
 
 # > To create the NECN soil inputs we combined SSURGO data, deadwood data from the US Forest Inventory and Analysis Program , baseflow and storm flow approximations, and data on soil carbon and nitrogen. 
@@ -47,11 +48,12 @@ library("raster")
 library("sf")
 library("tidyverse")
 library("spdep")
+library("soiltexture")
 
 # get our boundary for the study area, to clip soil map to
 # the CRS is EPSG:3857, WGS 84 Pseudo-Mercator
 # we'll reproject it to match the SSURGO data
-isro_boundary <- sf::st_read("./calibration_data/isle_royale_boundary_buffer/isle_royale_boundary_buffer.shp") %>%
+isro_boundary <- sf::st_read("./calibration_data/isle_royale_boundary_buffer/isro_buffer.shp") %>%
   sf::st_transform(crs = "EPSG:5070")
 
 # import SSURGO data and do some wrangling to allow us to extract soil data
@@ -99,6 +101,7 @@ mapunits <- sf::st_read(dsn = "./calibration_data/ssurgo/gSSURGO_MI/gSSURGO_MI.g
                               layer = "MUPOLYGON") %>%
   sf::st_make_valid() %>% #there are some self-intersections or other invalid geometry
   sf::st_intersection(isro_boundary) #clip state data to our study area 
+mapunits$OID <- 1:nrow(mapunits)
 
 sf::write_sf(mapunits, "mapunits.shp")
   
@@ -109,17 +112,16 @@ plot(sf::st_geometry(mapunits)) #looks good!
 # and comppct_r, which tells us what percentage of the map unit is comprised
 # of what component. 
 # We also need the "drainagecl" column which tells us the drainage type
-component <- sf::st_read(dsn = "./calibration_data/ssurgo/gSSURGO_MI/gSSURGO_MI.gdb", 
-                     layer = "component",
-                     quiet = TRUE) %>%
-  dplyr::select(comppct_r, cokey, mukey, drainagecl) %>%
-  dplyr::filter(mukey %in% mapunits$MUKEY)
+# we need slope_r for later, to calculate stormflow
 
-#some extra info we don't need
+# some extra info we don't need
 component_all <- sf::st_read(dsn = "./calibration_data/ssurgo/gSSURGO_MI/gSSURGO_MI.gdb", 
                               layer = "component",
                               quiet = TRUE) %>%
   dplyr::filter(mukey %in% mapunits$MUKEY)
+
+# select columns to make life easier
+component <- component_all %>% dplyr::select(comppct_r, cokey, mukey, drainagecl, slope_r) 
 
 #this has all the horizon data we need; each component (cokey) has several horizons
 hori <- sf::st_read(dsn = "./calibration_data/ssurgo/gSSURGO_MI/gSSURGO_MI.gdb", 
@@ -205,7 +207,7 @@ component <- hori %>%
 mapunits_data <- component %>%
   dplyr::group_by(mukey) %>%
   dplyr::summarise(across(c(wthirdbar_r, wfifteenbar_r, sandtotal_r, claytotal_r, ksat_r,
-                            soilDepth, soilDrain), 
+                            soilDepth, soilDrain, slope_r), 
                           ~stats::weighted.mean(., w = comppct_r, na.rm = TRUE))) %>%
   dplyr::right_join(mapunits, by = c("mukey" = "MUKEY")) %>%
   dplyr::rename(MUKEY = mukey) %>%
@@ -213,15 +215,30 @@ mapunits_data <- component %>%
 
 # SOM
 # this is one variable available from the Valu1 table!
+# it's in units of g m-2, already the scale we need
 mapunits_data <- left_join(mapunits_data, dplyr::select(valu1, c("mukey", "soc0_999")), by = c("MUKEY" = "mukey"))%>%
   sf::st_sf()
 
+#use relationships from Zachary Robbins to divvy up the SOM to different pools
 mapunits_data$SOM1surfC <- 0.01 * mapunits_data$soc0_999
 mapunits_data$SOM1soilC <- 0.02 * mapunits_data$soc0_999
 mapunits_data$SOM2C <- 0.59 * mapunits_data$soc0_999
 mapunits_data$SOM3C <- 0.38 * mapunits_data$soc0_999
 
-#calculate baseFlow
+# calculate baseFlow
+# assume a 2 inch rain event = 5 cm; how much of it would be absorbed in an hour?
+# I'll take this value to be the baseflow rate
+# TODO validate this, I guess
+
+# ksat is in units of um per second
+# 5 cm * (1 second / x um) = seconds
+# 3600 seconds in 1 hour
+
+# ksat/10000 #convert to cm
+
+mapunits_data$baseFlow <- (mapunits_data$ksat_r/10000) * 3600  #how much water can be absorbed in an hour?
+mapunits_data$baseFlow <- mapunits_data$baseFlow / 5 #What proportion of the 5cm rainfall can be absorbed?
+mapunits_data$baseFlow <- ifelse(mapunits_data$baseFlow > 1, 1, mapunits_data$baseFlow) #if more than 100%, set to 100%
 
 # storm flow
 # storm flow represents the proportion of water that runs off when soil water exceeds
@@ -229,27 +246,63 @@ mapunits_data$SOM3C <- 0.38 * mapunits_data$soc0_999
 # base flow happens only to all water; in Henne equations, both base and storm flow
 # happen only to excess water.
 
+
 # For stormflow (runoff), use Table 3.4 and eq. 3.2 in https://www.vub.be/WetSpa/downloads/WetSpa_manual.pdf
+
+mapunits_data$OID <- 1:nrow(mapunits_data)
+
+soil_runoff_table <- data.frame(
+  soil_type = c("Sand", "Loamy sand", "Sandy loam", "Loam", "Silt loam", "Silt", "Sandy clay loam", "Clay loam", "Silty clay loam", "Sandy clay", "Silty clay", "Clay"),
+  c0 = c(0.03, 0.07, 0.1, 0.13, 0.17, 0.20, 0.23, 0.27, 0.3, 0.33, 0.37, 0.4),
+  s0 = c(0.68, 0.65, 0.62, 0.59, 0.56, 0.53, 0.5, 0.47, 0.44, 0.41, 0.38, 0.35)
+  )
+
+soil_mat <- data.frame(OID = mapunits_data$OID,
+                       SAND = mapunits_data$sandtotal_r,
+                       CLAY = mapunits_data$claytotal_r,
+                       SILT = 100 - mapunits_data$sandtotal_r - mapunits_data$claytotal_r) %>%
+  na.omit()
+
+#classify soils by textyre
+texture <- TT.points.in.classes(soil_mat, class.sys = "USDA.TT")
+
+names(texture) <- c("Clay", "Silty clay", "Sandy clay", "Clay loam", "Silty clay loam", "Sandy clay loam", "Loam", "Silt loam", "Sandy loam", "Silt", "Loamy sand", "Sand")
+
+# soil_mat$class <- unlist(apply(texture, 1, function(x) unlist(names(texture)[which(x == 1)])))
+
+for(i in 1:nrow(texture)){
+  soil_mat$class[i] <- names(texture)[which(texture[i, ] %in% c(1,2,3))]
+}
+
+mapunits_data <- left_join(mapunits_data, soil_mat[c("OID", "class")], by = c("OID"))
+
+# mapunits_data$slope <- component_all$slope_r # TODO update with slope from DEM
+
+c0 <- soil_runoff_table[base::match(mapunits_data$class, soil_runoff_table$soil_type), "c0"]
+s0 <- soil_runoff_table[base::match(mapunits_data$class, soil_runoff_table$soil_type), "s0"]
+s <- mapunits_data$slope_r
+mapunits_data$runoff <- c0 + (1 - c0)*(s / (s + s0))
+
 
 # nitrogen pools
 # for N, we will use nitrogen data and carbon data from soilgrids.org to get the C:N ratio
 # and translate our soil C data from SSURGO to soil N
-# these should be in g m-2
+# these need to be changed to g m-2
 # these use a weird projection, Homolosine, EPSG:7030
 
-c_rasts <- c("c0-5.tif", "c5-15.tif", "c15-30.tif", "c30-60.tif", "c60-100.tif", "c100-200.tif")
-n_rasts <- c("n0-5.tif", "n5-15.tif", "n15-30.tif", "n30-60.tif", "n60-100.tif", "n100-200.tif")
-c_rasts <- paste0("./calibration_data/soilgrids/", c_rasts)
-n_rasts <- paste0("./calibration_data/soilgrids/", n_rasts)
+c_rasts <- c("c0-5.tif", "c5-15.tif", "c15-30.tif", "c30-60.tif", "c60-100.tif", "c100-200.tif") %>%
+  paste0("./calibration_data/soilgrids/", .)
+n_rasts <- c("n0-5.tif", "n5-15.tif", "n15-30.tif", "n30-60.tif", "n60-100.tif", "n100-200.tif") %>%
+  paste0("./calibration_data/soilgrids/", .)
 
 #TODO put this in a pipeline
 c_stack <- raster::stack(c_rasts) / 10 #convert from dg to g
-crs(c_stack) <- "EPSG:7030"
+# raster::crs(c_stack) <- "EPSG:7030"
 c_stack <- raster::projectRaster(c_stack, crs = "EPSG:5070", method = "bilinear")
 c_rast <- mean(c_stack)
 
 n_stack <- raster::stack(n_rasts) / 100 #convert from cg to g
-crs(n_stack) <- "EPSG:7030"
+# crs(n_stack) <- "EPSG:7030"
 n_stack <- raster::projectRaster(n_stack, crs = "EPSG:5070", method = "bilinear")
 n_rast <- mean(n_stack)
 
@@ -295,6 +348,9 @@ mapunits_data$SOM1surfN <- mapunits_data$SOM1surfC / mapunits$extract_cn
 mapunits_data$SOM1soilN <- mapunits_data$SOM1soilC / mapunits$extract_cn
 mapunits_data$SOM2N <- mapunits_data$SOM2C / mapunits$extract_cn
 mapunits_data$SOM3N <- mapunits_data$SOM3C / mapunits$extract_cn
+
+
+# write rasters!
 
 
 
