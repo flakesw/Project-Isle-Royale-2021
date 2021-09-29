@@ -8,3 +8,7 @@ To update to Biomass v6:
 2021-09-07 
 Rob fixed error with Biomass Succession
 Model appears to be running with new succession and browse
+
+2021-09-28 
+Got most everything updated, except for species parameters and climate. Rasters and IC are ready to go. 
+Borrowing species parameters from Melissa Lucash for now: https://github.com/LANDIS-II-Foundation/Project-MN-Climate-Change-2017/blob/master/Inputs/Disturbances_Paper/212N_Landscape_Final_Files/Century_succession-4ha_092716_1y.txt

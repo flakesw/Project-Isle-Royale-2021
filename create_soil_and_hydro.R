@@ -350,6 +350,14 @@ mapunits_data$SOM2N <- mapunits_data$SOM2C / mapunits$extract_cn
 mapunits_data$SOM3N <- mapunits_data$SOM3C / mapunits$extract_cn
 
 
+#-------------------------------------------------------------------------------
+# dead wood
+# estimate using https://www.fs.usda.gov/rds/archive/catalog/RDS-2013-0004
+# could also use treemap and link to FIA data TODO
+
+
+
+
 # write rasters!
 
 

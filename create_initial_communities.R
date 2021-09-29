@@ -3,6 +3,10 @@ library("raster")
 library("sf")
 library("tidyverse")
 library("RSQLite")
+library("rFIA")
+
+# TODO add in alder, willow, herbs
+
 
 #we'll use data from FIA for the initial communities, 
 # https://www.fs.usda.gov/rmrs/publications/treemap-tree-level-model-conterminous-us-forests-circa-2014-produced-imputation-fia
@@ -19,11 +23,17 @@ treemap_isro <- crop(treemap, st_bbox(isro_bound))
 plot_counts <- table(values(treemap_isro)) %>% #summary of how many of each plot ID in the study area
   as.data.frame()
 
-fia_plots <- read.csv("./calibration_data/treemap/RDS-2019-0026_Data/Data/TL_CN_Lookup.txt") %>%
+#write the raster for IC 
+writeRaster(treemap_isro, "./input rasters/initial_communities.tif", datatype = "INT2S", overwrite = TRUE)
+
+tl_plots <- read.csv("./calibration_data/treemap/RDS-2019-0026_Data/Data/TL_CN_Lookup.txt") %>%
   filter(tl_id %in% values(treemap_isro))
 
-fia_trees <- read.csv("./calibration_data/treemap/RDS-2019-0026_Data/Data/Tree_table_CONUS.txt") %>%
+tl_trees <- read.csv("./calibration_data/treemap/RDS-2019-0026_Data/Data/Tree_table_CONUS.txt") %>%
   filter(tl_id %in% values(treemap_isro))
+
+#inventory data from study area, to ground-truth which species are important
+isro_inv <- read.csv("./inventory_data/5_isro_spcov.csv")
 
 # download michigan FIA data and reference data from the datamart:
 # https://apps.fs.usda.gov/fia/datamart/CSV/datamart_csv.html
@@ -33,7 +43,7 @@ fia_trees <- read.csv("./calibration_data/treemap/RDS-2019-0026_Data/Data/Tree_t
 sp_ref <- read.csv("./calibration_data/fia/FIADB_REFERENCE/REF_SPECIES.csv")
 
 #get the basal area by species
-fia_trees_ba <- fia_trees %>%
+tl_trees_ba <- tl_trees %>%
   dplyr::group_by(tl_id, SPCD) %>%
   dplyr::summarise(plot_ba = sum(I((DIA/2)^2), na.rm = TRUE), .group = "drop") %>%
   dplyr::mutate(tl_id = as.factor(tl_id)) %>%
@@ -44,27 +54,70 @@ fia_trees_ba <- fia_trees %>%
   dplyr::arrange(species_ba_total) %>%
   dplyr::left_join(select(sp_ref, c("SPCD", "SPECIES_SYMBOL", "GENUS", "SPECIES"))) %>%
   dplyr::mutate(species_ba_pct = species_ba_total / sum(species_ba_total))
+
+#TODO reconcile these datasets
+tl_trees_ba$in_isro <- tl_trees_ba$SPECIES_SYMBOL %in% isro_inv$Plant.Symbol
   
-fia_trees_reduced <- fia_trees_ba[fia_trees_ba$species_ba_pct > 0.01, ] 
+# remove rare species
+# TODO replace with functional type
+# e.g. combine sorbus spp. into one Sorbus type; change rare species to genus or 
+tl_trees_reduced <- tl_trees_ba[tl_trees_ba$species_ba_pct > 0.01, ] 
 
-fia_clean <- fia_trees %>%
-  filter(SPCD %in% fia_trees_reduced$SPCD) %>%
-  left_join(select(sp_ref, c("SPCD", "SPECIES_SYMBOL", "GENUS", "SPECIES")))
-
-
-#estimate biomass using SilviaTerra's R package
-#code borrowed from https://github.com/SilviaTerra/rpnc250
-remotes::install_github("SilviaTerra/rpnc250", ref = "main")
-
-library(rpnc250)
-
-#clean up data, remove NAs and dead trees
-plot_ba <- fia_clean %>%
+tl_trees_clean <- tl_trees %>%
+  filter(SPCD %in% tl_trees_reduced$SPCD) %>%
+  left_join(select(sp_ref, c("SPCD", "SPECIES_SYMBOL", "GENUS", "SPECIES"))) %>%
   dplyr::filter(
     !is.na(DIA),
     !is.na(TPA_UNADJ),
     STATUSCD == 1
-  ) %>%
+  )
+
+# TODO
+# Get all TREE data for the plots needed, and get biomass from table
+# Get functional types for rare species
+library("rFIA")
+# getFIA(states = c(unique(tl_trees$State_Abbreviation)),
+#        tables = c('TREE', 'PLOT'),
+#        dir = './calibration_data/fia/rFIA_downloads/',
+#        load = FALSE)
+
+#create an empty dataframe with same structure as FIA TREE table -- this is a bad way to do this
+fia_trees <- read.csv('./calibration_data/fia/rFIA_downloads/MI_TREE.csv')[FALSE,]
+gc()
+
+for(state in unique(tl_trees$State_Abbreviation)){
+  fia_trees_temp <- readFIA(dir = './calibration_data/fia/rFIA_downloads/',
+                       tables = c('TREE'),
+                       states = state) %>%
+    '[['('TREE') %>%
+    filter(PLT_CN %in% tl_plots$CN)
+  print(state)
+  #add selected TREE data. This is inefficient. TODO refactor here
+  fia_trees <- rbind(fia_trees, fia_trees_temp)
+  rm(fia_trees_temp)
+  gc() #R was keeping the files in memory for some reason and taking up a lot of memory
+}
+
+
+#there's probably a way to do this using rFIA with its larger-than-RAM methods, TODO
+# fia_trees2 <- readFIA('./calibration_data/fia/rFIA_downloads/', 
+#                       inMemory = FALSE,
+#                       tables = c("TREE"))
+
+
+# #plot location of particular FIA plot types to visualize the weirdos
+# rc <- rowColFromCell(treemap_isro, which(values(treemap_isro == 21217)))
+# plot(extent(treemap_isro, rc[1], rc[1], rc[2],  rc[2]), add=TRUE, col='red', lwd=3)
+
+#------------------------------------------------------------------------------
+# estimate biomass using SilviaTerra's R package
+# code borrowed from https://github.com/SilviaTerra/rpnc250
+# remotes::install_github("SilviaTerra/rpnc250", ref = "main")
+
+library(rpnc250)
+
+#calculate basal area
+plot_ba <- tl_trees_clean  %>%
   dplyr::group_by(
     CN # FIA plot IDs
   ) %>%
@@ -74,7 +127,7 @@ plot_ba <- fia_clean %>%
   )
 
 # filter the trees and join to plot basal area table
-trees_prepped <- fia_clean %>%
+trees_prepped <- tl_trees_clean %>%
   dplyr::filter(
     !is.na(DIA),
     STATUSCD == 1, # only live trees
@@ -94,7 +147,7 @@ trees_with_biomass <- trees_prepped %>%
       site_index = 65,
       stand_basal_area = bapa
     )
-  )
+  ) 
 
 #plot biomass estimates
 trees_with_biomass %>%
@@ -113,6 +166,103 @@ trees_with_biomass %>%
   )
 
 
+#add in biomass to our original dataframe
+tl_trees_clean <- tl_trees_clean %>% 
+  left_join(trees_with_biomass %>% select(TreeID, biomass)) %>%
+  #biomass is in imperial tons -- convert to g
+  mutate(biomass = biomass * 907185) %>%
+  # convert to g ha-1 by multiplying by TPA and converting from ac to m^2
+  mutate(biomass_area = biomass * TPA_UNADJ /4046.9)
+
+#-------------------------------------------------------------------------------
+# estimate tree ages
+# use site tree information from FIA. initially, just using all data from MI
+# TODO subset to closest counties in MI and MN
+# TODO account for site index
+# TODO more realistic curve
+
+getFIA(states = c(unique(tl_trees$State_Abbreviation)),
+       tables = c('COND'),
+       dir = './calibration_data/fia/rFIA_downloads/',
+       load = FALSE)
+
+fia_cond <- readFIA(states = c(unique(tl_trees$State_Abbreviation)),
+                    tables = c('COND'),
+                    dir = './calibration_data/fia/rFIA_downloads/') %>%
+  '[['("COND") %>%
+  filter(PLT_CN %in% tl_plots$CN)
+
+#fit a linear regression 
+tree_regressions <- sitetrees %>% 
+  dplyr::filter(!is.na(DIA) & !is.na(AGEDIA) & !is.na(SPCD)) %>%
+  dplyr::filter(SPCD %in% tl_trees_clean$SPCD) %>%
+  dplyr::group_by(SPCD) %>%
+  dplyr::do(model = lm(AGEDIA ~ log(DIA) + 0, data = .))
+
+# TODO check on functional shape between age and diameter
+for(i in 1:nrow(tl_trees_clean)){
+  #estimate age from diameter for each tree
+  model <- tree_regressions[match(tl_trees_clean$SPCD[i], tree_regressions$SPCD), ] %>% pluck('model', 1)
+  tl_trees_clean$age[i] <- predict(model, newdata = list(DIA = tl_trees_clean$DIA[i]))
+  if(tl_trees_clean$age[i] < 1) tl_trees_clean$age[i] <- 1
+}
+
+plot(tl_trees_clean$age ~ tl_trees_clean$DIA)
+
+#set range of ages for cohorts
+# the weird expression in here rounds up the nearest 10
+breaks <- seq(0, max(tl_trees_clean$age) + (10 - max(tl_trees_clean$age) %% 10), by = 5)
+# breaks[1] <- 1
+
+site_biomass <- tl_trees_clean %>%
+  dplyr::mutate(age = ifelse(age < 1, 1, age)) %>%
+  dplyr::group_by(tl_id) %>%
+  dplyr::group_by(SPECIES_SYMBOL) %>%
+  dplyr::mutate(bin = base::cut(age, breaks = breaks, labels = breaks[-1], right = TRUE)) %>%
+  dplyr::mutate(bin = as.integer(as.character(bin))) %>%
+  dplyr::group_by(tl_id, SPECIES_SYMBOL, bin) %>%
+  dplyr::summarise(biomass = sum(biomass_area)) %>%
+  dplyr::mutate(biomass = round(biomass, digits = 0))
+
+names(site_biomass) <- c("MapCode", "SpeciesName", "CohortAge", "CohortBiomass")
+
+write.csv(site_biomass, "initial_communities_update.csv")
+
+site_total_biomass <- site_biomass %>%
+  dplyr::group_by(MapCode) %>%
+  dplyr::summarise(total_biomass = sum(CohortBiomass))
+
+density <- tl_trees_clean %>%
+  group_by(CN) %>%
+  summarize(dens = sum(TPA_UNADJ))
+
+
+
+#-------------------------------------------------------------------------------
+# estimate dead wood from FIA
+
+# getFIA(states = c(unique(tl_trees$State_Abbreviation)),
+#        tables = c('DWM_COARSE_WOODY_DEBRIS', 'DWM_FINE_WOODY_DEBRIS'),
+#        dir = './calibration_data/fia/rFIA_downloads/',
+#        load = FALSE)
+
+# getFIA(states = c(unique(tl_trees$State_Abbreviation)),
+#        tables = c('COND_DWM_CALC'),
+#        dir = './calibration_data/fia/rFIA_downloads/',
+#        load = FALSE)
+
+cwd_plot <- readFIA(dir = './calibration_data/fia/rFIA_downloads/',
+               tables = 'DWM_COARSE_WOODY_DEBRIS') %>%
+  '[['('DWM_COARSE_WOODY_DEBRIS') %>%
+  dplyr::filter(PLT_CN %in% tl_plots$CN) %>%
+  dplyr::group_by(PLT_CN) %>%
+  dplyr::summarise(total_cwd = sum(DRYBIO_AC_COND)) %>%
+  dplyr::left_join(dplyr::select(tl_plots, c("CN", "tl_id")), by = c("PLT_CN" = "CN")) %>%
+  dplyr::left_join(dplyr::select(site_total_biomass, c("MapCode", "total_biomass")), by = c("tl_id" = "MapCode")) %>%
+  dplyr::left_join(density, by = c("PLT_CN" = "CN"))
+
+
+#another alternative method uses data provided by FIA in the TREES table TODO
 
 # #alternative method using USFS NBEL database -- work in progress TODO
 # # we need to take diameters and heights of trees and translate to biomass
@@ -124,7 +274,7 @@ trees_with_biomass %>%
 # dbListTables(biomass_db)
 # 
 # biomass_eqn_coefs <- dbGetQuery(biomass_db, 'SELECT * FROM BM_EqCoefs') %>%
-#   filter(species_code %in% fia_trees_reduced$SPCD)
+#   filter(species_code %in% tl_trees_reduced$SPCD)
 # 
 # test <- dbGetQuery(biomass_db, 'SELECT * FROM tblEqns') # maybe useful? Returns weird variables like "BST", "BBL", "BFT"
 # test <- dbGetQuery(biomass_db, 'SELECT * FROM BM_comp') #maybe describes weird abbreviations above, but they' renot in the chart!
@@ -136,7 +286,7 @@ trees_with_biomass %>%
 # test <- dbGetQuery(biomass_db, 'SELECT * FROM tblConversions') #just some conversion factors
 # test <- dbGetQuery(biomass_db, 'SELECT * FROM tblEqnsMeta') #has equations already in usable form, but returns components like TblEqns
 # test <- dbGetQuery(biomass_db, 'SELECT * FROM tblEqnsNew') %>%
-#   filter(SPP_CODE %in% fia_trees_reduced$SPCD) #also has limited species, like eqninfobyspecies
+#   filter(SPP_CODE %in% tl_trees_reduced$SPCD) #also has limited species, like eqninfobyspecies
 # 
 # 
 # # species_defaults <- 
@@ -145,50 +295,11 @@ trees_with_biomass %>%
 # 
 # # forest_codes <- dbGetQuery(biomass_db, 'SELECT * FROM temp_BM_forests') #ISRO is in region 9, and the nearest forest is Superior NF, code 909
 # 
-# fia_trees[40, ] %>% left_join(biomass_eqn_coefs, by = c("SPCD" = "species_code"))
+# tl_trees[40, ] %>% left_join(biomass_eqn_coefs, by = c("SPCD" = "species_code"))
 # 
 # biomass_eqn_forms %>% dplyr::filter(eqform_id == "4") %>%
 #   select(equation)
 # 
 # biomass_eqn_cleaned <- 
 
-
-
-# 
-# orig_ic <- raster("./calibration_data/initial communities/init_comm_052318.img")
-# 
-# plot(orig_ic)
-# 
-# ecoreg <- raster("./calibration_data/ecoregions/ecoregions_09132021.tif")
-# 
-# pop_zone <- raster("./calibration_data/browse/pop_zone_052318.img")
-# 
-# values(orig_ic)[values(ecoreg) == 3] <- 135
-# values(orig_ic)[values(ecoreg) == 6] <- 134
-# values(orig_ic)[values(ecoreg) %in% c(0,1)] <- 0
-# 
-# writeRaster(orig_ic, filename = "./calibration_data/initial communities/ic_2021-09-16_test.tif",
-#             datatype = "INT2S", overwrite = TRUE)
-# 
-# ecoreg_updated <- ecoreg
-# values(ecoreg_updated)[values(orig_ic) == 0 & values(ecoreg_updated) != 1] <- 0
-# 
-# plot(ecoreg_updated - ecoreg)
-# 
-# writeRaster(ecoreg_updated, filename = "./calibration_data/ecoregions/ecoregions_test.tif",
-#             datatype = "INT2S", overwrite = TRUE)
-# 
-# # fix the pop_zone raster.
-# # It looks like I just made a new one? Need to figure out what I ended up doing
-# 
-# # pop_zone_new <- reclassify(orig_ic, c(0, 0, 0, 0, 135, 1))
-# # 
-# # writeRaster(pop_zone_new, "./calibration_data/browse/pop_zone_2021-09-16.tif",
-# #             datatype = "INT2S", overwrite = TRUE)
-# 
-# 
-# #To make the initial communities, we need to get cohort data with biomass for
-# #each cell. We can do this with FIA data.
-# 
-# fia_raster <- raster("./calibration_data/treemap/RDS-2019-0026_Data/Data/national_c2014_tree_list.tif")
 

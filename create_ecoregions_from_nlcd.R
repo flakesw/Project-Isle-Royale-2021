@@ -1,5 +1,7 @@
-#add ecoregreions for water, herbaceous wetlands, woody wetlands
+# add ecoregreions for water, herbaceous wetlands, woody wetlands
 # ecoregions for biomass succession
+# This script demonstrates how to take an existing ecoregion file
+# and add new ecoregions to what was previously NA ecoregions
 
 library("raster")
 library("tidyverse")

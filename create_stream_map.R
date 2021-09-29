@@ -1,5 +1,7 @@
 # make a stream map from a DEM using GRASS and rgrass7
-# and derive topographic data needed for 
+# and derive topographic data needed for, e.g., SCRPPLE or NECN stormflow
+# using standalone grass install v7.8.4
+
 library("rgrass7")
 library("openSTARS")
 library("link2GI")

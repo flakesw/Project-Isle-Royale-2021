@@ -1,0 +1,14 @@
+SpeciesCode,LeafLongevity,WoodDecayRate,MortalityCurve,GrowthCurve,LeafLignin
+BF,4,0.1,10,1,0.3
+WS,4,0.1,10,1,0.3
+BS ,4,0.1,10,1,0.3
+JP,4,0.1,10,1,0.3
+NWC ,4,0.1,10,1,0.3
+SM,1,0.1,10,1,0.1
+PB,1,0.1,10,1,0.1
+BA,1,0.1,10,1,0.1
+QA,1,0.1,10,1,0.1
+YB,1,0.1,10,1,0.1
+S,1,0.1,10,1,0.1
+Alder,1,0.1,10,1,0.1
+Grass,1,0.5,10,1,0.05
