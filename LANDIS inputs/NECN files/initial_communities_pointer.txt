@@ -1,0 +1,4 @@
+LandisData	"Initial Communities"
+>> SE Landis IC input of single species,single cohort TM
+
+CSV_File "../../LANDIS inputs/NECN files/initial_communities_update.csv"

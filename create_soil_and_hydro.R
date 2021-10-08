@@ -49,6 +49,11 @@ library("sf")
 library("tidyverse")
 library("spdep")
 library("soiltexture")
+# library("fasterize") #fasterize doesn't have "mean" as a built-in function -- try to figure this out?
+
+#clean up some garbage; this script needs a lot of RAM
+rm(list = ls())
+gc()
 
 # get our boundary for the study area, to clip soil map to
 # the CRS is EPSG:3857, WGS 84 Pseudo-Mercator
@@ -63,7 +68,8 @@ isro_boundary <- sf::st_read("./calibration_data/isle_royale_boundary_buffer/isr
 # the CRS is ESRI:102039, equivalent to EPSG:5070. Conus Albers projection
 # with some adjustments
 
-sf::st_layers("./calibration_data/ssurgo/gSSURGO_MI/gSSURGO_MI.gdb")
+#see what layers we've got
+# sf::st_layers("./calibration_data/ssurgo/gSSURGO_MI/gSSURGO_MI.gdb")
 
 # the data structure is a little complicated. What is mapped are map units, 
 # found in the "MUPOLYGON" layer (a polygon shape layer). Each map unit has
@@ -74,8 +80,8 @@ sf::st_layers("./calibration_data/ssurgo/gSSURGO_MI/gSSURGO_MI.gdb")
 
 # Some data are available "mapping-ready," in the "Valu1" layer. These data
 # have already been aggregated to the map unit level and can be merged and 
-# mapped directly. Sadly none of them are very useful for us, so we'll have to do it
-# the hard way.
+# mapped directly. Sadly not many of them are very useful for us, so we'll have 
+# to do it the hard way.
 
 # gSSURGO does have a raster of the mapunits, which you can extract using ArcGIS,
 # but for now the OpenFileGDB driver does not allow us to access the raster from R.
@@ -96,15 +102,18 @@ sf::st_layers("./calibration_data/ssurgo/gSSURGO_MI/gSSURGO_MI.gdb")
 # the component layer that contains some data and lets us join horizon data to 
 # mapunits, the corestriction layer that has depth to bedrock or hardpan (or other
 # restriction), and the chorizon layer that has horizon-level data
+# Extracting this takes a while, so once you've done it once, save it for later.
 
-mapunits <- sf::st_read(dsn = "./calibration_data/ssurgo/gSSURGO_MI/gSSURGO_MI.gdb",
-                              layer = "MUPOLYGON") %>%
-  sf::st_make_valid() %>% #there are some self-intersections or other invalid geometry
-  sf::st_intersection(isro_boundary) #clip state data to our study area 
-mapunits$OID <- 1:nrow(mapunits)
+# mapunits <- sf::st_read(dsn = "./calibration_data/ssurgo/gSSURGO_MI/gSSURGO_MI.gdb",
+#                               layer = "MUPOLYGON") %>%
+#   sf::st_make_valid() %>% #there are some self-intersections or other invalid geometry
+#   sf::st_intersection(isro_boundary) #clip state data to our study area 
+# mapunits$OID <- 1:nrow(mapunits)
 
-sf::write_sf(mapunits, "mapunits.shp")
-  
+# sf::write_sf(mapunits, "mapunits.shp")
+
+#after we've made the subset mapunits file, we can just read it in.
+mapunits <- sf::read_sf("mapunits.shp")
 plot(sf::st_geometry(mapunits)) #looks good!
 
 #this has the component data; each map unit has several soil components/
@@ -200,8 +209,10 @@ component <- hori %>%
   dplyr::group_by(cokey) %>%
   dplyr::summarise(across(c(wthirdbar_r, wfifteenbar_r, sandtotal_r, claytotal_r, ksat_r), 
                    ~stats::weighted.mean(., w = hzthk_r, na.rm = TRUE))) %>%
-  dplyr::mutate(across(everything(), ~replace_na(.x, 0))) %>% #replace NAs where any are left -- just on rocky outcrops and beaches
-  dplyr::right_join(component, by = "cokey")
+  dplyr::mutate(across(everything(), ~replace_na(.x, 1))) %>% #replace NAs where any are left -- just on rocky outcrops and beaches. Replace with 1 instead of 0 so that the sites can still be active
+  dplyr::mutate(across(c(wthirdbar_r, wfifteenbar_r, sandtotal_r, claytotal_r), .fns = ~ `*`(.x, 0.01))) %>% #multiply some columns by 0.01 to convert from percent to proportion
+  dplyr::right_join(component, by = "cokey") %>%
+  dplyr::mutate(across(everything(), ~replace_na(.x, 0.001))) #check out what's weird with the last three entries -- no horizon data?
   
 #add our extracted data to the mapunit layer
 mapunits_data <- component %>%
@@ -216,7 +227,10 @@ mapunits_data <- component %>%
 # SOM
 # this is one variable available from the Valu1 table!
 # it's in units of g m-2, already the scale we need
-mapunits_data <- left_join(mapunits_data, dplyr::select(valu1, c("mukey", "soc0_999")), by = c("MUKEY" = "mukey"))%>%
+mapunits_data <- left_join(mapunits_data, 
+                           dplyr::select(valu1, c("mukey", "soc0_999")), 
+                           by = c("MUKEY" = "mukey")) %>%
+  dplyr::mutate(mapunits_data, soc0_999 = ifelse(soc0_999 <= 0 | is.na(soc0_999), 100, soc0_999)) %>%
   sf::st_sf()
 
 #use relationships from Zachary Robbins to divvy up the SOM to different pools
@@ -297,26 +311,15 @@ n_rasts <- c("n0-5.tif", "n5-15.tif", "n15-30.tif", "n30-60.tif", "n60-100.tif",
 
 #TODO put this in a pipeline
 c_stack <- raster::stack(c_rasts) / 10 #convert from dg to g
-# raster::crs(c_stack) <- "EPSG:7030"
-c_stack <- raster::projectRaster(c_stack, crs = "EPSG:5070", method = "bilinear")
 c_rast <- mean(c_stack)
 
 n_stack <- raster::stack(n_rasts) / 100 #convert from cg to g
-# crs(n_stack) <- "EPSG:7030"
-n_stack <- raster::projectRaster(n_stack, crs = "EPSG:5070", method = "bilinear")
 n_rast <- mean(n_stack)
 
 c_n_rast <- c_rast/n_rast
 
-# c_n_stack <- c_stack / n_stack
-# plot(c_n_stack)
-# 
-# plot(c_n_stack$c0.5)
-# plot(sf::st_geometry(mapunits), add = TRUE)
-
-#TODO change to mapunits_data when done
-#TODO aggregate rasters first
-mapunits$extract_cn <- raster::extract(c_n_rast, mapunits, fun = mean, exact = TRUE)
+mapunits <- sf::st_transform(mapunits, crs(c_stack)) #set mapunits to match the soil rasters
+mapunits$extract_cn <- raster::extract(c_n_rast, mapunits, fun = mean, weights = TRUE)
 
 mapunit_cn <- mapunits[,"extract_cn"] %>%
   sf::st_set_geometry(NULL) %>%
@@ -349,17 +352,87 @@ mapunits_data$SOM1soilN <- mapunits_data$SOM1soilC / mapunits$extract_cn
 mapunits_data$SOM2N <- mapunits_data$SOM2C / mapunits$extract_cn
 mapunits_data$SOM3N <- mapunits_data$SOM3C / mapunits$extract_cn
 
+mapunits_data <- sf::st_transform(mapunits_data, "EPSG:26917") #reproject to NAD83 Zone 17N
 
 #-------------------------------------------------------------------------------
-# dead wood
-# estimate using https://www.fs.usda.gov/rds/archive/catalog/RDS-2013-0004
-# could also use treemap and link to FIA data TODO
-
-
-
-
 # write rasters!
+# this part might take a few hours depending on your study area, raster resolution, etc.
+detach("package:terra")
+# for some reason terra can't rasterize by the weighted mean of polygon within each cell?
 
+template_raster <- raster::raster("./LANDIS inputs/input rasters/initial_communities.tif")
+crs(template_raster) #check that we're in NAD 83 Zone 17N
 
+#rasterize takes forever -- try to shift to fasterize?
+#TODO make into a loop to extract everything, since it all comes from the same dataframe
+field_capacity <- raster::rasterize(mapunits_data, template_raster, field = "wthirdbar_r", fun="mean")
+values(field_capacity) <- ifelse(is.na(values(field_capacity)), 0, values(field_capacity))
+writeRaster(field_capacity, "./LANDIS inputs/input rasters/field_capacity.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
 
+wilt_point <- rasterize(mapunits_data, template_raster, field = "wfifteenbar_r", fun="mean")
+values(wilt_point) <- ifelse(is.na(values(wilt_point)), 0, values(wilt_point))
+writeRaster(wilt_point, "./LANDIS inputs/input rasters/wilt_point.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
 
+sand <- rasterize(mapunits_data, template_raster, field = "sandtotal_r", fun="mean")
+values(sand) <- ifelse(is.na(values(sand)), 0, values(sand))
+values(sand) <- ifelse(values(sand) > 1, 1, values(sand))
+writeRaster(sand, "./LANDIS inputs/input rasters/sand.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+clay <- rasterize(mapunits_data, template_raster, field = "claytotal_r", fun="mean")
+values(clay) <- ifelse(is.na(values(clay)), 0, values(clay))
+writeRaster(clay, "./LANDIS inputs/input rasters/clay.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+soilDrain <- rasterize(mapunits_data, template_raster, field = "soilDrain", fun="mean")
+values(soilDrain) <- ifelse(is.na(values(soilDrain)), 0, values(soilDrain))
+writeRaster(soilDrain, "./LANDIS inputs/input rasters/soil_drain.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+soilDepth <- rasterize(mapunits_data, template_raster, field = "soilDepth", fun="mean")
+values(soilDepth) <- ifelse(is.na(values(soilDepth)), 0, values(soilDepth))
+writeRaster(soilDepth, "./LANDIS inputs/input rasters/soil_depth.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+baseflow <- rasterize(mapunits_data, template_raster, field = "baseFlow", fun="mean") 
+values(baseflow) <- ifelse(is.na(values(baseflow)), 0, values(baseflow))
+writeRaster(baseflow, "./LANDIS inputs/input rasters/baseflow.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+stormflow <- rasterize(mapunits_data, template_raster, field = "runoff", fun="mean") 
+values(stormflow) <- ifelse(is.na(values(stormflow)), 0, values(stormflow))
+writeRaster(stormflow, "./LANDIS inputs/input rasters/stormflow.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+SOM1surfC <- rasterize(mapunits_data, template_raster, field = "SOM1surfC", fun="mean") 
+values(SOM1surfC) <- ifelse(is.na(values(SOM1surfC)), 0, values(SOM1surfC))
+writeRaster(SOM1surfC, "./LANDIS inputs/input rasters/SOM1surfC.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+SOM1soilC <- rasterize(mapunits_data, template_raster, field = "SOM1soilC", fun="mean") 
+values(SOM1soilC) <- ifelse(is.na(values(SOM1soilC)), 0, values(SOM1soilC))
+writeRaster(SOM1soilC, "./LANDIS inputs/input rasters/SOM1soilC.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+SOM2C <- rasterize(mapunits_data, template_raster, field = "SOM2C", fun="mean") 
+values(SOM2C) <- ifelse(is.na(values(SOM2C)), 0, values(SOM2C))
+
+values(SOM2C) <- ifelse(values(SOM2C) >= 25000, 24499, values(SOM2C)) #TODO fix this
+writeRaster(SOM2C, "./LANDIS inputs/input rasters/SOM2C.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+SOM3C <- rasterize(mapunits_data, template_raster, field = "SOM3C", fun="mean")
+values(SOM3C) <- ifelse(is.na(values(SOM3C)), 0, values(SOM3C))
+values(SOM3C) <- ifelse(values(SOM3C) >= 20000, 19999, values(SOM3C)) #TODO fix this
+writeRaster(SOM3C, "./LANDIS inputs/input rasters/SOM3C.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+SOM1surfN <- rasterize(mapunits_data, template_raster, field = "SOM1surfN", fun="mean") 
+values(SOM1surfN) <- ifelse(is.na(values(SOM1surfN)), 0, values(SOM1surfN))
+values(SOM1surfN) <- ifelse(values(SOM1surfN) >= 500, 499, values(SOM1surfN)) #TODO fix this
+writeRaster(SOM1surfN, "./LANDIS inputs/input rasters/SOM1surfN.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+SOM1soilN <- rasterize(mapunits_data, template_raster, field = "SOM1soilN", fun="mean") 
+values(SOM1soilN) <- ifelse(is.na(values(SOM1soilN)), 0, values(SOM1soilN))
+values(SOM1soilN) <- ifelse(values(SOM1soilN) >= 500, 499, values(SOM1soilN)) #TODO fix this
+writeRaster(SOM1soilN, "./LANDIS inputs/input rasters/SOM1soilN.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+SOM2N <- rasterize(mapunits_data, template_raster, field = "SOM2N", fun="mean") 
+values(SOM2N) <- ifelse(is.na(values(SOM2N)), 0, values(SOM2N))
+values(SOM2N) <- ifelse(values(SOM2N) >= 1000, 999, values(SOM2N)) #TODO fix this
+writeRaster(SOM2N, "./LANDIS inputs/input rasters/SOM2N.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+SOM3N <- rasterize(mapunits_data, template_raster, field = "SOM3N", fun="mean") 
+values(SOM3N) <- ifelse(is.na(values(SOM3N)), 0, values(SOM3N))
+values(SOM3N) <- ifelse(values(SOM3N) >= 1000, 999, values(SOM3N)) #TODO fix this
+writeRaster(SOM3N, "./LANDIS inputs/input rasters/SOM3N.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)

@@ -1,0 +1,25 @@
+LandisData "Output Biomass"
+
+Timestep 10
+
+MakeTable yes
+
+Species QURU
+	FRNI
+	PIBA2
+	ACSA3
+	PIMA
+	PIGL
+	ABBA
+	PIST
+	BEAL2
+	POTR5
+	THOC2
+	BEPA
+
+
+MapNames output_20/bio2-{species}-{timestep}.img
+
+>>DeadPools non-woody
+
+>>MapNames  deadoutput_20/{pool}-{timestep}.img
