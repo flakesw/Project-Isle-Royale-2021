@@ -20,13 +20,14 @@ stencil <- simplegeom(as(isro_boundary, Class = "Spatial"))
 # find the data you want, then find the URL under the OPENDAP link
 # or you can use webdatasets = query('webdata') to get a list of all the datasets, and filter from there
 
+#here's the MACAv2-METDATA downscaled climate data
 fabric <- webdata(url='https://cida.usgs.gov/thredds/dodsC/macav2metdata_daily_future')
 
-#see what variables are available -- data is identified by a concatenation of 
+# see what variables are available -- data is identified by a concatenation of 
 # climate variable, model, and rcp
 query(fabric, 'variables')
 
-#what climate variables do we need? Only Precipitation (pr), min temperature (tasmin), and 
+# what climate variables do we need? Only Precipitation (pr), min temperature (tasmin), and 
 # max temperature (tasmas) are needed by default
 vars <- c("pr", "tasmax", "tasmin", "uas", "vas")
 #which model?
@@ -44,26 +45,27 @@ varList <- query(fabric, 'variables') %>%
 
 query(fabric, 'times') #what times are available?
 
-#run a test job to see if things are working, using just one variable
-variables(fabric) <- varList[1]
-
 # set up the "knife" which tells the GeoData Portal what to do with the 
 # subset data. We want the mean, variance, and std_dev (specified above), 
 # averaged across the study area, 
 # and there are a few other arguments to give to the remote server, specified 
 # by the "knife" object:
 # wait = TRUE has R wait while job is processed
-# email argument emails you when process is done. 
+# email =TRUE emails you when process is done. 
 knife <- webprocess(wait = TRUE, email = "your.address@email.com")
 query(knife, 'algorithms')
 
-# area grid statistics are the default, but we can change it if we want
+# area grid statistics are the default, but we can change it if we  (we don't)
 algorithm(knife) <- list('Area Grid Statistics (weighted)' = 
                            "gov.usgs.cida.gdp.wps.algorithm.FeatureWeightedGridStatisticsAlgorithm")
 
 #I think this is the best way to set it? The geoknife documentation isn't clear on
 # if there's a better way; might be a feature in development
 knife@processInputs$STATISTICS <- summary_stats #what statistics do we want?
+
+#-------------------------------------------------------------------------------
+#run a test job to see if things are working, using just one variable
+variables(fabric) <- varList[1]
 
 testjob <- geoknife(stencil, fabric, knife)
 
@@ -81,13 +83,16 @@ test <- result(testjob)
 head(test)
 tail(test)
 
-#now to run it for the full set of data that we need
+#-------------------------------------------------------------------------------
+# now to run it for the full set of data that we need
+# we just have one ecoregion for now, TODO figure out how to do several ecoregions
 
 # I had the job fail when I did all variables at once, so let's split them up into separate jobs
 # we can't submit several jobs at the same time, so we'll put them in a loop and
 # wait until one job is done before starting the next one.
 # This takes a variable amount of time -- sometimes 10 minutes or sometimes an hour-ish
-knife@email <- "your.address@email.com"
+
+knife@email <- "your.address@email.com" #I just replaced this so I don't get emails about other people's data
 
   job_results <- list()
 
@@ -108,12 +113,11 @@ knife@email <- "your.address@email.com"
 #save your work!
 saveRDS(job_results, file = "climate_raw.RDS")
 
-ppt <- job_results[[1]]
-
-table(ppt$statistic)
-
 #The data are in a long format -- not quite what we want
 str(job_results[[1]]) 
+
+#check on one of our datasets
+ppt <- job_results[[1]]
 
 #reshape the data into the format we need
 job_results_reform <- job_results %>% 
@@ -134,6 +138,7 @@ job_results_reform[[3]]$MEAN <- job_results_reform[[3]]$MEAN - 273.15 #convert f
 
 
 vars #remind us what the original var names were
+
 #rewrite variables in the format the climate library needs
 # this is sort of difficult using data.frames or tibbles, because 
 # there are different kinds of data in each column -- so we'll do everything
