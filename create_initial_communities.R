@@ -237,7 +237,7 @@ site_biomass <- fia_trees %>%
   dplyr::mutate(biomass = round(biomass, digits = 0)) %>%
   dplyr::mutate(biomass = biomass * 0.11) #convert to g m-2 from lb ac-2
 
-names(site_biomass) <- c("PLT_CN", "SpeciesName", "CohortAge", "CohortBiomass")
+names(site_biomass) <- c("PLT_CN", "SPCD", "CohortAge", "CohortBiomass")
 
 #TODO investigate why some plots have very very little AGB
 site_total_biomass <- site_biomass %>%
@@ -280,8 +280,8 @@ cwd_plot <- readFIA(dir = './calibration_data/fia/rFIA_downloads/',
   dplyr::filter(PLT_CN %in% tl_plots$CN) %>%
   dplyr::group_by(PLT_CN) %>%
   dplyr::summarise(total_cwd = sum(DRYBIO_AC_PLOT)) %>%
-  dplyr::left_join(dplyr::select(site_total_biomass, c("PLT_CN", "total_biomass")), by = c("PLT_CN" = "PLT_CN")) %>%
-  dplyr::left_join(density, by = c("PLT_CN" = "CN"))
+  dplyr::left_join(dplyr::select(site_total_biomass, c("PLT_CN", "total_biomass")), 
+                   by = c("PLT_CN" = "PLT_CN")) 
 
 plot(cwd_plot$total_cwd ~ cwd_plot$total_biomass)
 abline(coef(lm(cwd_plot$total_cwd ~ cwd_plot$total_biomass))) #sadly, there isn't alinear relationship between biomass and cwd
@@ -310,12 +310,17 @@ site_total_biomass <- fia_trees %>%
 
 #-------------------------------------------------------------------------------
 # Tidy up and write data
+tl_trees_ba <- bind_rows(tl_trees_ba,
+                         list(SPCD = c(1,2), SPECIES_SYMBOL = c("HRDWD", "SFTWD")))
+
 site_biomass <- site_biomass %>%
-  mutate(MapCode = tl_plots[match(site_biomass$PLT_CN, tl_plots$CN), "tl_id"]) %>%
-  mutate(SpeciesName = tl_trees_ba[match(site_biomass$SpeciesName, tl_trees_ba$SPCD), "SPECIES_SYMBOL"])
+  mutate(MapCode = tl_plots[match(PLT_CN, tl_plots$CN), "tl_id"]) %>%
+  left_join(tl_trees_ba %>% select(c("SPCD", "SPECIES_SYMBOL")), by = "SPCD") %>%
+  dplyr::rename(SpeciesName = SPECIES_SYMBOL)
+  
 site_total_biomass$MapCode <- tl_plots[match(site_total_biomass$PLT_CN, tl_plots$CN), "tl_id"] #replace CNs with tl_ids
 
-write.csv(site_biomass[, c(5,2,3,4)], "./LANDIS inputs/NECN files/initial_communities_update.csv")
+write.csv(site_biomass[, c(5,6,3,4)], "./LANDIS inputs/NECN files/initial_communities_update.csv")
 
 cwd_raster <- raster::subs(treemap_isro, site_total_biomass, by = "MapCode", which = "cwd")
 values(cwd_raster) <- ifelse(values(cwd_raster) <= 0 | is.na(values(cwd_raster)), 1, values(cwd_raster))

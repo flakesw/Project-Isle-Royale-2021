@@ -1,11 +1,11 @@
 LandisData Scenario
 
-Duration 1
+Duration 5
 
 Species 		"../../LANDIS inputs/other inputs/species.txt"
 
 Ecoregions 		"../../LANDIS inputs/NECN files/ecoregions.txt"
-EcoregionsMap 		"../../LANDIS inputs/input rasters/ecoregions.tif"
+EcoregionsMap 		"../../LANDIS inputs/input rasters/ecoregions_test.tif"
 
 CellLength 30 << meters
 
@@ -30,7 +30,7 @@ DisturbancesRandomOrder no
 >> ----------------- -------------------
 >>  "Output Max Species Age"		max-spp-age.output.txt
 >>    "Output Biomass-by-Age"		output.biomass-by-age.txt
-    "Output Biomass"			"../../LANDIS inputs/other inputs/biomassoutput_20.txt"
+>>    "Output Biomass"			"../../LANDIS inputs/other inputs/biomassoutput_20.txt"
 >>  "Output Cohort Statistics"		output_CohortStats.txt
 
 >>RandomNumberSeed 4,357

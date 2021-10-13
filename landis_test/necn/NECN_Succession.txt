@@ -27,7 +27,7 @@ InitialSOM3NMapName				"../../LANDIS inputs/input rasters/SOM3N.tif"
 InitialDeadWoodSurfaceMapName			"../../LANDIS inputs/input rasters/dead_wood.tif" 
 InitialDeadCoarseRootsMapName			"../../LANDIS inputs/input rasters/coarse_roots.tif"
 
-CalibrateMode 	no
+CalibrateMode 	yes
 SmokeModelOutputs no
 Version_Henne_SoilWater yes
 WaterDecayFunction Ratio <<Linear or Ratio
@@ -37,7 +37,7 @@ InitialMineralN			5.0
 InitialFineFuels		0.75
 AtmosphericNSlope		0.004
 AtmosphericNIntercept		0.04
-Latitude			39.5
+Latitude			48
 DenitrificationRate		0.0014 <<was 0.5
 DecayRateSurf			0.88
 DecayRateSOM1			0.9

@@ -1,7 +1,15 @@
-   Loading spin-up weather data from file LTB_91_10.csv ...
-   Converting raw data from text file: LTB_91_10.csv, Format=daily_temp-c_precip-mmday, Temporal=Daily.
-   Loading future weather data from file LTB_91_10.csv ...
-   Converting raw data from text file: LTB_91_10.csv, Format=daily_temp-c_precip-mmday, Temporal=Daily.
-Core.StartTime = 0, Core.EndTime = 1.
-  Completed calculations for Future_Climate using Daily_RandomYear. Ecoregion = eco1, SimulatedYear = 1991, actualYearUsed=2008.
-  AnnualClimate_Daily: Daily_RandomYear: timeStep = 1991, actualYear = 2008, phase = Future_Climate.
+   Loading spin-up weather data from file ../../LANDIS inputs/NECN files/MACA_MIROC_rcp8_5.csv ...
+   Converting raw data from text file: ../../LANDIS inputs/NECN files/MACA_MIROC_rcp8_5.csv, Format=daily_temp-c_precip-mmday, Temporal=Daily.
+   Loading future weather data from file ../../LANDIS inputs/NECN files/MACA_MIROC_rcp8_5.csv ...
+   Converting raw data from text file: ../../LANDIS inputs/NECN files/MACA_MIROC_rcp8_5.csv, Format=daily_temp-c_precip-mmday, Temporal=Daily.
+Core.StartTime = 0, Core.EndTime = 5.
+  Completed calculations for Future_Climate using Daily_RandomYear. Ecoregion = eco1, SimulatedYear = 1991, actualYearUsed=2004.
+  AnnualClimate_Daily: Daily_RandomYear: timeStep = 1991, actualYear = 2004, phase = Future_Climate.
+  Completed calculations for Future_Climate using Daily_RandomYear. Ecoregion = eco1, SimulatedYear = 1992, actualYearUsed=1999.
+  AnnualClimate_Daily: Daily_RandomYear: timeStep = 1992, actualYear = 1999, phase = Future_Climate.
+  Completed calculations for Future_Climate using Daily_RandomYear. Ecoregion = eco1, SimulatedYear = 1993, actualYearUsed=1999.
+  AnnualClimate_Daily: Daily_RandomYear: timeStep = 1993, actualYear = 1999, phase = Future_Climate.
+  Completed calculations for Future_Climate using Daily_RandomYear. Ecoregion = eco1, SimulatedYear = 1994, actualYearUsed=2003.
+  AnnualClimate_Daily: Daily_RandomYear: timeStep = 1994, actualYear = 2003, phase = Future_Climate.
+  Completed calculations for Future_Climate using Daily_RandomYear. Ecoregion = eco1, SimulatedYear = 1995, actualYearUsed=1993.
+  AnnualClimate_Daily: Daily_RandomYear: timeStep = 1995, actualYear = 1993, phase = Future_Climate.
