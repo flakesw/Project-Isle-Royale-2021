@@ -135,6 +135,9 @@ job_results_reform[[3]]$MEAN <- job_results_reform[[3]]$MEAN - 273.15 #convert f
 
 vars #remind us what the original var names were
 #rewrite variables in the format the climate library needs
+# this is sort of difficult using data.frames or tibbles, because 
+# there are different kinds of data in each column -- so we'll do everything
+# as character vectors then glue it together at the end.
 var_rows <- c("#ppt",
                  "#Tmax",
                  "#Tmin",
@@ -172,9 +175,10 @@ for(i in 1:length(var_rows)){
 
 output_data <- cbind(TIMESTEP, means, variances, stdev)
 
-write.csv(output_data, "./LANDIS inputs/NECN files/MACA_MIROC_rcp8_5.csv", row.names = FALSE, col.names = FALSE)
 write.table(output_data,               # Write CSV file without header
             "./LANDIS inputs/NECN files/MACA_MIROC_rcp8_5.csv",
             sep = ",",
             col.names = FALSE,
-            row.names = FALSE)
+            row.names = FALSE,
+            quote = FALSE) # quote = false is important! Otherwise the CL can't read the file, 
+                          # but it won't be apparent looking at the data in Excel
