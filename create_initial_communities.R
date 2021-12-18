@@ -6,6 +6,8 @@ library("RSQLite")
 library("rFIA")
 library("terra")
 
+setwd("C:/Users/Sam/Documents/Research/Isle Royale/")
+
 # TODO add in alder, willow, herbs
 
 # This script creates initial communities, 
@@ -256,6 +258,7 @@ density <- tl_trees_clean %>%
 # data is only available for a few plots with intensive sampling
 # TODO find a better way to interpolate dead wood -- kriging? Or a clustering method
 # to find most similar plots
+# expand geographic scope to find more plots to use?
 
 # TODO try using CARBON_DOWN_DEAD column in COND table
 
@@ -274,28 +277,45 @@ density <- tl_trees_clean %>%
 
 
 #TODO double check this -- there is way too much CWD in some plots
-cwd_plot <- readFIA(dir = './calibration_data/fia/rFIA_downloads/',
-               tables = 'DWM_COARSE_WOODY_DEBRIS') %>%
-  '[['('DWM_COARSE_WOODY_DEBRIS') %>%
-  dplyr::filter(PLT_CN %in% tl_plots$CN) %>%
-  dplyr::group_by(PLT_CN) %>%
-  dplyr::summarise(total_cwd = sum(DRYBIO_AC_PLOT)) %>%
-  dplyr::left_join(dplyr::select(site_total_biomass, c("PLT_CN", "total_biomass")), 
-                   by = c("PLT_CN" = "PLT_CN")) 
+#TODO this model doesn't really work anyway; it results in a negative relationship
+# between CWD and total biomass, with the greatest CWD in sites wiht the least biomass
+# so for now, I'm replacing it with a simple proportion of live biomass
 
-plot(cwd_plot$total_cwd ~ cwd_plot$total_biomass)
-abline(coef(lm(cwd_plot$total_cwd ~ cwd_plot$total_biomass))) #sadly, there isn't alinear relationship between biomass and cwd
+# cwd_plot <- readFIA(dir = './calibration_data/fia/rFIA_downloads/',
+#                tables = 'DWM_COARSE_WOODY_DEBRIS') %>%
+#   '[['('DWM_COARSE_WOODY_DEBRIS') %>%
+#   dplyr::filter(PLT_CN %in% tl_plots$CN) %>%
+#   dplyr::group_by(PLT_CN) %>%
+#   dplyr::summarise(total_cwd = sum(DRYBIO_AC_PLOT)) %>%
+#   dplyr::left_join(dplyr::select(site_total_biomass, c("PLT_CN", "total_biomass")), 
+#                    by = c("PLT_CN" = "PLT_CN")) 
+# 
+# plot(cwd_plot$total_cwd ~ cwd_plot$total_biomass)
+# abline(coef(lm(cwd_plot$total_cwd ~ cwd_plot$total_biomass))) #sadly, there isn't a linear relationship between biomass and cwd
+# 
+# cwd_model <- lm(total_cwd ~ total_biomass, data = cwd_plot)
+# site_total_biomass$cwd <- predict(cwd_model, newdata = data.frame(total_biomass = site_total_biomass$total_biomass))
+# site_total_biomass$cwd <- site_total_biomass$cwd * 0.11 # convert from lb ac-1 to g m-2
 
-cwd_model <- lm(total_cwd ~ total_biomass, data = cwd_plot)
-site_total_biomass$cwd <- predict(cwd_model, newdata = data.frame(total_biomass = site_total_biomass$total_biomass))
-site_total_biomass$cwd <- site_total_biomass$cwd * 0.11 # convert from lb ac-1 to g m-2
+#from LANDIS runs, the equilibrium value for dead wood appears to be ~2300 / 6200 (one run) = 37%
+
+site_total_biomass$cwd <- site_total_biomass$total_biomass * 0.37
+
+
+
 
 #-------------------------------------------------------------------------------
 # coarse roots
 #-------------------------------------------------------------------------------
 # Coarse roots can be calculated per tree
 # TODO we need dead roots!
-# for the moment, guestimating that dead roots = 10% of live roots
+# a good source is Yanai et al. 2006, who found ~540 g m-2 of dead root biomass
+# and that it did not vary much with stand age. For young stands, there was 
+# approximately 2 parts dead roots per 3 parts live root. Older stands more like
+# one part dead to four parts live
+
+# for the moment, guestimating that dead roots = 30% of live roots
+
 # root_ratio = Exp(JENKINS_ROOT_RATIO_B1 + JENKINS_ROOT_RATIO_B2 / (DIA*2.54))
 
 # we can also use the DRYBIO_BG column in the TREE table
@@ -305,8 +325,10 @@ site_total_biomass <- fia_trees %>%
   dplyr::summarise(root_biomass = sum(biomass_area)) %>%
   dplyr::mutate(root_biomass = round(root_biomass, digits = 0)) %>%
   dplyr::mutate(root_biomass = root_biomass * 0.11) %>% #convert to g m-2 from lb ac-2
-  dplyr::mutate(root_biomass = root_biomass * 0.10) %>% #scale from live roots to dead roots
+  dplyr::mutate(root_biomass = root_biomass * 0.3) %>% #scale from live roots to dead roots
   dplyr::left_join(site_total_biomass, by = "PLT_CN")
+
+
 
 #-------------------------------------------------------------------------------
 # Tidy up and write data

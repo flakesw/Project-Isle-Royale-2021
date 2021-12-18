@@ -31,9 +31,11 @@ Borrowed climate data from Melissa Lucash; TODO find specific climate data and d
 2021-10-7
 Rasters weren't all done -- had to do a lot of fiddling.
 Included all trees, with catch-all hardwood and softwood "species" to fix problem with some plots not being in the raster,
-having been dropped when they included zero common trees.
-TODO Fix SOM C and N values where too large
+
 TODO Make new functional types, not just hardwood and softwood
 TODO fix the ANPP species data
 TODO climate data!
 TODO add willow and alder
+
+2021-12-6
+Fixed Nitrogen problem --denitrification rates were too low

@@ -175,6 +175,7 @@ component[is.na(component$soilDepth), "soilDepth"] <- 200 #if no restrictive lay
 # use a lookup table to assign polygons a value of SoilDrain. SSURGO gives the 
 # full range of drainage values as Excessively drained to Very poorly drained,
 # which I map onto the range from 1 to 0 (with 0 being poorly drained). 
+#TODO validate this
 
 drain_lookup <- read.csv("./parameterize/necn_parameterize/soil drainage/drain_coef_lookup_2021-09-16.csv")
 component$soilDrain <- drain_lookup$drain_coef[base::match(component$drainagecl, drain_lookup$ï..Drainage_class)]
@@ -212,7 +213,8 @@ component <- hori %>%
   dplyr::mutate(across(everything(), ~replace_na(.x, 1))) %>% #replace NAs where any are left -- just on rocky outcrops and beaches. Replace with 1 instead of 0 so that the sites can still be active
   dplyr::mutate(across(c(wthirdbar_r, wfifteenbar_r, sandtotal_r, claytotal_r), .fns = ~ `*`(.x, 0.01))) %>% #multiply some columns by 0.01 to convert from percent to proportion
   dplyr::right_join(component, by = "cokey") %>%
-  dplyr::mutate(across(everything(), ~replace_na(.x, 0.001))) #check out what's weird with the last three entries -- no horizon data?
+  dplyr::mutate(across(everything(), ~replace_na(.x, 0.001))) %>% #TODO check out what's weird with the last three entries -- no horizon data?
+  dplyr::mutate(wthirdbar_r = ifelse(wthirdbar_r <= wfifteenbar_r, wfifteenbar_r + 0.02, wthirdbar_r)) #fix a few sites where field capacity is less than wilt point for some reason
   
 #add our extracted data to the mapunit layer
 mapunits_data <- component %>%
@@ -277,7 +279,7 @@ soil_mat <- data.frame(OID = mapunits_data$OID,
                        SILT = 100 - mapunits_data$sandtotal_r - mapunits_data$claytotal_r) %>%
   na.omit()
 
-#classify soils by textyre
+#classify soils by texture
 texture <- TT.points.in.classes(soil_mat, class.sys = "USDA.TT")
 
 names(texture) <- c("Clay", "Silty clay", "Sandy clay", "Clay loam", "Silty clay loam", "Sandy clay loam", "Loam", "Silt loam", "Sandy loam", "Silt", "Loamy sand", "Sand")
@@ -299,10 +301,16 @@ mapunits_data$runoff <- c0 + (1 - c0)*(s / (s + s0))
 
 
 # nitrogen pools
+#at the moment, none of this fancy stuff works. Instead, I'm just using 
+# a relationship using C:N ratios in each horizon, from Melissa Lucash
+
 # for N, we will use nitrogen data and carbon data from soilgrids.org to get the C:N ratio
 # and translate our soil C data from SSURGO to soil N
 # these need to be changed to g m-2
+
 # these use a weird projection, Homolosine, EPSG:7030
+
+#units are in dg/kg or cg/kg -- that is, they are concentrations, not per m2
 
 c_rasts <- c("c0-5.tif", "c5-15.tif", "c15-30.tif", "c30-60.tif", "c60-100.tif", "c100-200.tif") %>%
   paste0("./calibration_data/soilgrids/", .)
@@ -311,52 +319,99 @@ n_rasts <- c("n0-5.tif", "n5-15.tif", "n15-30.tif", "n30-60.tif", "n60-100.tif",
 
 #TODO put this in a pipeline
 c_stack <- raster::stack(c_rasts) / 10 #convert from dg to g
-c_rast <- mean(c_stack)
+c_rast <- sum(c_stack) #total carbon
 
 n_stack <- raster::stack(n_rasts) / 100 #convert from cg to g
-n_rast <- mean(n_stack)
+n_rast <- sum(n_stack) #total nitrogen
 
 c_n_rast <- c_rast/n_rast
 
 mapunits <- sf::st_transform(mapunits, crs(c_stack)) #set mapunits to match the soil rasters
 mapunits$extract_cn <- raster::extract(c_n_rast, mapunits, fun = mean, weights = TRUE)
+mapunits$total_n <- raster::extract(n_rast, mapunits, fun = mean, weights = TRUE)
+mapunits$total_c <- raster::extract(c_rast, mapunits, fun = mean, weights = TRUE)
 
 mapunit_cn <- mapunits[,"extract_cn"] %>%
   sf::st_set_geometry(NULL) %>%
   stats::aggregate(by = list(mapunits$MUKEY), FUN = function(x){mean(x, na.rm = TRUE)}) %>%
   dplyr::rename("MUKEY" = "Group.1")
 
+# mapunit_n <- mapunits[,"total_n"] %>%
+#   sf::st_set_geometry(NULL) %>%
+#   stats::aggregate(by = list(mapunits$MUKEY), FUN = function(x){mean(x, na.rm = TRUE)}) %>%
+#   dplyr::rename("MUKEY" = "Group.1")
+
 #for NA values of extract_cn, add the average of the other mapunits with the same MUKEY
-mapunits[is.na(mapunits$extract_cn), "extract_cn"] <- mapunit_cn[match(mapunits$MUKEY, mapunit_cn$MUKEY), "extract_cn"] %>%
+mapunits[is.na(mapunits$extract_cn), "extract_cn"] <- mapunit_cn[match(mapunits$MUKEY, mapunit_n$MUKEY), "extract_cn"] %>%
   subset(is.na(mapunits$extract_cn))
 
-# for some other NAs, the whole mapunit is NA -- for these, average the values for the neighboring 
+# for some other NAs, the whole mapunit is NA -- for these, average the values for the neighboring
 # polygons and set the cn equal to that
 neighbors <- spdep::poly2nb(mapunits) #get neighbors for each mapunit
 neighbor_list <- neighbors
-neighbor_cn <- NA
+neighbor_n <- NA
 for(i in 1:nrow(mapunits)){
   #average the neighbors' CN for each shape
-  neighbor_cn[i] <- mean(mapunits$extract_cn[neighbor_list[[i]]], na.rm = TRUE)
+  neighbor_n[i] <- mean(mapunits$extract_cn[neighbor_list[[i]]], na.rm = TRUE)
 }
 
 #assign values from neighbors
-mapunits$extract_cn <- ifelse(is.na(mapunits$extract_cn), mapunits$neighbor_cn, mapunits$extract_cn)
-#for the remaining 4 polygons, just assign them a 5 I guess TODO
-mapunits[is.na(mapunits$extract_cn), "extract_cn"] <- 5
+mapunits$extract_cn <- ifelse(is.na(mapunits$extract_cn), neighbor_n, mapunits$extract_cn)
+#for the remaining 4 polygons, just assign them a 10 I guess TODO
+mapunits[is.na(mapunits$extract_cn), "extract_cn"] <- 10
+mapunits[mapunits$extract_cn == 0, "extract_cn"] <- 10
 
 #create the soil N maps using soil C and C:N ratio
 #TODO have C:N ratios change with soil layers
-mapunits_data$SOM1surfN <- mapunits_data$SOM1surfC / mapunits$extract_cn
-mapunits_data$SOM1soilN <- mapunits_data$SOM1soilC / mapunits$extract_cn
-mapunits_data$SOM2N <- mapunits_data$SOM2C / mapunits$extract_cn
-mapunits_data$SOM3N <- mapunits_data$SOM3C / mapunits$extract_cn
+
+# Nitrogen as a proportion of carbon
+# SOM1surfN=.1
+# SOM1soilN=.1
+# SOM2N=.04
+# SOM3N=.118
+# total = 0.322
+#instead, let's divvy up N using the same proportions, but using soil N from soilgrids
+# this doesn't work -- there's way too much surface N
+
+#another way to do it that doesn't work: create N using C:N ratios then scale so that 
+# C:N ratios in each horizon are on average equal to expected values, e.g.:
+# mapunits_data$SOM1surfN <- mapunits_data$SOM1surfN / (10/mean(mapunits_data$SOM1surfC/mapunits_data$SOM1surfN)) #multiply by scaling factor to make mean CN = 10
+
+
+# mapunits_data$total_n <- mapunits_data$soc0_999 / mapunits$extract_cn
+# 
+# #TODO: keep soil N as a raster, instead of coarsening to map units?
+
+#---------------
+#attempt to use CN from soilgrids, and then scale CN ratios to match (on average) Melissa's data
+mapunits_data$SOM1surfN <- mapunits$extract_cn * mapunits_data$SOM1surfC
+mapunits_data[mapunits_data$SOM1surfN < 1, "SOM1surfN"] <- 1
+mapunits_data$SOM1surfN <- mapunits_data$SOM1surfN / (10/mean(mapunits_data$SOM1surfC/mapunits_data$SOM1surfN)) #multiply by scaling factor to make mean CN = 10
+
+mapunits_data$SOM1soilN <- mapunits$extract_cn * mapunits_data$SOM1soilC
+mapunits_data[mapunits_data$SOM1soilN < 1, "SOM1soilN"] <- 1
+mapunits_data$SOM1soilN <- mapunits_data$SOM1soilN / (10/mean(mapunits_data$SOM1soilC/mapunits_data$SOM1soilN)) #multiply by scaling factor to make mean CN = 10
+
+mapunits_data$SOM2N <- mapunits$extract_cn * mapunits_data$SOM2C
+mapunits_data[mapunits_data$SOM2N < 1, "SOM2N "] <- 1
+mapunits_data$SOM2N <- mapunits_data$SOM2N / (25/mean(mapunits_data$SOM2C/mapunits_data$SOM2N)) #multiply by scaling factor to make mean CN = 10
+
+mapunits_data$SOM3N <- mapunits$extract_cn * mapunits_data$SOM3C
+mapunits_data[mapunits_data$SOM3N < 1, "SOM3N"] <- 1
+mapunits_data$SOM3N <- mapunits_data$SOM3N / ((1/0.118)/mean(mapunits_data$SOM3C/mapunits_data$SOM3N)) #multiply by scaling factor to make mean CN = 10
+
+
+mapunits_data <-   sf::st_sf(mapunits_data) #we lost the geometry at some point, so this function fixes it. Seems clunky though
 
 mapunits_data <- sf::st_transform(mapunits_data, "EPSG:26917") #reproject to NAD83 Zone 17N
+#------------------
+
 
 #-------------------------------------------------------------------------------
 # write rasters!
 # this part might take a few hours depending on your study area, raster resolution, etc.
+#TODO: rasterize once with mapunit, then 
+
 detach("package:terra")
 # for some reason terra can't rasterize by the weighted mean of polygon within each cell?
 
@@ -436,3 +491,9 @@ SOM3N <- rasterize(mapunits_data, template_raster, field = "SOM3N", fun="mean")
 values(SOM3N) <- ifelse(is.na(values(SOM3N)), 0, values(SOM3N))
 values(SOM3N) <- ifelse(values(SOM3N) >= 1000, 999, values(SOM3N)) #TODO fix this
 writeRaster(SOM3N, "./LANDIS inputs/input rasters/SOM3N.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+
+
+library("ggplot2")
+ggplot() +
+  geom_sf(data = mapunits_data, mapping = aes(fill = soc0_999), lwd = 0)
+

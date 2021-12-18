@@ -1,919 +1,135 @@
-2021-10-13 16:12:08,966 - LANDIS-II 7.0 (7)
-2021-10-13 16:12:08,980 - 
-2021-10-13 16:12:09,052 - Loading scenario from file "Scenario1.txt" ...
-2021-10-13 16:12:09,116 - Initialized random number generator with seed = 1,383,864,302
-2021-10-13 16:12:09,117 - Loading species data from file "../../LANDIS inputs/other inputs/species.txt" ...
-2021-10-13 16:12:09,139 - Loading ecoregions from file "../../LANDIS inputs/NECN files/ecoregions.txt" ...
-2021-10-13 16:12:09,152 - Initializing landscape from ecoregions map "../../LANDIS inputs/input rasters/ecoregions_test.tif" ...
-2021-10-13 16:12:09,166 - Cell length = 30 m, cell area = 0.09 ha
-2021-10-13 16:12:09,167 - Map dimensions: 2,668 rows by 3,317 columns = 8,849,756 cells
-2021-10-13 16:12:09,698 - Sites: 1 active (0.0%), 8,849,755 inactive (100.0%)
-2021-10-13 16:12:10,789 - Loading NECN Succession extension ...
-2021-10-13 16:12:10,805 -    Registering Data:  Succession.LeafBiomassCohorts.
-2021-10-13 16:12:10,805 -    Registering Data:  Succession.AgeCohorts.
-2021-10-13 16:12:10,805 -    Registering Data:  Succession.BiomassCohorts.
-2021-10-13 16:12:10,806 -    Registering Data:  Succession.FineFuels.
-2021-10-13 16:12:10,806 -    Registering Data:  Succession.SmolderConsumption.
-2021-10-13 16:12:10,806 -    Registering Data:  Succession.FlamingConsumption.
-2021-10-13 16:12:10,807 -    Registering Data:  Succession.CWD.
-2021-10-13 16:12:10,807 -    Registering Data:  Succession.PET.
-2021-10-13 16:12:11,097 -    Begin parsing NECN SPECIES table.
-2021-10-13 16:12:11,121 -    Begin parsing FUNCTIONAL GROUP table.
-2021-10-13 16:12:11,126 -    Begin reading FIRE REDUCTION parameters.
-2021-10-13 16:12:11,127 -    Begin reading HARVEST REDUCTION parameters.
-2021-10-13 16:12:11,130 - Initializing NECN Succession ...
-2021-10-13 16:12:11,168 -   Read in data from ../../LANDIS inputs/input rasters/soil_depth.tif
-2021-10-13 16:12:12,332 -   Read in data from ../../LANDIS inputs/input rasters/soil_drain.tif
-2021-10-13 16:12:13,391 -   Read in data from ../../LANDIS inputs/input rasters/baseflow.tif
-2021-10-13 16:12:14,447 -   Read in data from ../../LANDIS inputs/input rasters/stormflow.tif
-2021-10-13 16:12:15,490 -   Read in data from ../../LANDIS inputs/input rasters/field_capacity.tif
-2021-10-13 16:12:16,524 -   Read in data from ../../LANDIS inputs/input rasters/wilt_point.tif
-2021-10-13 16:12:17,626 -   Read in data from ../../LANDIS inputs/input rasters/sand.tif
-2021-10-13 16:12:18,683 -   Read in data from ../../LANDIS inputs/input rasters/clay.tif
-2021-10-13 16:12:20,039 -   Read in data from ../../LANDIS inputs/input rasters/SOM1surfC.tif
-2021-10-13 16:12:21,217 -   Read in data from ../../LANDIS inputs/input rasters/SOM1surfN.tif
-2021-10-13 16:12:22,302 -   Read in data from ../../LANDIS inputs/input rasters/SOM1soilC.tif
-2021-10-13 16:12:23,451 -   Read in data from ../../LANDIS inputs/input rasters/SOM1soilN.tif
-2021-10-13 16:12:24,701 -   Read in data from ../../LANDIS inputs/input rasters/SOM2C.tif
-2021-10-13 16:12:25,881 -   Read in data from ../../LANDIS inputs/input rasters/SOM2N.tif
-2021-10-13 16:12:27,403 -   Read in data from ../../LANDIS inputs/input rasters/SOM3C.tif
-2021-10-13 16:12:28,740 -   Read in data from ../../LANDIS inputs/input rasters/SOM3N.tif
-2021-10-13 16:12:30,147 -   Read in data from ../../LANDIS inputs/input rasters/dead_wood.tif
-2021-10-13 16:12:31,454 -   Read in data from ../../LANDIS inputs/input rasters/coarse_roots.tif
-2021-10-13 16:12:32,738 -    Loading weather data ...
-2021-10-13 16:13:38,289 -    Registering Data:  TimeOfLastSuccession.
-2021-10-13 16:13:38,290 -    Registering Data:  Shade.
-2021-10-13 16:13:38,292 -    Creating Dispersal Neighborhood List.
-2021-10-13 16:13:38,293 -    Dispersal:  NeighborRadius=5015, CellLength=30, numCellRadius=167
-2021-10-13 16:13:38,945 -    Loading initial communities from file "../../LANDIS inputs/NECN files/initial_communities_pointer.txt" ...
-2021-10-13 16:13:39,093 -    Reading initial communities map "../../LANDIS inputs/input rasters/initial_communities.tif" ...
-2021-10-13 16:13:41,555 - Loading Base Wind extension ...
-2021-10-13 16:13:41,608 -    Registering Data:  Wind.TimeOfLastEvent.
-2021-10-13 16:13:41,610 -    Registering Data:  Wind.Severity.
-2021-10-13 16:13:41,613 - Using the following extensions ...
+2021-12-12 20:04:01,553 - LANDIS-II 7.0 (7)
+2021-12-12 20:04:01,562 - 
+2021-12-12 20:04:01,629 - Loading scenario from file "Scenario1.txt" ...
+2021-12-12 20:04:01,694 - Initialized random number generator with seed = 3,765,041,347
+2021-12-12 20:04:01,695 - Loading species data from file "../../LANDIS inputs/other inputs/species.txt" ...
+2021-12-12 20:04:01,717 - Loading ecoregions from file "../../LANDIS inputs/NECN files/ecoregions.txt" ...
+2021-12-12 20:04:01,731 - Initializing landscape from ecoregions map "../../LANDIS inputs/input rasters/ecoregions.tif" ...
+2021-12-12 20:04:01,747 - Cell length = 30 m, cell area = 0.09 ha
+2021-12-12 20:04:01,749 - Map dimensions: 2,668 rows by 3,317 columns = 8,849,756 cells
+2021-12-12 20:04:02,421 - Sites: 565,096 active (6.4%), 8,284,660 inactive (93.6%)
+2021-12-12 20:04:03,473 - Loading NECN Succession extension ...
+2021-12-12 20:04:03,534 -    Registering Data:  Succession.LeafBiomassCohorts.
+2021-12-12 20:04:03,535 -    Registering Data:  Succession.AgeCohorts.
+2021-12-12 20:04:03,535 -    Registering Data:  Succession.BiomassCohorts.
+2021-12-12 20:04:03,535 -    Registering Data:  Succession.FineFuels.
+2021-12-12 20:04:03,535 -    Registering Data:  Succession.SmolderConsumption.
+2021-12-12 20:04:03,535 -    Registering Data:  Succession.FlamingConsumption.
+2021-12-12 20:04:03,535 -    Registering Data:  Succession.CWD.
+2021-12-12 20:04:03,535 -    Registering Data:  Succession.PET.
+2021-12-12 20:04:07,433 -    Begin parsing NECN SPECIES table.
+2021-12-12 20:04:07,453 -    Begin parsing FUNCTIONAL GROUP table.
+2021-12-12 20:04:07,458 -    Begin reading FIRE REDUCTION parameters.
+2021-12-12 20:04:07,459 -    Begin reading HARVEST REDUCTION parameters.
+2021-12-12 20:04:07,462 - Initializing NECN Succession ...
+2021-12-12 20:04:07,503 -   Read in data from ../../LANDIS inputs/input rasters/soil_depth.tif
+2021-12-12 20:04:08,712 -   Read in data from ../../LANDIS inputs/input rasters/soil_drain.tif
+2021-12-12 20:04:09,790 -   Read in data from ../../LANDIS inputs/input rasters/baseflow.tif
+2021-12-12 20:04:10,873 -   Read in data from ../../LANDIS inputs/input rasters/stormflow.tif
+2021-12-12 20:04:11,942 -   Read in data from ../../LANDIS inputs/input rasters/field_capacity.tif
+2021-12-12 20:04:13,039 -   Read in data from ../../LANDIS inputs/input rasters/wilt_point.tif
+2021-12-12 20:04:14,140 -   Read in data from ../../LANDIS inputs/input rasters/sand.tif
+2021-12-12 20:04:15,206 -   Read in data from ../../LANDIS inputs/input rasters/clay.tif
+2021-12-12 20:04:16,275 -   Read in data from ../../LANDIS inputs/input rasters/SOM1surfC.tif
+2021-12-12 20:04:17,416 -   Read in data from ../../LANDIS inputs/input rasters/SOM1surfN.tif
+2021-12-12 20:04:18,553 -   Read in data from ../../LANDIS inputs/input rasters/SOM1soilC.tif
+2021-12-12 20:04:19,695 -   Read in data from ../../LANDIS inputs/input rasters/SOM1soilN.tif
+2021-12-12 20:04:20,840 -   Read in data from ../../LANDIS inputs/input rasters/SOM2C.tif
+2021-12-12 20:04:21,962 -   Read in data from ../../LANDIS inputs/input rasters/SOM2N.tif
+2021-12-12 20:04:23,096 -   Read in data from ../../LANDIS inputs/input rasters/SOM3C.tif
+2021-12-12 20:04:24,224 -   Read in data from ../../LANDIS inputs/input rasters/SOM3N.tif
+2021-12-12 20:04:25,347 -   Read in data from ../../LANDIS inputs/input rasters/dead_wood.tif
+2021-12-12 20:04:26,671 -   Read in data from ../../LANDIS inputs/input rasters/coarse_roots.tif
+2021-12-12 20:04:27,794 -    Loading weather data ...
+2021-12-12 20:04:56,948 -    Registering Data:  TimeOfLastSuccession.
+2021-12-12 20:04:56,951 -    Registering Data:  Shade.
+2021-12-12 20:04:56,953 -    Creating Dispersal Neighborhood List.
+2021-12-12 20:04:56,954 -    Dispersal:  NeighborRadius=5015, CellLength=30, numCellRadius=167
+2021-12-12 20:05:00,012 -    Loading initial communities from file "../../LANDIS inputs/NECN files/initial_communities_pointer.txt" ...
+2021-12-12 20:05:00,422 -    Reading initial communities map "../../LANDIS inputs/input rasters/initial_communities.tif" ...
+2021-12-12 20:05:31,844 - Loading Base Wind extension ...
+2021-12-12 20:05:31,919 -    Registering Data:  Wind.TimeOfLastEvent.
+2021-12-12 20:05:31,920 -    Registering Data:  Wind.Severity.
+2021-12-12 20:05:31,922 - Using the following extensions ...
    Extension Name            Extension Filename       
    --------------            ------------------       
    NECN Succession           NECN_Succession.txt      
    Base Wind                 ../../LANDIS inputs/other inputs/BaseWind.txt
 
-2021-10-13 16:13:41,614 - Current time: 1
-2021-10-13 16:13:41,615 - Running NECN Succession ...
-2021-10-13 16:13:41,722 -    SoilWater:  month=6, PET=14.7161060075735.
-2021-10-13 16:13:41,724 -    SoilWater:  month=6, Remaining PET=14.7161060075735.
-2021-10-13 16:13:41,724 -    SoilWater:  month=6, addToSoil=6.12452329035523.
-2021-10-13 16:13:41,725 -    SoilWater:  month=6, AET=5.92452328085574.
-2021-10-13 16:13:41,726 -    SoilWater:  month=6, baseflow=0.
-2021-10-13 16:13:41,848 -    SoilWater:  month=7, PET=14.1397620150874.
-2021-10-13 16:13:41,851 -    SoilWater:  month=7, Remaining PET=14.1397620150874.
-2021-10-13 16:13:41,852 -    SoilWater:  month=7, addToSoil=3.95556274095857.
-2021-10-13 16:13:41,853 -    SoilWater:  month=7, AET=3.95556274095857.
-2021-10-13 16:13:41,854 -    SoilWater:  month=7, baseflow=0.
-2021-10-13 16:13:41,893 -    SoilWater:  month=8, PET=10.9520033100773.
-2021-10-13 16:13:41,895 -    SoilWater:  month=8, Remaining PET=10.9520033100773.
-2021-10-13 16:13:41,896 -    SoilWater:  month=8, addToSoil=3.21564750742189.
-2021-10-13 16:13:41,896 -    SoilWater:  month=8, AET=3.21564750742189.
-2021-10-13 16:13:41,897 -    SoilWater:  month=8, baseflow=0.
-2021-10-13 16:13:41,936 -    SoilWater:  month=9, PET=4.14514479027188.
-2021-10-13 16:13:41,937 -    SoilWater:  month=9, Remaining PET=4.14514479027188.
-2021-10-13 16:13:41,938 -    SoilWater:  month=9, addToSoil=3.84664303209125.
-2021-10-13 16:13:41,938 -    SoilWater:  month=9, AET=2.48708687416313.
-2021-10-13 16:13:41,939 -    SoilWater:  month=9, baseflow=7.81629608150074E-05.
-2021-10-13 16:13:41,974 -    SoilWater:  month=10, PET=1.93341039026812.
-2021-10-13 16:13:41,975 -    SoilWater:  month=10, Remaining PET=1.93341039026812.
-2021-10-13 16:13:41,976 -    SoilWater:  month=10, addToSoil=9.22210581259275.
-2021-10-13 16:13:41,977 -    SoilWater:  month=10, AET=1.16004623416087.
-2021-10-13 16:13:41,977 -    SoilWater:  month=10, baseflow=0.000541657456443611.
-2021-10-13 16:13:42,012 -    SoilWater:  month=11, PET=0.0283927604088346.
-2021-10-13 16:13:42,014 -    SoilWater:  month=11, AET=0.
-2021-10-13 16:13:42,016 -    SoilWater:  month=11, baseflow=0.000673691174087402.
-2021-10-13 16:13:42,045 -    SoilWater:  month=0, PET=0.589417482095348.
-2021-10-13 16:13:42,046 -    SoilWater:  month=0, AET=0.
-2021-10-13 16:13:42,047 -    SoilWater:  month=0, baseflow=0.0010455947145119.
-2021-10-13 16:13:42,080 -    SoilWater:  month=1, PET=1.52448385676833.
-2021-10-13 16:13:42,082 -    SoilWater:  month=1, Remaining PET=1.52448385676833.
-2021-10-13 16:13:42,082 -    SoilWater:  month=1, addToSoil=4.71204260029281.
-2021-10-13 16:13:42,083 -    SoilWater:  month=1, AET=0.914690314060996.
-2021-10-13 16:13:42,084 -    SoilWater:  month=1, baseflow=0.00126383501668324.
-2021-10-13 16:13:42,124 -    SoilWater:  month=2, PET=5.44831400083299.
-2021-10-13 16:13:42,126 -    SoilWater:  month=2, Remaining PET=5.44831400083299.
-2021-10-13 16:13:42,126 -    SoilWater:  month=2, addToSoil=6.2405891972668.
-2021-10-13 16:13:42,127 -    SoilWater:  month=2, AET=3.26898840049979.
-2021-10-13 16:13:42,129 -    SoilWater:  month=2, baseflow=0.00143458589073909.
-2021-10-13 16:13:42,168 -    SoilWater:  month=3, PET=7.28930195272046.
-2021-10-13 16:13:42,171 -    SoilWater:  month=3, Remaining PET=7.28930195272046.
-2021-10-13 16:13:42,172 -    SoilWater:  month=3, addToSoil=6.23710001217182.
-2021-10-13 16:13:42,173 -    SoilWater:  month=3, AET=4.37358117163227.
-2021-10-13 16:13:42,173 -    SoilWater:  month=3, baseflow=0.00154161914600529.
-2021-10-13 16:13:42,217 -    SoilWater:  month=4, PET=9.83265185352575.
-2021-10-13 16:13:42,218 -    SoilWater:  month=4, Remaining PET=9.83265185352575.
-2021-10-13 16:13:42,219 -    SoilWater:  month=4, addToSoil=7.4442043876897.
-2021-10-13 16:13:42,219 -    SoilWater:  month=4, AET=5.89959111211545.
-2021-10-13 16:13:42,219 -    SoilWater:  month=4, baseflow=0.00163031032668417.
-2021-10-13 16:13:42,254 -    SoilWater:  month=5, PET=10.8969061180826.
-2021-10-13 16:13:42,255 -    SoilWater:  month=5, Remaining PET=10.8969061180826.
-2021-10-13 16:13:42,256 -    SoilWater:  month=5, addToSoil=2.94275197173055.
-2021-10-13 16:13:42,257 -    SoilWater:  month=5, AET=2.94275197173055.
-2021-10-13 16:13:42,258 -    SoilWater:  month=5, baseflow=0.0016301929443365.
-2021-10-13 16:14:16,292 - Current time: 2
-2021-10-13 16:14:16,292 - Running NECN Succession ...
-2021-10-13 16:14:16,367 -    SoilWater:  month=6, PET=16.4035665744339.
-2021-10-13 16:14:16,368 -    SoilWater:  month=6, Remaining PET=16.4035665744339.
-2021-10-13 16:14:16,368 -    SoilWater:  month=6, addToSoil=4.43656914965926.
-2021-10-13 16:14:16,369 -    SoilWater:  month=6, AET=4.43656914965926.
-2021-10-13 16:14:16,369 -    SoilWater:  month=6, baseflow=0.00163007557044035.
-2021-10-13 16:14:16,399 -    SoilWater:  month=7, PET=14.2710795666285.
-2021-10-13 16:14:16,401 -    SoilWater:  month=7, Remaining PET=14.2710795666285.
-2021-10-13 16:14:16,402 -    SoilWater:  month=7, addToSoil=4.54009693506391.
-2021-10-13 16:14:16,402 -    SoilWater:  month=7, AET=4.54009693506391.
-2021-10-13 16:14:16,403 -    SoilWater:  month=7, baseflow=0.00162995820499513.
-2021-10-13 16:14:16,434 -    SoilWater:  month=8, PET=11.9709006185935.
-2021-10-13 16:14:16,435 -    SoilWater:  month=8, Remaining PET=11.9709006185935.
-2021-10-13 16:14:16,436 -    SoilWater:  month=8, addToSoil=3.34016105387685.
-2021-10-13 16:14:16,437 -    SoilWater:  month=8, AET=3.34016105387685.
-2021-10-13 16:14:16,437 -    SoilWater:  month=8, baseflow=0.00162984084800022.
-2021-10-13 16:14:16,466 -    SoilWater:  month=9, PET=4.03776735487203.
-2021-10-13 16:14:16,467 -    SoilWater:  month=9, Remaining PET=4.03776735487203.
-2021-10-13 16:14:16,468 -    SoilWater:  month=9, addToSoil=12.0242094989512.
-2021-10-13 16:14:16,468 -    SoilWater:  month=9, AET=2.42266041292322.
-2021-10-13 16:14:16,469 -    SoilWater:  month=9, baseflow=0.00218173122682853.
-2021-10-13 16:14:16,498 -    SoilWater:  month=10, PET=1.76537841061452.
-2021-10-13 16:14:16,499 -    SoilWater:  month=10, Remaining PET=1.76537841061452.
-2021-10-13 16:14:16,499 -    SoilWater:  month=10, addToSoil=4.39863516145419.
-2021-10-13 16:14:16,500 -    SoilWater:  month=10, AET=1.05922704636871.
-2021-10-13 16:14:16,501 -    SoilWater:  month=10, baseflow=0.00237356181706593.
-2021-10-13 16:14:16,532 -    SoilWater:  month=11, PET=0.383001562177791.
-2021-10-13 16:14:16,533 -    SoilWater:  month=11, Remaining PET=0.383001562177791.
-2021-10-13 16:14:16,534 -    SoilWater:  month=11, addToSoil=12.3528678532589.
-2021-10-13 16:14:16,534 -    SoilWater:  month=11, AET=0.229800937306674.
-2021-10-13 16:14:16,535 -    SoilWater:  month=11, baseflow=0.0030703645607074.
-2021-10-13 16:14:16,563 -    SoilWater:  month=0, PET=0.554506782665753.
-2021-10-13 16:14:16,564 -    SoilWater:  month=0, Remaining PET=0.554506782665753.
-2021-10-13 16:14:16,565 -    SoilWater:  month=0, addToSoil=13.1285390599337.
-2021-10-13 16:14:16,565 -    SoilWater:  month=0, AET=0.332704069599452.
-2021-10-13 16:14:16,566 -    SoilWater:  month=0, baseflow=0.0038057955990829.
-2021-10-13 16:14:16,606 -    SoilWater:  month=1, PET=1.08186050636573.
-2021-10-13 16:14:16,607 -    SoilWater:  month=1, Remaining PET=1.08186050636573.
-2021-10-13 16:14:16,608 -    SoilWater:  month=1, addToSoil=2.58144393871371.
-2021-10-13 16:14:16,608 -    SoilWater:  month=1, AET=0.64911630381944.
-2021-10-13 16:14:16,609 -    SoilWater:  month=1, baseflow=0.00391661404996598.
-2021-10-13 16:14:16,639 -    SoilWater:  month=2, PET=4.50771065125075.
-2021-10-13 16:14:16,640 -    SoilWater:  month=2, Remaining PET=4.50771065125075.
-2021-10-13 16:14:16,641 -    SoilWater:  month=2, addToSoil=5.3746082017997.
-2021-10-13 16:14:16,642 -    SoilWater:  month=2, AET=2.70462639075045.
-2021-10-13 16:14:16,642 -    SoilWater:  month=2, baseflow=0.0040698333875855.
-2021-10-13 16:14:16,677 -    SoilWater:  month=3, PET=7.77986536728525.
-2021-10-13 16:14:16,678 -    SoilWater:  month=3, Remaining PET=7.77986536728525.
-2021-10-13 16:14:16,679 -    SoilWater:  month=3, addToSoil=15.2388233467859.
-2021-10-13 16:14:16,680 -    SoilWater:  month=3, AET=4.66791922037115.
-2021-10-13 16:14:16,680 -    SoilWater:  month=3, baseflow=0.00467727778931544.
-2021-10-13 16:14:16,713 -    SoilWater:  month=4, PET=8.69712741716111.
-2021-10-13 16:14:16,714 -    SoilWater:  month=4, Remaining PET=8.69712741716111.
-2021-10-13 16:14:16,715 -    SoilWater:  month=4, addToSoil=17.7043977766656.
-2021-10-13 16:14:16,715 -    SoilWater:  month=4, AET=5.21827645029667.
-2021-10-13 16:14:16,716 -    SoilWater:  month=4, baseflow=0.00539478721817471.
-2021-10-13 16:14:16,749 -    SoilWater:  month=5, PET=12.4382145742182.
-2021-10-13 16:14:16,752 -    SoilWater:  month=5, Remaining PET=12.4382145742182.
-2021-10-13 16:14:16,752 -    SoilWater:  month=5, addToSoil=3.79707712551384.
-2021-10-13 16:14:16,754 -    SoilWater:  month=5, AET=3.79707712551384.
-2021-10-13 16:14:16,754 -    SoilWater:  month=5, baseflow=0.00539439879348126.
-2021-10-13 16:14:33,631 - Current time: 3
-2021-10-13 16:14:33,632 - Running NECN Succession ...
-2021-10-13 16:14:33,721 -    SoilWater:  month=6, PET=13.4400853435703.
-2021-10-13 16:14:33,722 -    SoilWater:  month=6, Remaining PET=13.4400853435703.
-2021-10-13 16:14:33,722 -    SoilWater:  month=6, addToSoil=1.97972870253109.
-2021-10-13 16:14:33,723 -    SoilWater:  month=6, AET=1.97972870253109.
-2021-10-13 16:14:33,724 -    SoilWater:  month=6, baseflow=0.00539401039675439.
-2021-10-13 16:14:33,760 -    SoilWater:  month=7, PET=15.1382405761943.
-2021-10-13 16:14:33,761 -    SoilWater:  month=7, Remaining PET=15.1382405761943.
-2021-10-13 16:14:33,763 -    SoilWater:  month=7, addToSoil=4.10180749709958.
-2021-10-13 16:14:33,764 -    SoilWater:  month=7, AET=4.10180749709958.
-2021-10-13 16:14:33,765 -    SoilWater:  month=7, baseflow=0.00539362202799209.
-2021-10-13 16:14:33,799 -    SoilWater:  month=8, PET=8.86995625856943.
-2021-10-13 16:14:33,800 -    SoilWater:  month=8, Remaining PET=8.86995625856943.
-2021-10-13 16:14:33,801 -    SoilWater:  month=8, addToSoil=3.06927590431474.
-2021-10-13 16:14:33,802 -    SoilWater:  month=8, AET=3.06927590431474.
-2021-10-13 16:14:33,802 -    SoilWater:  month=8, baseflow=0.00539323368719234.
-2021-10-13 16:14:33,833 -    SoilWater:  month=9, PET=3.1980593938824.
-2021-10-13 16:14:33,835 -    SoilWater:  month=9, Remaining PET=3.1980593938824.
-2021-10-13 16:14:33,835 -    SoilWater:  month=9, addToSoil=15.220862053447.
-2021-10-13 16:14:33,836 -    SoilWater:  month=9, AET=1.91883563632944.
-2021-10-13 16:14:33,837 -    SoilWater:  month=9, baseflow=0.00615759919753159.
-2021-10-13 16:14:33,868 -    SoilWater:  month=10, PET=0.879678533278762.
-2021-10-13 16:14:33,869 -    SoilWater:  month=10, Remaining PET=0.879678533278762.
-2021-10-13 16:14:33,869 -    SoilWater:  month=10, addToSoil=0.129628752495776.
-2021-10-13 16:14:33,870 -    SoilWater:  month=10, AET=0.129628752495776.
-2021-10-13 16:14:33,871 -    SoilWater:  month=10, baseflow=0.00615715585037368.
-2021-10-13 16:14:33,903 -    SoilWater:  month=11, PET=0.0197269115079574.
-2021-10-13 16:14:33,904 -    SoilWater:  month=11, AET=0.
-2021-10-13 16:14:33,905 -    SoilWater:  month=11, baseflow=0.00628671418994002.
-2021-10-13 16:14:33,935 -    SoilWater:  month=0, PET=0.0455037271700616.
-2021-10-13 16:14:33,936 -    SoilWater:  month=0, AET=0.
-2021-10-13 16:14:33,936 -    SoilWater:  month=0, baseflow=0.00642591670903347.
-2021-10-13 16:14:33,966 -    SoilWater:  month=1, PET=0.
-2021-10-13 16:14:33,967 -    SoilWater:  month=1, AET=0.
-2021-10-13 16:14:33,969 -    SoilWater:  month=1, baseflow=0.00649141899371678.
-2021-10-13 16:14:34,001 -    SoilWater:  month=2, PET=2.67531906571575.
-2021-10-13 16:14:34,002 -    SoilWater:  month=2, Remaining PET=2.67531906571575.
-2021-10-13 16:14:34,003 -    SoilWater:  month=2, addToSoil=12.232471230913.
-2021-10-13 16:14:34,003 -    SoilWater:  month=2, AET=1.60519143942945.
-2021-10-13 16:14:34,004 -    SoilWater:  month=2, baseflow=0.00710193016439933.
-2021-10-13 16:14:34,036 -    SoilWater:  month=3, PET=5.59731284541986.
-2021-10-13 16:14:34,037 -    SoilWater:  month=3, Remaining PET=5.59731284541986.
-2021-10-13 16:14:34,038 -    SoilWater:  month=3, addToSoil=2.32678559846461.
-2021-10-13 16:14:34,038 -    SoilWater:  month=3, AET=2.32678559846461.
-2021-10-13 16:14:34,039 -    SoilWater:  month=3, baseflow=0.00710141882540941.
-2021-10-13 16:14:34,072 -    SoilWater:  month=4, PET=7.6682358444573.
-2021-10-13 16:14:34,073 -    SoilWater:  month=4, Remaining PET=7.6682358444573.
-2021-10-13 16:14:34,074 -    SoilWater:  month=4, addToSoil=7.11552630961708.
-2021-10-13 16:14:34,075 -    SoilWater:  month=4, AET=4.60094150667438.
-2021-10-13 16:14:34,076 -    SoilWater:  month=4, baseflow=0.00724547484564643.
-2021-10-13 16:14:34,109 -    SoilWater:  month=5, PET=9.87811059924626.
-2021-10-13 16:14:34,111 -    SoilWater:  month=5, Remaining PET=9.87811059924626.
-2021-10-13 16:14:34,112 -    SoilWater:  month=5, addToSoil=5.7534568933015.
-2021-10-13 16:14:34,113 -    SoilWater:  month=5, AET=5.7534568933015.
-2021-10-13 16:14:34,114 -    SoilWater:  month=5, baseflow=0.00724495317143909.
-2021-10-13 16:14:52,450 - Current time: 4
-2021-10-13 16:14:52,452 - Running NECN Succession ...
-2021-10-13 16:14:52,541 -    SoilWater:  month=6, PET=16.8596175516218.
-2021-10-13 16:14:52,545 -    SoilWater:  month=6, Remaining PET=16.8596175516218.
-2021-10-13 16:14:52,548 -    SoilWater:  month=6, addToSoil=3.14329029842307.
-2021-10-13 16:14:52,549 -    SoilWater:  month=6, AET=3.14329029842307.
-2021-10-13 16:14:52,550 -    SoilWater:  month=6, baseflow=0.00724443153479229.
-2021-10-13 16:14:52,587 -    SoilWater:  month=7, PET=16.1424287555169.
-2021-10-13 16:14:52,588 -    SoilWater:  month=7, Remaining PET=16.1424287555169.
-2021-10-13 16:14:52,588 -    SoilWater:  month=7, addToSoil=3.64247788812843.
-2021-10-13 16:14:52,589 -    SoilWater:  month=7, AET=3.64247788812843.
-2021-10-13 16:14:52,589 -    SoilWater:  month=7, baseflow=0.00724390993570334.
-2021-10-13 16:14:52,624 -    SoilWater:  month=8, PET=10.6192327776679.
-2021-10-13 16:14:52,624 -    SoilWater:  month=8, Remaining PET=10.6192327776679.
-2021-10-13 16:14:52,625 -    SoilWater:  month=8, addToSoil=6.87179414833282.
-2021-10-13 16:14:52,625 -    SoilWater:  month=8, AET=6.37153966660077.
-2021-10-13 16:14:52,625 -    SoilWater:  month=8, baseflow=0.00727214876867411.
-2021-10-13 16:14:52,676 -    SoilWater:  month=9, PET=4.80063954058902.
-2021-10-13 16:14:52,688 -    SoilWater:  month=9, Remaining PET=4.80063954058902.
-2021-10-13 16:14:52,694 -    SoilWater:  month=9, addToSoil=4.26247942346439.
-2021-10-13 16:14:52,697 -    SoilWater:  month=9, AET=2.88038372435341.
-2021-10-13 16:14:52,711 -    SoilWater:  month=9, baseflow=0.00735108396742051.
-2021-10-13 16:14:52,768 -    SoilWater:  month=10, PET=1.96160264066767.
-2021-10-13 16:14:52,771 -    SoilWater:  month=10, Remaining PET=1.96160264066767.
-2021-10-13 16:14:52,782 -    SoilWater:  month=10, addToSoil=5.55134191973293.
-2021-10-13 16:14:52,802 -    SoilWater:  month=10, AET=1.1769615844006.
-2021-10-13 16:14:52,813 -    SoilWater:  month=10, baseflow=0.0076020444985462.
-2021-10-13 16:14:52,855 -    SoilWater:  month=11, PET=0.34914842435914.
-2021-10-13 16:14:52,859 -    SoilWater:  month=11, AET=0.
-2021-10-13 16:14:52,874 -    SoilWater:  month=11, baseflow=0.00764861596131769.
-2021-10-13 16:14:52,931 -    SoilWater:  month=0, PET=0.249970747968271.
-2021-10-13 16:14:52,934 -    SoilWater:  month=0, AET=0.
-2021-10-13 16:14:52,943 -    SoilWater:  month=0, baseflow=0.00784641282607747.
-2021-10-13 16:14:52,990 -    SoilWater:  month=1, PET=0.496062444591737.
-2021-10-13 16:14:52,991 -    SoilWater:  month=1, AET=0.
-2021-10-13 16:14:52,991 -    SoilWater:  month=1, baseflow=0.0081711936965103.
-2021-10-13 16:14:53,027 -    SoilWater:  month=2, PET=3.00019658243475.
-2021-10-13 16:14:53,028 -    SoilWater:  month=2, Remaining PET=3.00019658243475.
-2021-10-13 16:14:53,028 -    SoilWater:  month=2, addToSoil=13.5499993672143.
-2021-10-13 16:14:53,028 -    SoilWater:  month=2, AET=1.80011794946085.
-2021-10-13 16:14:53,028 -    SoilWater:  month=2, baseflow=0.00884612400615192.
-2021-10-13 16:14:53,077 -    SoilWater:  month=3, PET=7.5743167681587.
-2021-10-13 16:14:53,078 -    SoilWater:  month=3, Remaining PET=7.5743167681587.
-2021-10-13 16:14:53,078 -    SoilWater:  month=3, addToSoil=9.79514534493652.
-2021-10-13 16:14:53,078 -    SoilWater:  month=3, AET=4.54459006089522.
-2021-10-13 16:14:53,078 -    SoilWater:  month=3, baseflow=0.00914734953091924.
-2021-10-13 16:14:53,132 -    SoilWater:  month=4, PET=8.03656438958323.
-2021-10-13 16:14:53,133 -    SoilWater:  month=4, Remaining PET=8.03656438958323.
-2021-10-13 16:14:53,133 -    SoilWater:  month=4, addToSoil=12.6675967031667.
-2021-10-13 16:14:53,134 -    SoilWater:  month=4, AET=4.82193863374994.
-2021-10-13 16:14:53,134 -    SoilWater:  month=4, baseflow=0.00959774979169381.
-2021-10-13 16:14:53,184 -    SoilWater:  month=5, PET=11.8625209340022.
-2021-10-13 16:14:53,186 -    SoilWater:  month=5, Remaining PET=11.8625209340022.
-2021-10-13 16:14:53,187 -    SoilWater:  month=5, addToSoil=4.4818945290968.
-2021-10-13 16:14:53,223 -    SoilWater:  month=5, AET=4.4818945290968.
-2021-10-13 16:14:53,255 -    SoilWater:  month=5, baseflow=0.00959705875368436.
-2021-10-13 16:15:14,792 - Current time: 5
-2021-10-13 16:15:14,793 - Running NECN Succession ...
-2021-10-13 16:15:14,867 -    SoilWater:  month=6, PET=12.4978619457749.
-2021-10-13 16:15:14,868 -    SoilWater:  month=6, Remaining PET=12.4978619457749.
-2021-10-13 16:15:14,868 -    SoilWater:  month=6, addToSoil=5.42056774874507.
-2021-10-13 16:15:14,869 -    SoilWater:  month=6, AET=5.42056774874507.
-2021-10-13 16:15:14,870 -    SoilWater:  month=6, baseflow=0.00959636776542966.
-2021-10-13 16:15:14,901 -    SoilWater:  month=7, PET=14.6007455715865.
-2021-10-13 16:15:14,901 -    SoilWater:  month=7, Remaining PET=14.6007455715865.
-2021-10-13 16:15:14,902 -    SoilWater:  month=7, addToSoil=3.22638244330668.
-2021-10-13 16:15:14,902 -    SoilWater:  month=7, AET=3.22638244330668.
-2021-10-13 16:15:14,902 -    SoilWater:  month=7, baseflow=0.0095956768269261.
-2021-10-13 16:15:14,937 -    SoilWater:  month=8, PET=9.29726641630347.
-2021-10-13 16:15:14,938 -    SoilWater:  month=8, Remaining PET=9.29726641630347.
-2021-10-13 16:15:14,938 -    SoilWater:  month=8, addToSoil=5.76767474773861.
-2021-10-13 16:15:14,938 -    SoilWater:  month=8, AET=5.57835984978208.
-2021-10-13 16:15:14,939 -    SoilWater:  month=8, baseflow=0.00960586994091204.
-2021-10-13 16:15:14,992 -    SoilWater:  month=9, PET=4.02122308051087.
-2021-10-13 16:15:14,993 -    SoilWater:  month=9, Remaining PET=4.02122308051087.
-2021-10-13 16:15:14,993 -    SoilWater:  month=9, addToSoil=9.26475874479565.
-2021-10-13 16:15:14,993 -    SoilWater:  month=9, AET=2.41273384830652.
-2021-10-13 16:15:14,993 -    SoilWater:  month=9, baseflow=0.00999911169891035.
-2021-10-13 16:15:15,031 -    SoilWater:  month=10, PET=1.19277000843152.
-2021-10-13 16:15:15,032 -    SoilWater:  month=10, Remaining PET=1.19277000843152.
-2021-10-13 16:15:15,032 -    SoilWater:  month=10, addToSoil=5.34494342572739.
-2021-10-13 16:15:15,033 -    SoilWater:  month=10, AET=0.71566200505891.
-2021-10-13 16:15:15,033 -    SoilWater:  month=10, baseflow=0.0102645362248976.
-2021-10-13 16:15:15,102 -    SoilWater:  month=11, PET=1.06807498811626.
-2021-10-13 16:15:15,103 -    SoilWater:  month=11, Remaining PET=1.06807498811626.
-2021-10-13 16:15:15,103 -    SoilWater:  month=11, addToSoil=5.4795223412735.
-2021-10-13 16:15:15,105 -    SoilWater:  month=11, AET=0.640844992869757.
-2021-10-13 16:15:15,105 -    SoilWater:  month=11, baseflow=0.0105419801321444.
-2021-10-13 16:15:15,139 -    SoilWater:  month=0, PET=0.65018744695216.
-2021-10-13 16:15:15,140 -    SoilWater:  month=0, Remaining PET=0.65018744695216.
-2021-10-13 16:15:15,140 -    SoilWater:  month=0, addToSoil=0.
-2021-10-13 16:15:15,140 -    SoilWater:  month=0, AET=NaN.
-2021-10-13 16:15:15,141 -    SoilWater:  month=0, baseflow=0.010541221109548.
-2021-10-13 16:15:15,141 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,142 -   Yr=5,Mo=1.     Other Information: MaxB=15000, Bsite=7448, Bcohort=374.8, SoilT=3.9.
-2021-10-13 16:15:15,142 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,144 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,144 -   Yr=5,Mo=1.     Other Information: MaxB=15000, Bsite=7447, Bcohort=146.1, SoilT=3.9.
-2021-10-13 16:15:15,145 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,146 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,147 -   Yr=5,Mo=1.     Other Information: MaxB=20000, Bsite=7446, Bcohort=495.6, SoilT=3.9.
-2021-10-13 16:15:15,147 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,149 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,149 -   Yr=5,Mo=1.     Other Information: MaxB=20000, Bsite=7444, Bcohort=473.1, SoilT=3.9.
-2021-10-13 16:15:15,149 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,151 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,151 -   Yr=5,Mo=1.     Other Information: MaxB=20000, Bsite=7442, Bcohort=631.4, SoilT=3.9.
-2021-10-13 16:15:15,152 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,153 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,153 -   Yr=5,Mo=1.     Other Information: MaxB=20000, Bsite=7439, Bcohort=227.7, SoilT=3.9.
-2021-10-13 16:15:15,154 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,155 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,156 -   Yr=5,Mo=1.     Other Information: MaxB=15000, Bsite=7438, Bcohort=463.5, SoilT=3.9.
-2021-10-13 16:15:15,156 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,157 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,158 -   Yr=5,Mo=1.     Other Information: MaxB=35000, Bsite=7436, Bcohort=161.5, SoilT=3.9.
-2021-10-13 16:15:15,158 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,159 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,160 -   Yr=5,Mo=1.     Other Information: MaxB=100000, Bsite=7436, Bcohort=122.3, SoilT=3.9.
-2021-10-13 16:15:15,160 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,162 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,162 -   Yr=5,Mo=1.     Other Information: MaxB=20000, Bsite=7435, Bcohort=918.5, SoilT=3.9.
-2021-10-13 16:15:15,163 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,164 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,164 -   Yr=5,Mo=1.     Other Information: MaxB=20000, Bsite=7432, Bcohort=573.7, SoilT=3.9.
-2021-10-13 16:15:15,165 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,166 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,166 -   Yr=5,Mo=1.     Other Information: MaxB=15000, Bsite=7430, Bcohort=357.3, SoilT=3.9.
-2021-10-13 16:15:15,167 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,168 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,169 -   Yr=5,Mo=1.     Other Information: MaxB=100000, Bsite=7429, Bcohort=115.0, SoilT=3.9.
-2021-10-13 16:15:15,169 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,170 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,171 -   Yr=5,Mo=1.     Other Information: MaxB=35000, Bsite=7429, Bcohort=250.3, SoilT=3.9.
-2021-10-13 16:15:15,171 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,172 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,173 -   Yr=5,Mo=1.     Other Information: MaxB=20000, Bsite=7428, Bcohort=347.8, SoilT=3.9.
-2021-10-13 16:15:15,173 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,174 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,175 -   Yr=5,Mo=1.     Other Information: MaxB=15000, Bsite=7427, Bcohort=101.4, SoilT=3.9.
-2021-10-13 16:15:15,175 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,176 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,177 -   Yr=5,Mo=1.     Other Information: MaxB=100000, Bsite=7427, Bcohort=345.0, SoilT=3.9.
-2021-10-13 16:15:15,177 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,178 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,179 -   Yr=5,Mo=1.     Other Information: MaxB=35000, Bsite=7426, Bcohort=177.4, SoilT=3.9.
-2021-10-13 16:15:15,179 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,181 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,181 -   Yr=5,Mo=1.     Other Information: MaxB=20000, Bsite=7426, Bcohort=129.9, SoilT=3.9.
-2021-10-13 16:15:15,182 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,183 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,183 -   Yr=5,Mo=1.     Other Information: MaxB=100000, Bsite=7426, Bcohort=215.1, SoilT=3.9.
-2021-10-13 16:15:15,184 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,185 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,185 -   Yr=5,Mo=1.     Other Information: MaxB=35000, Bsite=7425, Bcohort=404.3, SoilT=3.9.
-2021-10-13 16:15:15,186 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,190 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,191 -   Yr=5,Mo=1.     Other Information: MaxB=20000, Bsite=7424, Bcohort=56.3, SoilT=3.9.
-2021-10-13 16:15:15,192 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,194 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,194 -   Yr=5,Mo=1.     Other Information: MaxB=20000, Bsite=7424, Bcohort=56.0, SoilT=3.9.
-2021-10-13 16:15:15,194 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,197 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,198 -   Yr=5,Mo=1.     Other Information: MaxB=15000, Bsite=7424, Bcohort=44.3, SoilT=3.9.
-2021-10-13 16:15:15,198 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,199 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,200 -   Yr=5,Mo=1.     Other Information: MaxB=100000, Bsite=7424, Bcohort=111.7, SoilT=3.9.
-2021-10-13 16:15:15,200 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,201 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,202 -   Yr=5,Mo=1.     Other Information: MaxB=100000, Bsite=7424, Bcohort=101.5, SoilT=3.9.
-2021-10-13 16:15:15,202 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,203 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,204 -   Yr=5,Mo=1.     Other Information: MaxB=100000, Bsite=7424, Bcohort=60.2, SoilT=3.9.
-2021-10-13 16:15:15,204 -   Yr=5,Mo=1.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,206 -    SoilWater:  month=1, PET=1.40644029800253.
-2021-10-13 16:15:15,206 -    SoilWater:  month=1, Remaining PET=1.40644029800253.
-2021-10-13 16:15:15,206 -    SoilWater:  month=1, addToSoil=NaN.
-2021-10-13 16:15:15,206 -    SoilWater:  month=1, AET=NaN.
-2021-10-13 16:15:15,207 -    SoilWater:  month=1, baseflow=0.0105404621416013.
-2021-10-13 16:15:15,207 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,207 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,208 -   Nallocation=NaN, Nfraction=0.05, availableN=NaN.
-2021-10-13 16:15:15,208 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,208 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,208 -   Nallocation=NaN, Nfraction=0.02, availableN=NaN.
-2021-10-13 16:15:15,209 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,209 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,209 -   Nallocation=NaN, Nfraction=0.06, availableN=NaN.
-2021-10-13 16:15:15,210 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,210 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,210 -   Nallocation=NaN, Nfraction=0.05, availableN=NaN.
-2021-10-13 16:15:15,211 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,211 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,211 -   Nallocation=NaN, Nfraction=0.02, availableN=NaN.
-2021-10-13 16:15:15,212 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,212 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,212 -   Nallocation=NaN, Nfraction=0.01, availableN=NaN.
-2021-10-13 16:15:15,213 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,213 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,213 -   Nallocation=NaN, Nfraction=0.01, availableN=NaN.
-2021-10-13 16:15:15,213 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,214 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,214 -   Nallocation=NaN, Nfraction=0.01, availableN=NaN.
-2021-10-13 16:15:15,214 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,214 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,215 -   Nallocation=NaN, Nfraction=0.00, availableN=NaN.
-2021-10-13 16:15:15,215 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,215 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,215 -   Nallocation=NaN, Nfraction=0.00, availableN=NaN.
-2021-10-13 16:15:15,216 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,216 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,216 -   Nallocation=NaN, Nfraction=0.07, availableN=NaN.
-2021-10-13 16:15:15,216 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,216 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,217 -   Nallocation=NaN, Nfraction=0.08, availableN=NaN.
-2021-10-13 16:15:15,217 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,217 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,217 -   Nallocation=NaN, Nfraction=0.07, availableN=NaN.
-2021-10-13 16:15:15,218 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,218 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,218 -   Nallocation=NaN, Nfraction=0.05, availableN=NaN.
-2021-10-13 16:15:15,218 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,219 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,219 -   Nallocation=NaN, Nfraction=0.02, availableN=NaN.
-2021-10-13 16:15:15,219 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,219 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,220 -   Nallocation=NaN, Nfraction=0.03, availableN=NaN.
-2021-10-13 16:15:15,220 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,220 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,221 -   Nallocation=NaN, Nfraction=0.03, availableN=NaN.
-2021-10-13 16:15:15,221 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,221 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,221 -   Nallocation=NaN, Nfraction=0.04, availableN=NaN.
-2021-10-13 16:15:15,222 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,222 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,222 -   Nallocation=NaN, Nfraction=0.03, availableN=NaN.
-2021-10-13 16:15:15,222 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,223 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,223 -   Nallocation=NaN, Nfraction=0.06, availableN=NaN.
-2021-10-13 16:15:15,223 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,224 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,224 -   Nallocation=NaN, Nfraction=0.02, availableN=NaN.
-2021-10-13 16:15:15,224 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,224 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,225 -   Nallocation=NaN, Nfraction=0.02, availableN=NaN.
-2021-10-13 16:15:15,225 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,225 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,225 -   Nallocation=NaN, Nfraction=0.05, availableN=NaN.
-2021-10-13 16:15:15,226 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,226 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,226 -   Nallocation=NaN, Nfraction=0.03, availableN=NaN.
-2021-10-13 16:15:15,226 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,227 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,227 -   Nallocation=NaN, Nfraction=0.02, availableN=NaN.
-2021-10-13 16:15:15,227 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,228 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,228 -   Nallocation=NaN, Nfraction=0.02, availableN=NaN.
-2021-10-13 16:15:15,229 -   LIMIT N CALCULATION = NaN!  
-2021-10-13 16:15:15,229 -   Site_Row=690, Site_Column=2877.
-2021-10-13 16:15:15,229 -   Nallocation=NaN, Nfraction=0.01, availableN=NaN.
-2021-10-13 16:15:15,229 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,230 -   Yr=5,Mo=2.     Other Information: MaxB=15000, Bsite=7423, Bcohort=373.3, SoilT=NaN.
-2021-10-13 16:15:15,230 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,232 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,232 -   Yr=5,Mo=2.     Other Information: MaxB=15000, Bsite=7421, Bcohort=145.5, SoilT=NaN.
-2021-10-13 16:15:15,232 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,234 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,235 -   Yr=5,Mo=2.     Other Information: MaxB=20000, Bsite=7420, Bcohort=493.5, SoilT=NaN.
-2021-10-13 16:15:15,235 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,237 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,237 -   Yr=5,Mo=2.     Other Information: MaxB=20000, Bsite=7418, Bcohort=471.2, SoilT=NaN.
-2021-10-13 16:15:15,237 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,238 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,239 -   Yr=5,Mo=2.     Other Information: MaxB=20000, Bsite=7416, Bcohort=628.9, SoilT=NaN.
-2021-10-13 16:15:15,239 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,241 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,241 -   Yr=5,Mo=2.     Other Information: MaxB=20000, Bsite=7414, Bcohort=226.7, SoilT=NaN.
-2021-10-13 16:15:15,241 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,243 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,243 -   Yr=5,Mo=2.     Other Information: MaxB=15000, Bsite=7413, Bcohort=461.9, SoilT=NaN.
-2021-10-13 16:15:15,243 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,245 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,245 -   Yr=5,Mo=2.     Other Information: MaxB=35000, Bsite=7412, Bcohort=161.2, SoilT=NaN.
-2021-10-13 16:15:15,246 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,247 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,248 -   Yr=5,Mo=2.     Other Information: MaxB=100000, Bsite=7411, Bcohort=121.8, SoilT=NaN.
-2021-10-13 16:15:15,248 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,249 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,250 -   Yr=5,Mo=2.     Other Information: MaxB=20000, Bsite=7411, Bcohort=915.5, SoilT=NaN.
-2021-10-13 16:15:15,250 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,251 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,252 -   Yr=5,Mo=2.     Other Information: MaxB=20000, Bsite=7408, Bcohort=571.8, SoilT=NaN.
-2021-10-13 16:15:15,252 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,253 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,254 -   Yr=5,Mo=2.     Other Information: MaxB=15000, Bsite=7406, Bcohort=356.2, SoilT=NaN.
-2021-10-13 16:15:15,254 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,255 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,256 -   Yr=5,Mo=2.     Other Information: MaxB=100000, Bsite=7405, Bcohort=114.6, SoilT=NaN.
-2021-10-13 16:15:15,256 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,263 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,264 -   Yr=5,Mo=2.     Other Information: MaxB=35000, Bsite=7405, Bcohort=249.9, SoilT=NaN.
-2021-10-13 16:15:15,265 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,268 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,269 -   Yr=5,Mo=2.     Other Information: MaxB=20000, Bsite=7405, Bcohort=346.7, SoilT=NaN.
-2021-10-13 16:15:15,269 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,270 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,271 -   Yr=5,Mo=2.     Other Information: MaxB=15000, Bsite=7404, Bcohort=101.1, SoilT=NaN.
-2021-10-13 16:15:15,271 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,282 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,284 -   Yr=5,Mo=2.     Other Information: MaxB=100000, Bsite=7403, Bcohort=343.9, SoilT=NaN.
-2021-10-13 16:15:15,284 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,291 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,295 -   Yr=5,Mo=2.     Other Information: MaxB=35000, Bsite=7402, Bcohort=177.1, SoilT=NaN.
-2021-10-13 16:15:15,303 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,315 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,317 -   Yr=5,Mo=2.     Other Information: MaxB=20000, Bsite=7401, Bcohort=129.5, SoilT=NaN.
-2021-10-13 16:15:15,317 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,319 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,320 -   Yr=5,Mo=2.     Other Information: MaxB=100000, Bsite=7401, Bcohort=214.4, SoilT=NaN.
-2021-10-13 16:15:15,320 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,322 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,323 -   Yr=5,Mo=2.     Other Information: MaxB=35000, Bsite=7400, Bcohort=403.6, SoilT=NaN.
-2021-10-13 16:15:15,324 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,325 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,326 -   Yr=5,Mo=2.     Other Information: MaxB=20000, Bsite=7399, Bcohort=56.1, SoilT=NaN.
-2021-10-13 16:15:15,326 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,327 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,328 -   Yr=5,Mo=2.     Other Information: MaxB=20000, Bsite=7398, Bcohort=55.8, SoilT=NaN.
-2021-10-13 16:15:15,328 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,330 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,330 -   Yr=5,Mo=2.     Other Information: MaxB=15000, Bsite=7398, Bcohort=44.2, SoilT=NaN.
-2021-10-13 16:15:15,330 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,332 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,332 -   Yr=5,Mo=2.     Other Information: MaxB=100000, Bsite=7397, Bcohort=111.4, SoilT=NaN.
-2021-10-13 16:15:15,332 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,334 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,334 -   Yr=5,Mo=2.     Other Information: MaxB=100000, Bsite=7397, Bcohort=101.2, SoilT=NaN.
-2021-10-13 16:15:15,335 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,336 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,336 -   Yr=5,Mo=2.     Other Information: MaxB=100000, Bsite=7396, Bcohort=59.9, SoilT=NaN.
-2021-10-13 16:15:15,337 -   Yr=5,Mo=2.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,338 -    SoilWater:  month=2, PET=3.21028856936261.
-2021-10-13 16:15:15,339 -    SoilWater:  month=2, Remaining PET=3.21028856936261.
-2021-10-13 16:15:15,339 -    SoilWater:  month=2, addToSoil=NaN.
-2021-10-13 16:15:15,340 -    SoilWater:  month=2, AET=NaN.
-2021-10-13 16:15:15,340 -    SoilWater:  month=2, baseflow=0.0105397032283003.
-2021-10-13 16:15:15,340 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,340 -   Yr=5,Mo=3.     Other Information: MaxB=15000, Bsite=7396, Bcohort=371.7, SoilT=NaN.
-2021-10-13 16:15:15,341 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,342 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,343 -   Yr=5,Mo=3.     Other Information: MaxB=15000, Bsite=7395, Bcohort=144.9, SoilT=NaN.
-2021-10-13 16:15:15,343 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,344 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,345 -   Yr=5,Mo=3.     Other Information: MaxB=20000, Bsite=7395, Bcohort=491.5, SoilT=NaN.
-2021-10-13 16:15:15,345 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,346 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,347 -   Yr=5,Mo=3.     Other Information: MaxB=20000, Bsite=7393, Bcohort=469.3, SoilT=NaN.
-2021-10-13 16:15:15,347 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,348 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,349 -   Yr=5,Mo=3.     Other Information: MaxB=20000, Bsite=7391, Bcohort=626.5, SoilT=NaN.
-2021-10-13 16:15:15,349 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,351 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,351 -   Yr=5,Mo=3.     Other Information: MaxB=20000, Bsite=7389, Bcohort=225.9, SoilT=NaN.
-2021-10-13 16:15:15,351 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,353 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,354 -   Yr=5,Mo=3.     Other Information: MaxB=15000, Bsite=7388, Bcohort=460.3, SoilT=NaN.
-2021-10-13 16:15:15,354 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,357 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,358 -   Yr=5,Mo=3.     Other Information: MaxB=35000, Bsite=7386, Bcohort=160.9, SoilT=NaN.
-2021-10-13 16:15:15,358 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,360 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,360 -   Yr=5,Mo=3.     Other Information: MaxB=100000, Bsite=7386, Bcohort=121.3, SoilT=NaN.
-2021-10-13 16:15:15,360 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,362 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,362 -   Yr=5,Mo=3.     Other Information: MaxB=20000, Bsite=7385, Bcohort=912.6, SoilT=NaN.
-2021-10-13 16:15:15,362 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,363 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,364 -   Yr=5,Mo=3.     Other Information: MaxB=20000, Bsite=7382, Bcohort=569.9, SoilT=NaN.
-2021-10-13 16:15:15,364 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,365 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,366 -   Yr=5,Mo=3.     Other Information: MaxB=15000, Bsite=7381, Bcohort=355.2, SoilT=NaN.
-2021-10-13 16:15:15,366 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,367 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,367 -   Yr=5,Mo=3.     Other Information: MaxB=100000, Bsite=7380, Bcohort=114.2, SoilT=NaN.
-2021-10-13 16:15:15,368 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,369 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,369 -   Yr=5,Mo=3.     Other Information: MaxB=35000, Bsite=7379, Bcohort=249.4, SoilT=NaN.
-2021-10-13 16:15:15,370 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,371 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,371 -   Yr=5,Mo=3.     Other Information: MaxB=20000, Bsite=7378, Bcohort=345.6, SoilT=NaN.
-2021-10-13 16:15:15,371 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,373 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,373 -   Yr=5,Mo=3.     Other Information: MaxB=15000, Bsite=7377, Bcohort=100.8, SoilT=NaN.
-2021-10-13 16:15:15,373 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,374 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,375 -   Yr=5,Mo=3.     Other Information: MaxB=100000, Bsite=7377, Bcohort=342.9, SoilT=NaN.
-2021-10-13 16:15:15,375 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,376 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,377 -   Yr=5,Mo=3.     Other Information: MaxB=35000, Bsite=7376, Bcohort=176.8, SoilT=NaN.
-2021-10-13 16:15:15,377 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,378 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,379 -   Yr=5,Mo=3.     Other Information: MaxB=20000, Bsite=7376, Bcohort=129.1, SoilT=NaN.
-2021-10-13 16:15:15,379 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,380 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,380 -   Yr=5,Mo=3.     Other Information: MaxB=100000, Bsite=7375, Bcohort=213.8, SoilT=NaN.
-2021-10-13 16:15:15,381 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,382 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,382 -   Yr=5,Mo=3.     Other Information: MaxB=35000, Bsite=7375, Bcohort=402.9, SoilT=NaN.
-2021-10-13 16:15:15,383 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,384 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,384 -   Yr=5,Mo=3.     Other Information: MaxB=20000, Bsite=7375, Bcohort=55.9, SoilT=NaN.
-2021-10-13 16:15:15,385 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,386 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,386 -   Yr=5,Mo=3.     Other Information: MaxB=20000, Bsite=7375, Bcohort=55.6, SoilT=NaN.
-2021-10-13 16:15:15,386 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,388 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,388 -   Yr=5,Mo=3.     Other Information: MaxB=15000, Bsite=7375, Bcohort=44.0, SoilT=NaN.
-2021-10-13 16:15:15,388 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,390 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,390 -   Yr=5,Mo=3.     Other Information: MaxB=100000, Bsite=7375, Bcohort=111.1, SoilT=NaN.
-2021-10-13 16:15:15,390 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,391 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,392 -   Yr=5,Mo=3.     Other Information: MaxB=100000, Bsite=7374, Bcohort=100.9, SoilT=NaN.
-2021-10-13 16:15:15,392 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,393 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,394 -   Yr=5,Mo=3.     Other Information: MaxB=100000, Bsite=7374, Bcohort=59.8, SoilT=NaN.
-2021-10-13 16:15:15,394 -   Yr=5,Mo=3.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,396 -    SoilWater:  month=3, PET=6.57351890179351.
-2021-10-13 16:15:15,396 -    SoilWater:  month=3, Remaining PET=6.57351890179351.
-2021-10-13 16:15:15,396 -    SoilWater:  month=3, addToSoil=NaN.
-2021-10-13 16:15:15,396 -    SoilWater:  month=3, AET=NaN.
-2021-10-13 16:15:15,397 -    SoilWater:  month=3, baseflow=0.010538944369641.
-2021-10-13 16:15:15,397 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,397 -   Yr=5,Mo=4.     Other Information: MaxB=15000, Bsite=7374, Bcohort=370.2, SoilT=NaN.
-2021-10-13 16:15:15,398 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,399 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,399 -   Yr=5,Mo=4.     Other Information: MaxB=15000, Bsite=7372, Bcohort=144.3, SoilT=NaN.
-2021-10-13 16:15:15,400 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,402 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,403 -   Yr=5,Mo=4.     Other Information: MaxB=20000, Bsite=7371, Bcohort=489.5, SoilT=NaN.
-2021-10-13 16:15:15,404 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,407 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,407 -   Yr=5,Mo=4.     Other Information: MaxB=20000, Bsite=7369, Bcohort=467.5, SoilT=NaN.
-2021-10-13 16:15:15,407 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,410 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,410 -   Yr=5,Mo=4.     Other Information: MaxB=20000, Bsite=7367, Bcohort=624.0, SoilT=NaN.
-2021-10-13 16:15:15,410 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,412 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,412 -   Yr=5,Mo=4.     Other Information: MaxB=20000, Bsite=7364, Bcohort=225.0, SoilT=NaN.
-2021-10-13 16:15:15,413 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,414 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,415 -   Yr=5,Mo=4.     Other Information: MaxB=15000, Bsite=7364, Bcohort=458.7, SoilT=NaN.
-2021-10-13 16:15:15,415 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,416 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,417 -   Yr=5,Mo=4.     Other Information: MaxB=35000, Bsite=7363, Bcohort=160.6, SoilT=NaN.
-2021-10-13 16:15:15,417 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,419 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,419 -   Yr=5,Mo=4.     Other Information: MaxB=100000, Bsite=7363, Bcohort=120.8, SoilT=NaN.
-2021-10-13 16:15:15,419 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,420 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,421 -   Yr=5,Mo=4.     Other Information: MaxB=20000, Bsite=7363, Bcohort=909.7, SoilT=NaN.
-2021-10-13 16:15:15,421 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,422 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,423 -   Yr=5,Mo=4.     Other Information: MaxB=20000, Bsite=7360, Bcohort=568.1, SoilT=NaN.
-2021-10-13 16:15:15,423 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,424 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,425 -   Yr=5,Mo=4.     Other Information: MaxB=15000, Bsite=7358, Bcohort=354.1, SoilT=NaN.
-2021-10-13 16:15:15,425 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,426 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,427 -   Yr=5,Mo=4.     Other Information: MaxB=100000, Bsite=7357, Bcohort=113.8, SoilT=NaN.
-2021-10-13 16:15:15,427 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,428 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,429 -   Yr=5,Mo=4.     Other Information: MaxB=35000, Bsite=7357, Bcohort=249.0, SoilT=NaN.
-2021-10-13 16:15:15,429 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,430 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,431 -   Yr=5,Mo=4.     Other Information: MaxB=20000, Bsite=7357, Bcohort=344.6, SoilT=NaN.
-2021-10-13 16:15:15,431 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,432 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,432 -   Yr=5,Mo=4.     Other Information: MaxB=15000, Bsite=7356, Bcohort=100.5, SoilT=NaN.
-2021-10-13 16:15:15,433 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,434 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,435 -   Yr=5,Mo=4.     Other Information: MaxB=100000, Bsite=7356, Bcohort=341.9, SoilT=NaN.
-2021-10-13 16:15:15,435 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,436 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,436 -   Yr=5,Mo=4.     Other Information: MaxB=35000, Bsite=7355, Bcohort=176.5, SoilT=NaN.
-2021-10-13 16:15:15,437 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,438 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,438 -   Yr=5,Mo=4.     Other Information: MaxB=20000, Bsite=7355, Bcohort=128.7, SoilT=NaN.
-2021-10-13 16:15:15,439 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,440 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,440 -   Yr=5,Mo=4.     Other Information: MaxB=100000, Bsite=7355, Bcohort=213.1, SoilT=NaN.
-2021-10-13 16:15:15,441 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,442 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,442 -   Yr=5,Mo=4.     Other Information: MaxB=35000, Bsite=7354, Bcohort=402.1, SoilT=NaN.
-2021-10-13 16:15:15,442 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,444 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,444 -   Yr=5,Mo=4.     Other Information: MaxB=20000, Bsite=7353, Bcohort=55.7, SoilT=NaN.
-2021-10-13 16:15:15,444 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,446 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,446 -   Yr=5,Mo=4.     Other Information: MaxB=20000, Bsite=7353, Bcohort=55.4, SoilT=NaN.
-2021-10-13 16:15:15,446 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,447 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,448 -   Yr=5,Mo=4.     Other Information: MaxB=15000, Bsite=7353, Bcohort=43.8, SoilT=NaN.
-2021-10-13 16:15:15,448 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,449 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,450 -   Yr=5,Mo=4.     Other Information: MaxB=100000, Bsite=7353, Bcohort=110.8, SoilT=NaN.
-2021-10-13 16:15:15,450 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,451 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,452 -   Yr=5,Mo=4.     Other Information: MaxB=100000, Bsite=7353, Bcohort=100.6, SoilT=NaN.
-2021-10-13 16:15:15,452 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,453 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,453 -   Yr=5,Mo=4.     Other Information: MaxB=100000, Bsite=7353, Bcohort=59.6, SoilT=NaN.
-2021-10-13 16:15:15,454 -   Yr=5,Mo=4.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,455 -    SoilWater:  month=4, PET=8.45333911122812.
-2021-10-13 16:15:15,455 -    SoilWater:  month=4, Remaining PET=8.45333911122812.
-2021-10-13 16:15:15,455 -    SoilWater:  month=4, addToSoil=NaN.
-2021-10-13 16:15:15,455 -    SoilWater:  month=4, AET=NaN.
-2021-10-13 16:15:15,456 -    SoilWater:  month=4, baseflow=0.0105381855656195.
-2021-10-13 16:15:15,456 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,456 -   Yr=5,Mo=5.     Other Information: MaxB=15000, Bsite=7353, Bcohort=368.7, SoilT=NaN.
-2021-10-13 16:15:15,456 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,458 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,458 -   Yr=5,Mo=5.     Other Information: MaxB=15000, Bsite=7352, Bcohort=143.7, SoilT=NaN.
-2021-10-13 16:15:15,458 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,459 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,460 -   Yr=5,Mo=5.     Other Information: MaxB=20000, Bsite=7352, Bcohort=487.6, SoilT=NaN.
-2021-10-13 16:15:15,460 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,461 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,462 -   Yr=5,Mo=5.     Other Information: MaxB=20000, Bsite=7350, Bcohort=465.7, SoilT=NaN.
-2021-10-13 16:15:15,462 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,463 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,464 -   Yr=5,Mo=5.     Other Information: MaxB=20000, Bsite=7348, Bcohort=621.7, SoilT=NaN.
-2021-10-13 16:15:15,465 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,466 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,466 -   Yr=5,Mo=5.     Other Information: MaxB=20000, Bsite=7346, Bcohort=224.1, SoilT=NaN.
-2021-10-13 16:15:15,467 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,468 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,468 -   Yr=5,Mo=5.     Other Information: MaxB=15000, Bsite=7345, Bcohort=457.2, SoilT=NaN.
-2021-10-13 16:15:15,469 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,470 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,471 -   Yr=5,Mo=5.     Other Information: MaxB=35000, Bsite=7343, Bcohort=160.3, SoilT=NaN.
-2021-10-13 16:15:15,471 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,472 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,473 -   Yr=5,Mo=5.     Other Information: MaxB=100000, Bsite=7343, Bcohort=120.4, SoilT=NaN.
-2021-10-13 16:15:15,473 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,474 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,475 -   Yr=5,Mo=5.     Other Information: MaxB=20000, Bsite=7342, Bcohort=906.9, SoilT=NaN.
-2021-10-13 16:15:15,475 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,476 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,477 -   Yr=5,Mo=5.     Other Information: MaxB=20000, Bsite=7340, Bcohort=566.3, SoilT=NaN.
-2021-10-13 16:15:15,477 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,479 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,479 -   Yr=5,Mo=5.     Other Information: MaxB=15000, Bsite=7338, Bcohort=353.1, SoilT=NaN.
-2021-10-13 16:15:15,479 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,481 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,482 -   Yr=5,Mo=5.     Other Information: MaxB=100000, Bsite=7337, Bcohort=113.4, SoilT=NaN.
-2021-10-13 16:15:15,482 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,483 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,484 -   Yr=5,Mo=5.     Other Information: MaxB=35000, Bsite=7337, Bcohort=248.5, SoilT=NaN.
-2021-10-13 16:15:15,484 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,486 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,486 -   Yr=5,Mo=5.     Other Information: MaxB=20000, Bsite=7337, Bcohort=343.5, SoilT=NaN.
-2021-10-13 16:15:15,486 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,487 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,488 -   Yr=5,Mo=5.     Other Information: MaxB=15000, Bsite=7336, Bcohort=100.2, SoilT=NaN.
-2021-10-13 16:15:15,488 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,489 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,490 -   Yr=5,Mo=5.     Other Information: MaxB=100000, Bsite=7335, Bcohort=340.9, SoilT=NaN.
-2021-10-13 16:15:15,490 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,492 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,492 -   Yr=5,Mo=5.     Other Information: MaxB=35000, Bsite=7334, Bcohort=176.2, SoilT=NaN.
-2021-10-13 16:15:15,492 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,494 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,494 -   Yr=5,Mo=5.     Other Information: MaxB=20000, Bsite=7333, Bcohort=128.3, SoilT=NaN.
-2021-10-13 16:15:15,494 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,497 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,497 -   Yr=5,Mo=5.     Other Information: MaxB=100000, Bsite=7332, Bcohort=212.5, SoilT=NaN.
-2021-10-13 16:15:15,497 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,499 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,500 -   Yr=5,Mo=5.     Other Information: MaxB=35000, Bsite=7331, Bcohort=401.4, SoilT=NaN.
-2021-10-13 16:15:15,500 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,502 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,502 -   Yr=5,Mo=5.     Other Information: MaxB=20000, Bsite=7330, Bcohort=55.5, SoilT=NaN.
-2021-10-13 16:15:15,502 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,504 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,504 -   Yr=5,Mo=5.     Other Information: MaxB=20000, Bsite=7330, Bcohort=55.2, SoilT=NaN.
-2021-10-13 16:15:15,504 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,506 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,506 -   Yr=5,Mo=5.     Other Information: MaxB=15000, Bsite=7330, Bcohort=43.7, SoilT=NaN.
-2021-10-13 16:15:15,507 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,508 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,508 -   Yr=5,Mo=5.     Other Information: MaxB=100000, Bsite=7330, Bcohort=110.4, SoilT=NaN.
-2021-10-13 16:15:15,509 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,510 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,511 -   Yr=5,Mo=5.     Other Information: MaxB=100000, Bsite=7330, Bcohort=100.4, SoilT=NaN.
-2021-10-13 16:15:15,511 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,513 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,513 -   Yr=5,Mo=5.     Other Information: MaxB=100000, Bsite=7330, Bcohort=59.4, SoilT=NaN.
-2021-10-13 16:15:15,514 -   Yr=5,Mo=5.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,515 -    SoilWater:  month=5, PET=11.4444308906158.
-2021-10-13 16:15:15,516 -    SoilWater:  month=5, Remaining PET=11.4444308906158.
-2021-10-13 16:15:15,516 -    SoilWater:  month=5, addToSoil=NaN.
-2021-10-13 16:15:15,516 -    SoilWater:  month=5, AET=NaN.
-2021-10-13 16:15:15,516 -    SoilWater:  month=5, baseflow=0.010537426816232.
-2021-10-13 16:15:15,517 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,517 -   Yr=5,Mo=6.     Other Information: MaxB=15000, Bsite=7330, Bcohort=367.2, SoilT=NaN.
-2021-10-13 16:15:15,517 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,519 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,519 -   Yr=5,Mo=6.     Other Information: MaxB=15000, Bsite=7328, Bcohort=143.1, SoilT=NaN.
-2021-10-13 16:15:15,520 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,521 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,521 -   Yr=5,Mo=6.     Other Information: MaxB=20000, Bsite=7327, Bcohort=485.7, SoilT=NaN.
-2021-10-13 16:15:15,522 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,523 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,524 -   Yr=5,Mo=6.     Other Information: MaxB=20000, Bsite=7325, Bcohort=463.9, SoilT=NaN.
-2021-10-13 16:15:15,524 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,526 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,526 -   Yr=5,Mo=6.     Other Information: MaxB=20000, Bsite=7324, Bcohort=619.4, SoilT=NaN.
-2021-10-13 16:15:15,526 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,528 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,528 -   Yr=5,Mo=6.     Other Information: MaxB=20000, Bsite=7322, Bcohort=223.3, SoilT=NaN.
-2021-10-13 16:15:15,529 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,530 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,531 -   Yr=5,Mo=6.     Other Information: MaxB=15000, Bsite=7321, Bcohort=455.7, SoilT=NaN.
-2021-10-13 16:15:15,531 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,532 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,533 -   Yr=5,Mo=6.     Other Information: MaxB=35000, Bsite=7320, Bcohort=160.0, SoilT=NaN.
-2021-10-13 16:15:15,533 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,535 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,535 -   Yr=5,Mo=6.     Other Information: MaxB=100000, Bsite=7319, Bcohort=119.9, SoilT=NaN.
-2021-10-13 16:15:15,535 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,537 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,537 -   Yr=5,Mo=6.     Other Information: MaxB=20000, Bsite=7319, Bcohort=904.1, SoilT=NaN.
-2021-10-13 16:15:15,537 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,539 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,539 -   Yr=5,Mo=6.     Other Information: MaxB=20000, Bsite=7316, Bcohort=564.5, SoilT=NaN.
-2021-10-13 16:15:15,539 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,541 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,541 -   Yr=5,Mo=6.     Other Information: MaxB=15000, Bsite=7314, Bcohort=352.1, SoilT=NaN.
-2021-10-13 16:15:15,541 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,543 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,543 -   Yr=5,Mo=6.     Other Information: MaxB=100000, Bsite=7313, Bcohort=113.1, SoilT=NaN.
-2021-10-13 16:15:15,543 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,545 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,545 -   Yr=5,Mo=6.     Other Information: MaxB=35000, Bsite=7312, Bcohort=248.1, SoilT=NaN.
-2021-10-13 16:15:15,545 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,547 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,547 -   Yr=5,Mo=6.     Other Information: MaxB=20000, Bsite=7311, Bcohort=342.5, SoilT=NaN.
-2021-10-13 16:15:15,547 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,548 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,549 -   Yr=5,Mo=6.     Other Information: MaxB=15000, Bsite=7310, Bcohort=99.9, SoilT=NaN.
-2021-10-13 16:15:15,549 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,550 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,551 -   Yr=5,Mo=6.     Other Information: MaxB=100000, Bsite=7310, Bcohort=339.9, SoilT=NaN.
-2021-10-13 16:15:15,551 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,552 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,552 -   Yr=5,Mo=6.     Other Information: MaxB=35000, Bsite=7309, Bcohort=175.8, SoilT=NaN.
-2021-10-13 16:15:15,553 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,554 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,554 -   Yr=5,Mo=6.     Other Information: MaxB=20000, Bsite=7309, Bcohort=127.9, SoilT=NaN.
-2021-10-13 16:15:15,554 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,556 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,556 -   Yr=5,Mo=6.     Other Information: MaxB=100000, Bsite=7309, Bcohort=211.9, SoilT=NaN.
-2021-10-13 16:15:15,556 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,558 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,559 -   Yr=5,Mo=6.     Other Information: MaxB=35000, Bsite=7309, Bcohort=400.7, SoilT=NaN.
-2021-10-13 16:15:15,559 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,560 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,561 -   Yr=5,Mo=6.     Other Information: MaxB=20000, Bsite=7308, Bcohort=55.4, SoilT=NaN.
-2021-10-13 16:15:15,561 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,562 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,563 -   Yr=5,Mo=6.     Other Information: MaxB=20000, Bsite=7308, Bcohort=55.0, SoilT=NaN.
-2021-10-13 16:15:15,563 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,564 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,565 -   Yr=5,Mo=6.     Other Information: MaxB=15000, Bsite=7307, Bcohort=43.5, SoilT=NaN.
-2021-10-13 16:15:15,565 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,567 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,567 -   Yr=5,Mo=6.     Other Information: MaxB=100000, Bsite=7307, Bcohort=110.1, SoilT=NaN.
-2021-10-13 16:15:15,567 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,569 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,569 -   Yr=5,Mo=6.     Other Information: MaxB=100000, Bsite=7306, Bcohort=100.1, SoilT=NaN.
-2021-10-13 16:15:15,570 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
-2021-10-13 16:15:15,571 -   EITHER WOOD or LEAF NPP = NaN!  Will set to zero.
-2021-10-13 16:15:15,571 -   Yr=5,Mo=6.     Other Information: MaxB=100000, Bsite=7305, Bcohort=59.2, SoilT=NaN.
-2021-10-13 16:15:15,571 -   Yr=5,Mo=6.     WoodNPP=NaN, LeafNPP=NaN.
+2021-12-12 20:05:31,923 - Current time: 1
+2021-12-12 20:05:31,924 - Running NECN Succession ...
+2021-12-12 20:44:31,015 - Current time: 2
+2021-12-12 20:44:31,016 - Running NECN Succession ...
+2021-12-12 21:28:08,385 - Current time: 3
+2021-12-12 21:28:08,387 - Running NECN Succession ...
+2021-12-12 22:23:23,757 - Current time: 4
+2021-12-12 22:23:23,758 - Running NECN Succession ...
+2021-12-12 23:14:49,507 - Current time: 5
+2021-12-12 23:14:49,508 - Running NECN Succession ...
+2021-12-13 00:10:53,408 - Current time: 6
+2021-12-13 00:10:53,410 - Running NECN Succession ...
+2021-12-13 01:16:28,204 - Current time: 7
+2021-12-13 01:16:28,205 - Running NECN Succession ...
+2021-12-13 02:26:51,785 - Current time: 8
+2021-12-13 02:26:51,786 - Running NECN Succession ...
+2021-12-13 03:40:55,887 - Current time: 9
+2021-12-13 03:40:55,889 - Running NECN Succession ...
+2021-12-13 05:02:23,212 - Current time: 10
+2021-12-13 05:02:23,213 - Running Base Wind ...
+2021-12-13 05:02:23,217 - Processing landscape for wind events ...
+2021-12-13 05:02:25,850 -   Wind events: 28
+2021-12-13 05:02:27,158 - Running NECN Succession ...
+2021-12-13 06:29:23,247 - Current time: 11
+2021-12-13 06:29:23,248 - Running NECN Succession ...
+2021-12-13 08:01:15,178 - Current time: 12
+2021-12-13 08:01:15,180 - Running NECN Succession ...
+2021-12-13 09:39:51,007 - Current time: 13
+2021-12-13 09:39:51,008 - Running NECN Succession ...
+2021-12-13 11:46:36,356 - Current time: 14
+2021-12-13 11:46:36,357 - Running NECN Succession ...
+2021-12-13 13:47:51,743 - Current time: 15
+2021-12-13 13:47:51,744 - Running NECN Succession ...
+2021-12-13 16:16:14,670 - Current time: 16
+2021-12-13 16:16:14,676 - Running NECN Succession ...
+2021-12-13 18:44:36,884 - Current time: 17
+2021-12-13 18:44:36,885 - Running NECN Succession ...
+2021-12-13 21:11:39,856 - Current time: 18
+2021-12-13 21:11:39,858 - Running NECN Succession ...
+2021-12-13 23:47:00,760 - Current time: 19
+2021-12-13 23:47:00,762 - Running NECN Succession ...
+2021-12-14 02:12:00,987 - Current time: 20
+2021-12-14 02:12:00,989 - Running Base Wind ...
+2021-12-14 02:12:00,990 - Processing landscape for wind events ...
+2021-12-14 02:12:03,234 -   Wind events: 21
+2021-12-14 02:12:04,570 - Running NECN Succession ...
+2021-12-14 04:44:16,843 - Current time: 21
+2021-12-14 04:44:16,844 - Running NECN Succession ...
+2021-12-14 07:21:41,808 - Current time: 22
+2021-12-14 07:21:41,809 - Running NECN Succession ...
+2021-12-14 10:07:09,629 - Current time: 23
+2021-12-14 10:07:09,631 - Running NECN Succession ...
+2021-12-14 13:12:14,190 - Current time: 24
+2021-12-14 13:12:14,203 - Running NECN Succession ...
+2021-12-14 16:21:15,683 - Current time: 25
+2021-12-14 16:21:15,683 - Running NECN Succession ...
+2021-12-14 19:15:50,633 - Current time: 26
+2021-12-14 19:15:50,633 - Running NECN Succession ...
+2021-12-14 22:38:52,341 - Current time: 27
+2021-12-14 22:38:52,343 - Running NECN Succession ...
+2021-12-15 01:53:03,146 - Current time: 28
+2021-12-15 01:53:03,147 - Running NECN Succession ...
+2021-12-15 05:06:54,137 - Current time: 29
+2021-12-15 05:06:54,138 - Running NECN Succession ...
+2021-12-15 08:35:39,462 - Current time: 30
+2021-12-15 08:35:39,463 - Running Base Wind ...
+2021-12-15 08:35:39,463 - Processing landscape for wind events ...
+2021-12-15 08:35:42,490 -   Wind events: 28
+2021-12-15 08:35:43,527 - Running NECN Succession ...
+2021-12-15 12:09:04,239 - Current time: 31
+2021-12-15 12:09:04,241 - Running NECN Succession ...
+2021-12-15 16:24:27,321 - Current time: 32
+2021-12-15 16:24:27,329 - Running NECN Succession ...
+2021-12-15 20:18:24,378 - Current time: 33
+2021-12-15 20:18:24,379 - Running NECN Succession ...
+2021-12-16 00:06:18,338 - Current time: 34
+2021-12-16 00:06:18,339 - Running NECN Succession ...

@@ -1,0 +1,946 @@
+2021-10-18 12:11:27,580 - LANDIS-II 7.0 (7)
+2021-10-18 12:11:27,603 - 
+2021-10-18 12:11:27,732 - Loading scenario from file "Scenario.txt" ...
+2021-10-18 12:11:27,869 - Initialized random number generator with seed = 2,319,897,415
+2021-10-18 12:11:27,870 - Loading species data from file "./species.txt" ...
+2021-10-18 12:11:27,915 - Loading ecoregions from file "./ecoregions.txt" ...
+2021-10-18 12:11:27,941 - Initializing landscape from ecoregions map "./ecoregions_051718.img" ...
+2021-10-18 12:11:27,985 - Cell length = 50 m, cell area = 0.25 ha
+2021-10-18 12:11:27,992 - Map dimensions: 1,182 rows by 1,867 columns = 2,206,794 cells
+2021-10-18 12:11:28,257 - Sites: 187,928 active (8.5%), 2,018,866 inactive (91.5%)
+2021-10-18 12:11:28,893 - Loading Biomass Succession extension ...
+2021-10-18 12:11:29,056 -    Registering Data:  Succession.BiomassCohorts.
+2021-10-18 12:11:29,057 -    Registering Data:  Succession.AgeCohorts.
+2021-10-18 12:11:29,057 -    Registering Data:  Succession.WoodyDebris.
+2021-10-18 12:11:29,057 -    Registering Data:  Succession.Litter.
+2021-10-18 12:11:29,057 -    Registering Data:  Succession.MaxBiomass.
+2021-10-18 12:11:29,116 -    Begin reading FIRE REDUCTION parameters.
+2021-10-18 12:11:29,116 -    Begin reading HARVEST REDUCTION parameters.
+2021-10-18 12:11:29,333 -    Generating summary table...
+2021-10-18 12:11:29,357 -    Registering Data:  TimeOfLastSuccession.
+2021-10-18 12:11:29,358 -    Registering Data:  Shade.
+2021-10-18 12:11:29,360 -    Creating Dispersal Neighborhood List.
+2021-10-18 12:11:29,360 -    Dispersal:  NeighborRadius=5025, CellLength=50, numCellRadius=100
+2021-10-18 12:11:29,779 -    Loading initial communities from file "./init_comm_30_2018.txt" ...
+2021-10-18 12:11:29,803 -    Reading initial communities map "./init_comm_052318.img" ...
+2021-10-18 12:11:32,816 - Loading Biomass Browse extension ...
+2021-10-18 12:11:32,828 -    Begin parsing SPECIES table.
+2021-10-18 12:11:32,839 - Loading Base Wind extension ...
+2021-10-18 12:11:33,669 -    Loading dynamic input data from file "DefinedUngulatePopulation.txt" ...
+2021-10-18 12:11:33,672 -   Dynamic Input Parser:  Add new year = 0.
+2021-10-18 12:11:33,694 -    Loading dynamic population data from file "DynamicUngulatePopulation.txt" ...
+2021-10-18 12:11:33,707 -    Opening browse log files "browse/browse_log.csv" ...
+2021-10-18 12:11:33,721 -    Registering Data:  Wind.TimeOfLastEvent.
+2021-10-18 12:11:33,722 -    Registering Data:  Wind.Severity.
+2021-10-18 12:11:33,726 - Using the following extensions ...
+   Extension Name            Extension Filename       
+   --------------            ------------------       
+   Biomass Succession        BiomassSuccession3updated.txt
+   Biomass Browse            DynamicUngulateBrowse_2.txt
+   Base Wind                 BaseWind.txt             
+
+2021-10-18 12:11:33,727 - Current time: 1
+2021-10-18 12:11:33,731 - Running Biomass Browse ...
+2021-10-18 12:11:33,735 - Processing landscape for ungulate browse events ...
+2021-10-18 12:11:33,739 -    Calculating Site Preference & Forage.
+2021-10-18 12:11:42,861 -    Calculating Zone Population.
+2021-10-18 12:11:42,882 -    Calculating HSI.
+2021-10-18 12:12:22,574 -    Calculating Local Population.
+2021-10-18 12:12:22,659 -    Disturbing Sites
+2021-10-18 12:13:39,722 - Running Biomass Succession ...
+2021-10-18 12:13:58,274 - Current time: 2
+2021-10-18 12:13:58,276 - Running Biomass Browse ...
+2021-10-18 12:13:58,276 - Processing landscape for ungulate browse events ...
+2021-10-18 12:13:58,277 -    Calculating Site Preference & Forage.
+2021-10-18 12:14:05,555 -    Calculating Zone Population.
+2021-10-18 12:14:05,572 -    Calculating HSI.
+2021-10-18 12:14:49,729 -    Calculating Local Population.
+2021-10-18 12:14:49,826 -    Disturbing Sites
+2021-10-18 12:16:37,002 - Running Biomass Succession ...
+2021-10-18 12:16:51,560 - Current time: 3
+2021-10-18 12:16:51,561 - Running Biomass Browse ...
+2021-10-18 12:16:51,562 - Processing landscape for ungulate browse events ...
+2021-10-18 12:16:51,562 -    Calculating Site Preference & Forage.
+2021-10-18 12:16:57,856 -    Calculating Zone Population.
+2021-10-18 12:16:57,870 -    Calculating HSI.
+2021-10-18 12:17:37,229 -    Calculating Local Population.
+2021-10-18 12:17:37,389 -    Disturbing Sites
+2021-10-18 12:19:22,688 - Running Biomass Succession ...
+2021-10-18 12:19:38,795 - Current time: 4
+2021-10-18 12:19:38,801 - Running Biomass Browse ...
+2021-10-18 12:19:38,801 - Processing landscape for ungulate browse events ...
+2021-10-18 12:19:38,802 -    Calculating Site Preference & Forage.
+2021-10-18 12:19:46,565 -    Calculating Zone Population.
+2021-10-18 12:19:46,581 -    Calculating HSI.
+2021-10-18 12:20:31,975 -    Calculating Local Population.
+2021-10-18 12:20:32,136 -    Disturbing Sites
+2021-10-18 12:22:32,794 - Running Biomass Succession ...
+2021-10-18 12:22:50,322 - Current time: 5
+2021-10-18 12:22:50,323 - Running Biomass Browse ...
+2021-10-18 12:22:50,324 - Processing landscape for ungulate browse events ...
+2021-10-18 12:22:50,324 -    Calculating Site Preference & Forage.
+2021-10-18 12:22:56,438 -    Calculating Zone Population.
+2021-10-18 12:22:56,454 -    Calculating HSI.
+2021-10-18 12:23:39,023 -    Calculating Local Population.
+2021-10-18 12:23:39,145 -    Disturbing Sites
+2021-10-18 12:25:40,481 - Running Biomass Succession ...
+2021-10-18 12:25:56,744 - Current time: 6
+2021-10-18 12:25:56,746 - Running Biomass Browse ...
+2021-10-18 12:25:56,746 - Processing landscape for ungulate browse events ...
+2021-10-18 12:25:56,747 -    Calculating Site Preference & Forage.
+2021-10-18 12:26:02,540 -    Calculating Zone Population.
+2021-10-18 12:26:02,556 -    Calculating HSI.
+2021-10-18 12:26:39,266 -    Calculating Local Population.
+2021-10-18 12:26:39,383 -    Disturbing Sites
+2021-10-18 12:28:18,166 - Running Biomass Succession ...
+2021-10-18 12:28:32,582 - Current time: 7
+2021-10-18 12:28:32,584 - Running Biomass Browse ...
+2021-10-18 12:28:32,584 - Processing landscape for ungulate browse events ...
+2021-10-18 12:28:32,585 -    Calculating Site Preference & Forage.
+2021-10-18 12:28:38,499 -    Calculating Zone Population.
+2021-10-18 12:28:38,518 -    Calculating HSI.
+2021-10-18 12:29:14,261 -    Calculating Local Population.
+2021-10-18 12:29:14,358 -    Disturbing Sites
+2021-10-18 12:30:54,611 - Running Biomass Succession ...
+2021-10-18 12:31:08,544 - Current time: 8
+2021-10-18 12:31:08,545 - Running Biomass Browse ...
+2021-10-18 12:31:08,546 - Processing landscape for ungulate browse events ...
+2021-10-18 12:31:08,546 -    Calculating Site Preference & Forage.
+2021-10-18 12:31:14,432 -    Calculating Zone Population.
+2021-10-18 12:31:14,449 -    Calculating HSI.
+2021-10-18 12:31:50,806 -    Calculating Local Population.
+2021-10-18 12:31:50,923 -    Disturbing Sites
+2021-10-18 12:33:26,797 - Running Biomass Succession ...
+2021-10-18 12:33:40,925 - Current time: 9
+2021-10-18 12:33:40,927 - Running Biomass Browse ...
+2021-10-18 12:33:40,927 - Processing landscape for ungulate browse events ...
+2021-10-18 12:33:40,928 -    Calculating Site Preference & Forage.
+2021-10-18 12:33:47,025 -    Calculating Zone Population.
+2021-10-18 12:33:47,040 -    Calculating HSI.
+2021-10-18 12:34:23,962 -    Calculating Local Population.
+2021-10-18 12:34:24,067 -    Disturbing Sites
+2021-10-18 12:34:32,028 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:34:33,712 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:34:34,762 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:34:35,136 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:34:35,530 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:34:56,520 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:35:19,931 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:36:16,636 - Running Biomass Succession ...
+2021-10-18 12:36:32,293 - Current time: 10
+2021-10-18 12:36:32,294 - Running Base Wind ...
+2021-10-18 12:36:32,298 - Processing landscape for wind events ...
+2021-10-18 12:36:32,942 -   Wind events: 28
+2021-10-18 12:36:33,378 - Running Biomass Browse ...
+2021-10-18 12:36:33,379 - Processing landscape for ungulate browse events ...
+2021-10-18 12:36:33,380 -    Calculating Site Preference & Forage.
+2021-10-18 12:36:42,689 -    Calculating Zone Population.
+2021-10-18 12:36:42,710 -    Calculating HSI.
+2021-10-18 12:37:22,468 -    Calculating Local Population.
+2021-10-18 12:37:22,565 -    Disturbing Sites
+2021-10-18 12:39:19,397 - Running Biomass Succession ...
+2021-10-18 12:39:34,291 - Current time: 11
+2021-10-18 12:39:34,292 - Running Biomass Browse ...
+2021-10-18 12:39:34,293 - Processing landscape for ungulate browse events ...
+2021-10-18 12:39:34,294 -    Calculating Site Preference & Forage.
+2021-10-18 12:39:40,541 -    Calculating Zone Population.
+2021-10-18 12:39:40,557 -    Calculating HSI.
+2021-10-18 12:40:16,561 -    Calculating Local Population.
+2021-10-18 12:40:16,671 -    Disturbing Sites
+2021-10-18 12:40:28,006 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:41:19,249 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:41:28,078 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:41:45,304 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:42:20,709 - Running Biomass Succession ...
+2021-10-18 12:42:39,482 - Current time: 12
+2021-10-18 12:42:39,483 - Running Biomass Browse ...
+2021-10-18 12:42:39,484 - Processing landscape for ungulate browse events ...
+2021-10-18 12:42:39,485 -    Calculating Site Preference & Forage.
+2021-10-18 12:42:46,814 -    Calculating Zone Population.
+2021-10-18 12:42:46,824 -    Calculating HSI.
+2021-10-18 12:43:29,615 -    Calculating Local Population.
+2021-10-18 12:43:29,763 -    Disturbing Sites
+2021-10-18 12:44:18,345 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:44:25,466 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:44:28,336 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:44:34,669 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:44:39,396 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:44:43,593 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:44:44,906 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:44:48,334 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:44:49,846 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:44:50,006 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:44:54,785 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:44:56,602 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:45:06,725 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:45:19,800 - Running Biomass Succession ...
+2021-10-18 12:45:36,690 - Current time: 13
+2021-10-18 12:45:36,692 - Running Biomass Browse ...
+2021-10-18 12:45:36,693 - Processing landscape for ungulate browse events ...
+2021-10-18 12:45:36,693 -    Calculating Site Preference & Forage.
+2021-10-18 12:45:43,688 -    Calculating Zone Population.
+2021-10-18 12:45:43,705 -    Calculating HSI.
+2021-10-18 12:46:24,158 -    Calculating Local Population.
+2021-10-18 12:46:24,347 -    Disturbing Sites
+2021-10-18 12:46:58,808 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:47:44,736 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:48:00,139 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:48:11,215 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:48:22,095 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:48:49,532 - Running Biomass Succession ...
+2021-10-18 12:49:09,175 - Current time: 14
+2021-10-18 12:49:09,177 - Running Biomass Browse ...
+2021-10-18 12:49:09,177 - Processing landscape for ungulate browse events ...
+2021-10-18 12:49:09,178 -    Calculating Site Preference & Forage.
+2021-10-18 12:49:17,264 -    Calculating Zone Population.
+2021-10-18 12:49:17,282 -    Calculating HSI.
+2021-10-18 12:50:02,411 -    Calculating Local Population.
+2021-10-18 12:50:02,578 -    Disturbing Sites
+2021-10-18 12:50:04,286 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:50:05,743 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:50:06,412 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:50:06,448 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:50:08,656 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:50:10,170 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:50:10,583 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:50:12,979 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:50:13,047 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:50:13,048 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:50:14,146 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:50:16,862 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:50:19,640 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:50:19,658 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:50:19,696 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:50:19,953 -    Browse Proportion not between 0 and 1: 1.16666666666667
+2021-10-18 12:50:20,668 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:50:24,743 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:50:25,725 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:50:31,474 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:50:31,979 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:50:34,337 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:50:42,363 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:50:42,549 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:51:00,219 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:51:00,602 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:51:01,002 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:51:05,066 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:51:05,334 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:51:12,358 -    Browse Proportion not between 0 and 1: 1.6
+2021-10-18 12:51:12,655 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:51:22,455 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:51:24,430 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:51:31,228 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:51:36,792 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:51:42,926 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:51:48,811 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:51:48,930 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:51:49,969 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:51:50,016 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:51:50,061 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:51:50,070 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:51:54,190 - Running Biomass Succession ...
+2021-10-18 12:52:11,485 - Current time: 15
+2021-10-18 12:52:11,486 - Running Biomass Browse ...
+2021-10-18 12:52:11,487 - Processing landscape for ungulate browse events ...
+2021-10-18 12:52:11,488 -    Calculating Site Preference & Forage.
+2021-10-18 12:52:19,641 -    Calculating Zone Population.
+2021-10-18 12:52:19,659 -    Calculating HSI.
+2021-10-18 12:53:39,990 -    Calculating Local Population.
+2021-10-18 12:53:40,340 -    Disturbing Sites
+2021-10-18 12:53:44,333 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:53:45,003 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:53:45,914 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:53:46,505 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:53:47,742 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:53:48,002 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:53:48,006 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:53:50,069 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:53:51,021 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:53:51,584 -    Browse Proportion not between 0 and 1: 1.07142857142857
+2021-10-18 12:53:51,600 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:53:51,710 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:53:51,954 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:53:52,001 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:53:52,340 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:53:52,412 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:53:52,737 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:53:52,746 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:53:54,438 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:53:54,776 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:53:55,149 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:53:55,333 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:53:55,346 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:53:55,478 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:53:55,617 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:53:55,766 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:53:55,789 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:53:55,896 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:53:56,340 -    Browse Proportion not between 0 and 1: 3.33333333333333
+2021-10-18 12:53:56,845 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:53:57,400 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:53:57,749 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:53:57,793 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:53:57,862 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:53:57,870 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:53:58,257 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:53:58,531 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:53:59,096 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:54:00,031 -    Browse Proportion not between 0 and 1: 1.16666666666667
+2021-10-18 12:54:00,140 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:54:00,146 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:00,369 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:00,460 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:00,577 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:54:00,752 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:00,753 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:54:00,961 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:01,093 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:01,160 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:01,196 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:01,578 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:54:01,581 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:54:01,975 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:02,212 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:54:02,344 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:02,373 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:02,515 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:02,526 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:02,607 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:02,629 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:02,715 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:02,832 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:02,968 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:03,056 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:54:03,176 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:03,256 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:54:03,418 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:04,316 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:04,527 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:04,530 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:54:04,658 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:54:04,782 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:54:04,983 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:05,421 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:05,498 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:05,689 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:06,183 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:06,462 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:06,900 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:54:07,178 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:07,381 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:07,504 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:54:07,679 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:07,711 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:09,121 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:54:09,130 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:09,156 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:09,237 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:10,110 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:10,123 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:10,265 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:54:10,267 -    Browse Proportion not between 0 and 1: 1.16666666666667
+2021-10-18 12:54:10,586 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:10,946 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:11,354 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:54:13,960 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:15,246 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:54:15,357 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:15,469 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:15,733 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:54:15,745 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:15,937 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:54:16,029 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:54:16,144 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:16,147 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:16,198 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:54:16,251 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:16,346 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:16,481 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:16,569 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:54:16,642 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:16,785 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:16,881 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:54:18,448 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:18,541 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:18,697 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:19,298 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:19,331 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:54:19,602 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:19,781 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:19,826 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:54:20,811 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:21,038 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:54:21,532 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:54:21,625 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:22,297 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:22,424 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:22,552 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:54:22,751 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:23,332 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:54:23,514 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:54:23,554 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:23,779 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:24,005 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:54:24,232 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:24,264 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:24,331 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:24,352 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:24,420 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:24,522 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:24,734 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:54:24,926 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:54:24,973 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:25,203 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:54:25,212 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:25,258 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:25,304 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:25,426 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:54:25,594 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:54:26,116 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:54:26,138 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:26,319 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:26,498 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:26,790 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:26,799 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:26,823 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:54:26,856 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:27,439 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:27,584 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:27,783 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:54:28,763 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:29,593 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:29,656 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:30,209 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:30,467 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:30,687 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:31,391 -    Browse Proportion not between 0 and 1: 1.4
+2021-10-18 12:54:32,840 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:34,861 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:35,552 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:35,825 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:37,547 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:54:39,013 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:39,491 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:39,688 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:39,814 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:54:39,880 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:39,980 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:40,203 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:40,377 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:41,000 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:42,537 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:54:43,133 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:45,339 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:54:45,443 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:45,605 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:45,779 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:46,001 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:46,353 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:47,532 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:48,131 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:54:48,371 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:51,354 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:52,603 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:53,047 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:54,371 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:54,587 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:54:57,866 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:57,869 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:54:57,892 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:57,893 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:54:58,326 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:54:58,550 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:54:59,400 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:54:59,568 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:54:59,644 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:54:59,801 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:54:59,976 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:55:00,201 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:55:03,088 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:55:05,900 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:55:07,384 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:55:08,186 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:55:10,632 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:55:11,122 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:55:11,281 -    Browse Proportion not between 0 and 1: 8
+2021-10-18 12:55:12,927 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:55:12,945 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:55:13,395 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:55:13,843 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:55:14,121 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:55:14,128 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:55:15,312 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:55:15,374 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:55:15,491 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:55:15,521 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:55:16,645 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:55:17,592 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:55:17,951 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:55:18,439 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:55:19,661 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:55:19,734 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:55:19,817 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:55:19,902 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:55:19,976 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:55:20,312 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:55:20,573 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:55:20,758 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:55:20,841 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:55:20,868 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:55:21,373 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:55:21,397 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:55:21,667 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:55:22,030 -    Browse Proportion not between 0 and 1: 1.14285714285714
+2021-10-18 12:55:23,036 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:55:23,382 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:55:23,578 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:55:23,969 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:55:24,106 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:55:24,405 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:55:27,051 - Running Biomass Succession ...
+2021-10-18 12:55:40,576 - Current time: 16
+2021-10-18 12:55:40,577 - Running Biomass Browse ...
+2021-10-18 12:55:40,578 - Processing landscape for ungulate browse events ...
+2021-10-18 12:55:40,578 -    Calculating Site Preference & Forage.
+2021-10-18 12:55:46,130 -    Calculating Zone Population.
+2021-10-18 12:55:46,143 -    Calculating HSI.
+2021-10-18 12:56:19,420 -    Calculating Local Population.
+2021-10-18 12:56:19,519 -    Disturbing Sites
+2021-10-18 12:56:20,706 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:56:20,999 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:56:22,047 -    Browse Proportion not between 0 and 1: 1.6
+2021-10-18 12:56:22,099 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:56:22,120 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:56:22,752 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:56:23,062 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:56:23,179 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:56:23,258 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:56:23,416 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:56:23,808 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:56:23,819 -    Browse Proportion not between 0 and 1: 2.25
+2021-10-18 12:56:24,320 -    Browse Proportion not between 0 and 1: 4.5
+2021-10-18 12:56:24,744 -    Browse Proportion not between 0 and 1: 9
+2021-10-18 12:56:24,895 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:56:25,959 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:56:26,379 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:56:26,532 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:56:26,628 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:56:26,854 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:56:27,006 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:56:27,009 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:56:27,264 -    Browse Proportion not between 0 and 1: 2.75
+2021-10-18 12:56:27,447 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:56:27,643 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:56:27,744 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:56:28,049 -    Browse Proportion not between 0 and 1: 1.4
+2021-10-18 12:56:28,319 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:56:28,621 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:56:28,756 -    Browse Proportion not between 0 and 1: 3.33333333333333
+2021-10-18 12:56:28,932 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:56:29,214 -    Browse Proportion not between 0 and 1: 1.16666666666667
+2021-10-18 12:56:29,440 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:56:29,464 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:56:29,505 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:56:29,509 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:56:30,093 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:56:30,315 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:56:30,425 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:56:31,066 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:56:31,266 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:56:31,342 -    Browse Proportion not between 0 and 1: 8
+2021-10-18 12:56:32,112 -    Browse Proportion not between 0 and 1: 1.8
+2021-10-18 12:56:32,116 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:56:32,310 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:56:32,415 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:56:33,090 -    Browse Proportion not between 0 and 1: 10
+2021-10-18 12:56:33,275 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:56:33,714 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:56:33,761 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:56:33,787 -    Browse Proportion not between 0 and 1: 3.66666666666667
+2021-10-18 12:56:33,815 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:56:33,896 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:56:33,900 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:56:34,076 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:56:34,275 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:56:34,571 -    Browse Proportion not between 0 and 1: 4.5
+2021-10-18 12:56:35,047 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:56:35,173 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:56:35,793 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:56:36,556 -    Browse Proportion not between 0 and 1: 1.12
+2021-10-18 12:56:37,836 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:56:38,111 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:56:38,185 -    Browse Proportion not between 0 and 1: 4.5
+2021-10-18 12:56:38,310 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:56:38,544 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:56:38,685 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:56:38,749 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:56:39,327 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:56:39,990 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:56:40,087 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:56:40,186 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:56:40,300 -    Browse Proportion not between 0 and 1: 1.4
+2021-10-18 12:56:40,812 -    Browse Proportion not between 0 and 1: 4.5
+2021-10-18 12:56:40,943 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:56:41,952 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:56:41,985 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:56:42,036 -    Browse Proportion not between 0 and 1: 4.66666666666667
+2021-10-18 12:56:42,068 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:56:42,178 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:56:42,286 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:56:44,071 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:56:44,396 -    Browse Proportion not between 0 and 1: 12
+2021-10-18 12:56:44,849 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:56:44,904 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:56:44,923 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:56:45,121 -    Browse Proportion not between 0 and 1: 14
+2021-10-18 12:56:45,343 -    Browse Proportion not between 0 and 1: 3.33333333333333
+2021-10-18 12:56:46,130 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:56:46,189 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:56:46,597 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:56:47,022 -    Browse Proportion not between 0 and 1: 1.4
+2021-10-18 12:56:47,344 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:56:47,367 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:56:47,915 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:56:47,975 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:56:48,056 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:56:48,283 -    Browse Proportion not between 0 and 1: 12
+2021-10-18 12:56:48,824 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:56:48,873 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:56:49,265 -    Browse Proportion not between 0 and 1: 13
+2021-10-18 12:56:49,618 -    Browse Proportion not between 0 and 1: 13
+2021-10-18 12:56:50,119 -    Browse Proportion not between 0 and 1: 13
+2021-10-18 12:56:50,163 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:56:50,461 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:56:50,623 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:56:50,915 -    Browse Proportion not between 0 and 1: 1.625
+2021-10-18 12:56:51,419 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:56:51,458 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:56:51,572 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:56:51,600 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:56:51,734 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:56:52,306 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:56:53,514 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:56:54,577 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:56:54,726 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:56:54,885 -    Browse Proportion not between 0 and 1: 1.125
+2021-10-18 12:56:55,574 -    Browse Proportion not between 0 and 1: 4.5
+2021-10-18 12:56:55,628 -    Browse Proportion not between 0 and 1: 4.66666666666667
+2021-10-18 12:56:55,745 -    Browse Proportion not between 0 and 1: 10
+2021-10-18 12:56:55,808 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:56:56,006 -    Browse Proportion not between 0 and 1: 1.04347826086957
+2021-10-18 12:56:56,264 -    Browse Proportion not between 0 and 1: 1.16666666666667
+2021-10-18 12:56:56,523 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:56:56,632 -    Browse Proportion not between 0 and 1: 10
+2021-10-18 12:56:57,293 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:56:57,457 -    Browse Proportion not between 0 and 1: 2.25
+2021-10-18 12:56:57,469 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:56:57,662 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:56:57,671 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:56:57,828 -    Browse Proportion not between 0 and 1: 4.5
+2021-10-18 12:56:57,994 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:56:58,579 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:56:59,624 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:56:59,642 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:56:59,763 -    Browse Proportion not between 0 and 1: 1.125
+2021-10-18 12:57:00,878 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:57:00,886 -    Browse Proportion not between 0 and 1: 5.5
+2021-10-18 12:57:01,050 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:57:01,398 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:57:01,853 -    Browse Proportion not between 0 and 1: 8
+2021-10-18 12:57:02,488 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:57:03,949 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:57:04,201 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:57:04,245 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:57:04,250 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:57:04,761 -    Browse Proportion not between 0 and 1: 1.15789473684211
+2021-10-18 12:57:06,085 -    Browse Proportion not between 0 and 1: 3.66666666666667
+2021-10-18 12:57:06,840 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:57:08,362 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:57:09,589 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:57:10,056 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:57:10,216 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:57:10,218 -    Browse Proportion not between 0 and 1: 5.5
+2021-10-18 12:57:10,526 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:57:11,215 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:57:11,374 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:57:11,382 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:57:11,529 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:57:11,684 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:57:11,953 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:57:12,413 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:57:12,568 -    Browse Proportion not between 0 and 1: 1.22222222222222
+2021-10-18 12:57:12,988 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:57:13,158 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:57:13,808 -    Browse Proportion not between 0 and 1: 8
+2021-10-18 12:57:14,084 -    Browse Proportion not between 0 and 1: 1.4
+2021-10-18 12:57:14,243 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:57:14,873 -    Browse Proportion not between 0 and 1: 1.57142857142857
+2021-10-18 12:57:15,865 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:57:16,156 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:57:16,606 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:57:17,444 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:57:17,641 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:57:17,813 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:57:19,852 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:57:20,606 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:57:20,818 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:57:21,227 -    Browse Proportion not between 0 and 1: 1.22222222222222
+2021-10-18 12:57:21,323 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:57:21,422 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:57:22,393 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:57:22,518 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:57:22,900 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:57:24,742 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:57:24,847 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:57:25,603 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:57:27,149 -    Browse Proportion not between 0 and 1: 1.41176470588235
+2021-10-18 12:57:28,409 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:57:29,565 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:57:29,649 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:57:31,176 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:57:31,314 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:57:31,386 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:57:31,516 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:57:31,611 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:57:31,783 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:57:31,814 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:57:32,107 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:57:32,218 -    Browse Proportion not between 0 and 1: 1.375
+2021-10-18 12:57:32,484 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:57:32,784 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:57:32,930 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:57:33,531 -    Browse Proportion not between 0 and 1: 4.5
+2021-10-18 12:57:34,093 -    Browse Proportion not between 0 and 1: 13
+2021-10-18 12:57:34,145 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:57:34,246 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:57:34,314 -    Browse Proportion not between 0 and 1: 10
+2021-10-18 12:57:34,320 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:57:34,447 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:57:34,485 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:57:34,860 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:57:34,909 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:57:35,021 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:57:35,179 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:57:37,777 - Running Biomass Succession ...
+2021-10-18 12:57:50,800 - Current time: 17
+2021-10-18 12:57:50,801 - Running Biomass Browse ...
+2021-10-18 12:57:50,802 - Processing landscape for ungulate browse events ...
+2021-10-18 12:57:50,802 -    Calculating Site Preference & Forage.
+2021-10-18 12:57:56,079 -    Calculating Zone Population.
+2021-10-18 12:57:56,092 -    Calculating HSI.
+2021-10-18 12:58:28,877 -    Calculating Local Population.
+2021-10-18 12:58:28,999 -    Disturbing Sites
+2021-10-18 12:58:30,593 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:58:31,246 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:58:31,673 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:58:31,694 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:58:31,810 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:58:31,958 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:58:32,013 -    Browse Proportion not between 0 and 1: 1.125
+2021-10-18 12:58:32,462 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:58:32,468 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:58:32,706 -    Browse Proportion not between 0 and 1: 2.25
+2021-10-18 12:58:33,145 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:58:33,600 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:58:35,113 -    Browse Proportion not between 0 and 1: 2.25
+2021-10-18 12:58:35,905 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:58:36,323 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:58:36,453 -    Browse Proportion not between 0 and 1: 1.4
+2021-10-18 12:58:36,659 -    Browse Proportion not between 0 and 1: 9
+2021-10-18 12:58:37,293 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:58:37,303 -    Browse Proportion not between 0 and 1: 12
+2021-10-18 12:58:37,568 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:58:38,352 -    Browse Proportion not between 0 and 1: 1.14285714285714
+2021-10-18 12:58:39,609 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:58:39,950 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:58:39,985 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:58:40,839 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:58:41,103 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:58:41,284 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:58:41,338 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:58:41,460 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:58:41,706 -    Browse Proportion not between 0 and 1: 12
+2021-10-18 12:58:42,155 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:58:42,488 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:58:42,997 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:58:43,056 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:58:43,175 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:58:43,274 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:58:43,697 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:58:43,825 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:58:44,212 -    Browse Proportion not between 0 and 1: 11
+2021-10-18 12:58:44,255 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:58:44,256 -    Browse Proportion not between 0 and 1: 1.66666666666667
+2021-10-18 12:58:44,515 -    Browse Proportion not between 0 and 1: 2.4
+2021-10-18 12:58:45,173 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:58:46,674 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:58:46,989 -    Browse Proportion not between 0 and 1: 1.16666666666667
+2021-10-18 12:58:47,040 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:58:47,813 -    Browse Proportion not between 0 and 1: 8
+2021-10-18 12:58:48,293 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:58:49,162 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:58:49,191 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:58:49,299 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:58:49,824 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:58:50,230 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:58:50,481 -    Browse Proportion not between 0 and 1: 5.5
+2021-10-18 12:58:50,560 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:58:50,658 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:58:50,666 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:58:51,081 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:58:51,147 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:58:51,577 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:58:51,628 -    Browse Proportion not between 0 and 1: 4.33333333333333
+2021-10-18 12:58:51,802 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:58:51,851 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:58:53,052 -    Browse Proportion not between 0 and 1: 12
+2021-10-18 12:58:53,231 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:58:53,327 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:58:53,604 -    Browse Proportion not between 0 and 1: 10
+2021-10-18 12:58:53,626 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:58:53,749 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:58:54,028 -    Browse Proportion not between 0 and 1: 1.125
+2021-10-18 12:58:54,146 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:58:54,515 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:58:55,511 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:58:56,128 -    Browse Proportion not between 0 and 1: 1.8
+2021-10-18 12:58:56,160 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:58:56,702 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:58:56,798 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:58:56,865 -    Browse Proportion not between 0 and 1: 1.1304347826087
+2021-10-18 12:58:56,982 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:58:57,496 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:58:58,207 -    Browse Proportion not between 0 and 1: 8
+2021-10-18 12:58:58,756 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:58:59,974 -    Browse Proportion not between 0 and 1: 1.16666666666667
+2021-10-18 12:59:00,050 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:59:00,194 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:59:00,454 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:59:00,461 -    Browse Proportion not between 0 and 1: 1.8
+2021-10-18 12:59:00,827 -    Browse Proportion not between 0 and 1: 8
+2021-10-18 12:59:01,297 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:59:01,392 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:59:02,359 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:59:02,464 -    Browse Proportion not between 0 and 1: 10
+2021-10-18 12:59:02,583 -    Browse Proportion not between 0 and 1: 1.4
+2021-10-18 12:59:02,610 -    Browse Proportion not between 0 and 1: 1.11111111111111
+2021-10-18 12:59:03,238 -    Browse Proportion not between 0 and 1: 1.4
+2021-10-18 12:59:03,583 -    Browse Proportion not between 0 and 1: 3.33333333333333
+2021-10-18 12:59:03,664 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:59:03,676 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:59:03,685 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:59:03,890 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:59:03,928 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:59:03,945 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:59:03,991 -    Browse Proportion not between 0 and 1: 15
+2021-10-18 12:59:04,508 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:59:05,242 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:59:05,252 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:59:05,836 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:59:06,504 -    Browse Proportion not between 0 and 1: 3
+2021-10-18 12:59:07,309 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:59:10,234 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:59:10,790 -    Browse Proportion not between 0 and 1: 2.4
+2021-10-18 12:59:13,129 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 12:59:13,385 -    Browse Proportion not between 0 and 1: 3.33333333333333
+2021-10-18 12:59:14,816 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:59:15,591 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 12:59:17,045 -    Browse Proportion not between 0 and 1: 4.5
+2021-10-18 12:59:19,332 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:59:21,175 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 12:59:21,660 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:59:21,870 -    Browse Proportion not between 0 and 1: 2.33333333333333
+2021-10-18 12:59:22,489 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:59:22,662 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:59:22,915 -    Browse Proportion not between 0 and 1: 1.85714285714286
+2021-10-18 12:59:23,676 -    Browse Proportion not between 0 and 1: 6
+2021-10-18 12:59:24,325 -    Browse Proportion not between 0 and 1: 9
+2021-10-18 12:59:24,990 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:59:25,970 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:59:26,052 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 12:59:26,054 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 12:59:26,165 -    Browse Proportion not between 0 and 1: 11
+2021-10-18 12:59:26,981 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 12:59:31,169 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 12:59:32,770 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 12:59:34,949 -    Browse Proportion not between 0 and 1: 1.25
+2021-10-18 12:59:34,953 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 12:59:35,071 -    Browse Proportion not between 0 and 1: 12
+2021-10-18 12:59:35,096 -    Browse Proportion not between 0 and 1: 2.66666666666667
+2021-10-18 12:59:35,235 -    Browse Proportion not between 0 and 1: 1.33333333333333
+2021-10-18 12:59:37,871 - Running Biomass Succession ...
+2021-10-18 12:59:51,950 - Current time: 18
+2021-10-18 12:59:51,951 - Running Biomass Browse ...
+2021-10-18 12:59:51,951 - Processing landscape for ungulate browse events ...
+2021-10-18 12:59:51,952 -    Calculating Site Preference & Forage.
+2021-10-18 12:59:56,930 -    Calculating Zone Population.
+2021-10-18 12:59:56,940 -    Calculating HSI.
+2021-10-18 13:00:28,616 -    Calculating Local Population.
+2021-10-18 13:00:28,711 -    Disturbing Sites
+2021-10-18 13:00:30,327 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 13:00:30,606 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 13:00:31,239 -    Browse Proportion not between 0 and 1: 1.06666666666667
+2021-10-18 13:00:31,978 -    Browse Proportion not between 0 and 1: 3.33333333333333
+2021-10-18 13:00:33,067 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 13:00:34,861 -    Browse Proportion not between 0 and 1: 8
+2021-10-18 13:00:36,539 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 13:00:37,796 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 13:00:38,920 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 13:00:39,680 -    Browse Proportion not between 0 and 1: 1.52941176470588
+2021-10-18 13:00:41,023 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 13:00:44,082 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 13:00:47,183 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 13:00:49,108 -    Browse Proportion not between 0 and 1: 3.5
+2021-10-18 13:00:50,001 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 13:00:50,977 -    Browse Proportion not between 0 and 1: 3.33333333333333
+2021-10-18 13:00:51,840 -    Browse Proportion not between 0 and 1: 4
+2021-10-18 13:00:53,647 -    Browse Proportion not between 0 and 1: 2.5
+2021-10-18 13:00:54,846 -    Browse Proportion not between 0 and 1: 1.1304347826087
+2021-10-18 13:00:57,475 -    Browse Proportion not between 0 and 1: 2.75
+2021-10-18 13:00:57,781 -    Browse Proportion not between 0 and 1: 2.25
+2021-10-18 13:00:59,817 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 13:01:08,640 -    Browse Proportion not between 0 and 1: 1.5
+2021-10-18 13:01:11,197 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 13:01:12,174 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 13:01:12,385 -    Browse Proportion not between 0 and 1: 10
+2021-10-18 13:01:12,817 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 13:01:14,020 -    Browse Proportion not between 0 and 1: 9
+2021-10-18 13:01:20,212 -    Browse Proportion not between 0 and 1: 10
+2021-10-18 13:01:22,899 -    Browse Proportion not between 0 and 1: 1.26086956521739
+2021-10-18 13:01:23,205 -    Browse Proportion not between 0 and 1: 1.16
+2021-10-18 13:01:23,560 -    Browse Proportion not between 0 and 1: 12
+2021-10-18 13:01:25,811 -    Browse Proportion not between 0 and 1: 1.18181818181818
+2021-10-18 13:01:27,542 -    Browse Proportion not between 0 and 1: 1.22222222222222
+2021-10-18 13:01:30,418 - Running Biomass Succession ...
+2021-10-18 13:01:43,769 - Current time: 19
+2021-10-18 13:01:43,770 - Running Biomass Browse ...
+2021-10-18 13:01:43,771 - Processing landscape for ungulate browse events ...
+2021-10-18 13:01:43,772 -    Calculating Site Preference & Forage.
+2021-10-18 13:01:48,969 -    Calculating Zone Population.
+2021-10-18 13:01:48,983 -    Calculating HSI.
+2021-10-18 13:02:39,266 -    Calculating Local Population.
+2021-10-18 13:02:39,393 -    Disturbing Sites
+2021-10-18 13:02:47,545 -    Browse Proportion not between 0 and 1: 1.2
+2021-10-18 13:03:01,072 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 13:03:04,406 -    Browse Proportion not between 0 and 1: 1.02941176470588
+2021-10-18 13:03:32,801 -    Browse Proportion not between 0 and 1: 5
+2021-10-18 13:03:33,203 -    Browse Proportion not between 0 and 1: 1.07142857142857
+2021-10-18 13:03:43,847 -    Browse Proportion not between 0 and 1: 2
+2021-10-18 13:03:44,811 -    Browse Proportion not between 0 and 1: 1.75
+2021-10-18 13:03:47,915 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 13:04:04,896 - Running Biomass Succession ...
+2021-10-18 13:04:19,590 - Current time: 20
+2021-10-18 13:04:19,592 - Running Biomass Browse ...
+2021-10-18 13:04:19,593 - Processing landscape for ungulate browse events ...
+2021-10-18 13:04:19,593 -    Calculating Site Preference & Forage.
+2021-10-18 13:04:24,654 -    Calculating Zone Population.
+2021-10-18 13:04:24,668 -    Calculating HSI.
+2021-10-18 13:05:21,452 -    Calculating Local Population.
+2021-10-18 13:05:21,579 -    Disturbing Sites
+2021-10-18 13:05:34,877 -    Browse Proportion not between 0 and 1: 1.04651162790698
+2021-10-18 13:06:04,995 -    Browse Proportion not between 0 and 1: 7
+2021-10-18 13:06:18,562 - Running Base Wind ...
+2021-10-18 13:06:18,563 - Processing landscape for wind events ...
+2021-10-18 13:06:19,058 -   Wind events: 26
+2021-10-18 13:06:19,378 - Running Biomass Succession ...
+2021-10-18 18:18:01,360 - Model run is complete.
