@@ -53,7 +53,7 @@ raster_folder <- "rasters/"
 ext <- ".tif"
 
 new_folder <- TRUE
-new_folder_name <- "test/"
+new_folder_name <- "test4/"
 if(!new_folder) new_folder_name <- ""
 
 #make the folders if we want to
@@ -95,12 +95,16 @@ write_cell(SOM3C)
 
 #Total soil N (or C:N ratio)
 SOM1surfN <- 0.1 * SOM1surfC
+SOM1surfN <- 0.5 * SOM1surfN
 write_cell(SOM1surfN)
 SOM1soilN <- 0.1 * SOM1soilC
+SOM1soilN <- 0.5 * SOM1soilN
 write_cell(SOM1soilN)
 SOM2N <- 0.04 * SOM2C
+SOM2N <- 0.5 * SOM2N
 write_cell(SOM2N)
 SOM3N <- 0.118 * SOM3C
+SOM3N <- 0.5 * SOM3N
 write_cell(SOM3N)
 
 #Soil Drain
@@ -135,12 +139,19 @@ write_cell(baseflow)
 stormflow <- 0.87
 write_cell(stormflow)
 
+# species biomass cohorts (initial communities)
+# you can put your own initial communities here to test
+# single cohort growth to calibrate against plantation data, for example
+# init_comm <- data.frame(MapCode = 1,
+#                         SpeciesName = "THOC2",
+#                         CohortAge = 10,
+#                         CohortBiomass = 150)
 
-#species biomass cohorts (initial communities)
-init_comm <- data.frame(MapCode = 1,
-                        SpeciesName = "THOC2",
-                        CohortAge = 10,
-                        CohortBiomass = 150)
+#or import data from a spreadsheet
+init_comm <- read.csv("./initial_communities_update.csv") %>%
+  filter(MapCode == 26907) %>%
+  select(!X)
+init_comm$MapCode <- 1
 write.csv(init_comm, paste0("./", new_folder_name, "init_comm.csv"))
 
 initial_communities <- 1
@@ -172,12 +183,12 @@ NECN_succession[30:45] <- c("CalibrateMode yes",
                               "WaterDecayFunction Ratio <<Linear or Ratio",
                               "",
                               "ProbabilityEstablishAdjust 	1.0",
-                              "InitialMineralN			5.0",
+                              "InitialMineralN			1.0",
                               "InitialFineFuels		0.75",
-                              "AtmosphericNSlope		0.004",
-                              "AtmosphericNIntercept		0.04",
+                              "AtmosphericNSlope		-0.000109",
+                              "AtmosphericNIntercept		0.0589",
                               "Latitude			48",
-                              "DenitrificationRate		0.55 <<was 0.5",
+                              "DenitrificationRate		0.25 <<was 0.5",
                               "DecayRateSurf			0.88",
                               "DecayRateSOM1			0.95 << increased from 0.9 sf 2021-12-8",
                               "DecayRateSOM2			0.02 << changed back to 0.02 sf 2021-12-8 <<0.06 << Was 0.02 from Louise. changed 2/5",
@@ -216,8 +227,8 @@ if(new_folder & copy_climate){
 } else if(new_folder & !copy_climate){
   # assuming the actual climate file stays in the main working directory, not copied
   # to one level lower
-  climate_generator[4] <- paste0("ClimateFile \"./", climate_filename, "\"")
-  climate_generator[8] <- paste0("SpinUpClimateFile \"./", climate_filename, "\"")
+  climate_generator[4] <- paste0("ClimateFile \"../", climate_filename, "\"")
+  climate_generator[8] <- paste0("SpinUpClimateFile \"../", climate_filename, "\"")
   write(climate_generator, file = paste0("./", new_folder_name, climate_generator_filename))
 }
 
@@ -243,10 +254,16 @@ writeLines(scenario, paste0("./", new_folder_name,"Scenario1.txt"))
 ecoregions <- readLines("ecoregions.txt")
 writeLines(ecoregions, paste0("./", new_folder_name,"ecoregions.txt"))
 
+readme <- "Test with new N deposition; poorly-drained soils; decreased N by half; ratio water"
+write(readme, file = paste0("./", new_folder_name, "readme.txt"))
+
+
 #make the batchfile and optionally run it
 batch <- c("call landis-ii-7 Scenario1.txt", "pause")
 write(batch, file = paste0("./", new_folder_name, "Scenario1.bat"))
 
-#shell.exec(paste0("SimpleBatchFile-base-fire", iter, ".bat"))
+#shell.exec(paste0("./", new_folder_name, "Scenario1.bat"))
+
+
 
 

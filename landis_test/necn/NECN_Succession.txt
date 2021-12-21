@@ -35,8 +35,8 @@ WaterDecayFunction Ratio <<Linear or Ratio
 ProbabilityEstablishAdjust 	1.0
 InitialMineralN			5.0
 InitialFineFuels		0.75
-AtmosphericNSlope		0.004
-AtmosphericNIntercept		0.04
+AtmosphericNSlope		-0.000109 <<updated for ISRO 2021-12-20
+AtmosphericNIntercept		0.0589 <<updated for ISRO 2021-12-20
 Latitude			48
 DenitrificationRate		0.6 <<was 0.5
 DecayRateSurf			0.88
