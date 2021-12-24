@@ -17,11 +17,8 @@ CellLength 30 << meters
 
 >> Disturbance Extensions Initialization File
 >> ---------------------- -------------------
->>	"SCRAPPLE"		SCRAPPLE_klamath.txt
->>	"Dynamic Biomass Fuels"	Dynamic_Biomass_Fuels.txt
->>	"Biomass Harvest"	biom-harvest-Adaptability.txt	   
->>    	"Biomass BDA"           biomass-BDA-input.txt
-	"Base Wind"		"../../LANDIS inputs/other inputs/BaseWind.txt"
+     	"Biomass Browse"	"../../LANDIS inputs/browse/DynamicUngulateBrowse_2.txt"
+>>	"Base Wind"		"../../LANDIS inputs/other inputs/BaseWind.txt"
 
 
 DisturbancesRandomOrder no

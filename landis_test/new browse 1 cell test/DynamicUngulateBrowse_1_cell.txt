@@ -4,28 +4,28 @@ Timestep 1
 
 << Species Inputs >>
 SpeciesTable
->>				--GrowthReduction--	----Mortality-----
->> Name		Preference	Threshold	Max	Threshold	Max
->> --------	----------	---------	---	---------	---
-ABBA		0.15		0.3		0.4	0.8		0.01
-ACSA3		0.15		0.3		0.4	0.8		0.01
-BEAL2		0.15		0.3		0.4	0.8		0.01
-BEPA		0.25		0.4		0.3	0.9		0.01
-PIGL		0		0		1	0.8		0.01
-PIBA2		0		0		1	0.8		0.01
-POTR5		0.30		0.4		0.3	0.9		0.01
-THOC2		0.05		0.3		0.4	0.8		0.01
-FRNI		0		0		1	0.8		0.01
-PIMA		0		0		1	0.8		0.01
-PIST             0.05            0.3		0.4	0.8		0.01
-QURU		0.05		0.3		0.4	0.8		0.01
-SFTWD		0.30		0.4		0.3	0.9		0.01
-HRDWD		0.15		0.3		0.4	0.8		0.01
+>>				--GrowthReduction--	----Mortality-----     Biomass
+>> Name		Preference	Threshold	Max	Threshold	Max      Max
+>> --------	----------	---------	---	---------	---    -------
+ABBA		0.15		0.3		0.4	0.8		0.01   25000
+ACSA3		0.15		0.3		0.4	0.8		0.01   25000
+BEAL2		0.15		0.3		0.4	0.8		0.01   25000
+BEPA		0.25		0.4		0.3	0.9		0.01   25000
+PIGL		0		0		1	0.8		0.01   25000
+PIBA2		0		0		1	0.8		0.01   25000
+POTR5		0.30		0.4		0.3	0.9		0.01   25000
+THOC2		0.05		0.3		0.4	0.8		0.01   25000
+FRNI		0		0		1	0.8		0.01   25000
+PIMA		0		0		1	0.8		0.01   25000
+PIST             0.05            0.3		0.4	0.8		0.01   25000
+QURU		0.05		0.3		0.4	0.8		0.01   25000
+SFTWD		0.15		0.3		0.4	0.8		0.01   25000
+HRDWD		0.15		0.3		0.4	0.8		0.01   25000
 
 << Browser population Inputs >>
-ZoneMap  pop_zone_052318.img
-PopulationFile	DefinedUngulatePopulation.txt  << User-defined population
-DynamicPopulationFile  DynamicUngulatePopulation.txt  << Dynamic population - Optional
+ZoneMap  "./rasters/ecoregions.tif" <<same as ecoregions right now; every active cell can be browsed. sf 2021-12-20
+PopulationFile	"../../LANDIS inputs/browse/DefinedUngulatePopulation.txt"  << User-defined population
+DynamicPopulationFile  "../../LANDIS inputs/browse/DynamicUngulatePopulation.txt"  << Dynamic population - Optional
 ConsumptionRate  2327  << kg/yr/individual
 
 << Forage Inputs >>
