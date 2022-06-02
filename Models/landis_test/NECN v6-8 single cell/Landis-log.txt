@@ -1,0 +1,94 @@
+2022-04-29 16:05:36,203 - LANDIS-II 7.0 (7)
+2022-04-29 16:05:36,212 - 
+2022-04-29 16:05:36,308 - Loading scenario from file "Scenario1.txt" ...
+2022-04-29 16:05:36,392 - Initialized random number generator with seed = 1,071,684,209
+2022-04-29 16:05:36,393 - Loading species data from file "species.txt" ...
+2022-04-29 16:05:36,425 - Loading ecoregions from file "ecoregions_one_cell.txt" ...
+2022-04-29 16:05:36,448 - Initializing landscape from ecoregions map "./rasters/single3.tif" ...
+2022-04-29 16:05:36,468 - Cell length = 1000 m, cell area = 100 ha
+2022-04-29 16:05:36,471 - Map dimensions: 1 row by 1 column = 1 cell
+2022-04-29 16:05:36,481 - Sites: 1 active (100.0%), 0 inactive (0.0%)
+2022-04-29 16:05:36,493 - Loading NECN Succession extension ...
+2022-04-29 16:05:36,517 -    Registering Data:  Succession.LeafBiomassCohorts.
+2022-04-29 16:05:36,518 -    Registering Data:  Succession.AgeCohorts.
+2022-04-29 16:05:36,518 -    Registering Data:  Succession.BiomassCohorts.
+2022-04-29 16:05:36,518 -    Registering Data:  Succession.FineFuels.
+2022-04-29 16:05:36,519 -    Registering Data:  Succession.SmolderConsumption.
+2022-04-29 16:05:36,519 -    Registering Data:  Succession.FlamingConsumption.
+2022-04-29 16:05:36,519 -    Registering Data:  Succession.CWD.
+2022-04-29 16:05:36,519 -    Registering Data:  Succession.PET.
+2022-04-29 16:05:36,557 -    Begin parsing NECN SPECIES table.
+2022-04-29 16:05:36,590 -    Begin parsing FUNCTIONAL GROUP table.
+2022-04-29 16:05:36,600 -    Begin reading FIRE REDUCTION parameters.
+2022-04-29 16:05:36,601 -    Begin reading HARVEST REDUCTION parameters.
+2022-04-29 16:05:36,606 - Initializing NECN Succession ...
+2022-04-29 16:05:36,671 -   Read in data from ./rasters/soil_depth.tif
+2022-04-29 16:05:36,683 -   Read in data from ./rasters/soil_drain.tif
+2022-04-29 16:05:36,685 -   Read in data from ./rasters/baseflow.tif
+2022-04-29 16:05:36,688 -   Read in data from ./rasters/stormflow.tif
+2022-04-29 16:05:36,690 -   Read in data from ./rasters/field_capacity.tif
+2022-04-29 16:05:36,694 -   Read in data from ./rasters/wilt_point.tif
+2022-04-29 16:05:36,696 -   Read in data from ./rasters/sand.tif
+2022-04-29 16:05:36,699 -   Read in data from ./rasters/clay.tif
+2022-04-29 16:05:36,705 -   Read in data from ./rasters/SOM1surfC.tif
+2022-04-29 16:05:36,707 -   Read in data from ./rasters/SOM1surfN.tif
+2022-04-29 16:05:36,710 -   Read in data from ./rasters/SOM1soilC.tif
+2022-04-29 16:05:36,711 -   Read in data from ./rasters/SOM1soilN.tif
+2022-04-29 16:05:36,713 -   Read in data from ./rasters/SOM2C.tif
+2022-04-29 16:05:36,715 -   Read in data from ./rasters/SOM2N.tif
+2022-04-29 16:05:36,716 -   Read in data from ./rasters/SOM3C.tif
+2022-04-29 16:05:36,717 -   Read in data from ./rasters/SOM3N.tif
+2022-04-29 16:05:36,721 -   Read in data from ./rasters/dead_wood.tif
+2022-04-29 16:05:36,722 -   Read in data from ./rasters/coarse_roots.tif
+2022-04-29 16:05:36,750 -    Loading weather data ...
+2022-04-29 16:05:38,933 -    Registering Data:  TimeOfLastSuccession.
+2022-04-29 16:05:38,934 -    Registering Data:  Shade.
+2022-04-29 16:05:38,935 -    Creating Dispersal Neighborhood List.
+2022-04-29 16:05:38,936 -    Dispersal:  NeighborRadius=5500, CellLength=1000, numCellRadius=5
+2022-04-29 16:05:38,942 -    Loading initial communities from file "initial_communities_pointer.txt" ...
+2022-04-29 16:05:38,963 -    Reading initial communities map "./rasters/initial_communities.tif" ...
+2022-04-29 16:05:39,017 - Loading Biomass Browse extension ...
+2022-04-29 16:05:39,029 -    Begin parsing SPECIES table.
+2022-04-29 16:05:39,050 - Population Zone 0 has Map Code 3.
+2022-04-29 16:05:39,051 -    Loading dynamic input data from file "DefinedUngulatePopulation.txt" ...
+2022-04-29 16:05:39,056 -   Dynamic Input Parser:  Add new year = 0.
+2022-04-29 16:05:39,068 -    Opening browse log files "browse/browse_log.csv" ...
+2022-04-29 16:05:39,076 -    Generating summary table...
+2022-04-29 16:05:39,077 -    Generating summary table...
+2022-04-29 16:05:39,085 - Using the following extensions ...
+   Extension Name            Extension Filename       
+   --------------            ------------------       
+   NECN Succession           NECN_Succession.txt      
+   Biomass Browse            DynamicUngulateBrowse_1_cell.txt
+
+2022-04-29 16:05:39,086 - Current time: 1
+2022-04-29 16:05:39,086 - Running Biomass Browse ...
+2022-04-29 16:05:39,092 - Processing landscape for ungulate browse events ...
+2022-04-29 16:05:39,097 -    Calculating Site Preference & Forage.
+2022-04-29 16:05:39,119 -    Calculating Zone Population.
+2022-04-29 16:05:39,120 - Dynamic Population is True
+2022-04-29 16:05:39,126 - oldPop = 5.  popR = 0.242106548743322. popMortality = 0.164104850124568. popPredation = 0. popHarvest = 0. popGrowth = 0.0343380771053194. newPop = 5.
+2022-04-29 16:05:39,126 - Using dynamic population. PopZone Index 0.  Population = 5. K = 17.0176192522561. EffectivePop = 5.
+2022-04-29 16:05:39,127 -    Calculating HSI.
+2022-04-29 16:05:39,135 -    Calculating Local Population.
+2022-04-29 16:05:39,143 -    Disturbing Sites
+2022-04-29 16:05:39,145 - Recording reduction:  ABBA/20.0/29.
+2022-04-29 16:05:39,146 - Recording reduction:  THOC2/10.0/9.
+2022-04-29 16:05:39,147 - ReducingCohortBiomass NOW!
+2022-04-29 16:05:39,260 - Running NECN Succession ...
+2022-04-29 16:05:39,719 - Current time: 2
+2022-04-29 16:05:39,720 - Running Biomass Browse ...
+2022-04-29 16:05:39,721 - Processing landscape for ungulate browse events ...
+2022-04-29 16:05:39,721 -    Calculating Site Preference & Forage.
+2022-04-29 16:05:39,722 -    Calculating Zone Population.
+2022-04-29 16:05:39,722 - Dynamic Population is True
+2022-04-29 16:05:39,723 - oldPop = 5.  popR = 0.202328480221331. popMortality = 0.160126025183126. popPredation = 0. popHarvest = 0. popGrowth = -0.0267747821196009. newPop = 4.
+2022-04-29 16:05:39,723 - Using dynamic population. PopZone Index 0.  Population = 4. K = 21.2720240653202. EffectivePop = 4.
+2022-04-29 16:05:39,724 -    Calculating HSI.
+2022-04-29 16:05:39,724 -    Calculating Local Population.
+2022-04-29 16:05:39,724 -    Disturbing Sites
+2022-04-29 16:05:39,725 - Recording reduction:  ABBA/21.0/37.
+2022-04-29 16:05:39,725 - Recording reduction:  THOC2/11.0/1.
+2022-04-29 16:05:39,726 - Recording reduction:  THOC2/2.0/10.
+2022-04-29 16:05:39,726 - ReducingCohortBiomass NOW!
+2022-04-29 16:05:39,790 - Running NECN Succession ...

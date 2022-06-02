@@ -1,0 +1,81 @@
+2022-04-27 21:48:02,133 - LANDIS-II 7.0 (7)
+2022-04-27 21:48:02,143 - 
+2022-04-27 21:48:02,218 - Loading scenario from file "Scenario1.txt" ...
+2022-04-27 21:48:02,282 - Initialized random number generator with seed = 2,633,440,199
+2022-04-27 21:48:02,283 - Loading species data from file "../../LANDIS inputs/other inputs/species.txt" ...
+2022-04-27 21:48:02,304 - Loading ecoregions from file "../../LANDIS inputs/NECN files/ecoregions.txt" ...
+2022-04-27 21:48:02,318 - Initializing landscape from ecoregions map "../../LANDIS inputs/input rasters/ecoregions.tif" ...
+2022-04-27 21:48:02,331 - Cell length = 30 m, cell area = 0.09 ha
+2022-04-27 21:48:02,336 - Map dimensions: 2,667 rows by 3,317 columns = 8,846,439 cells
+2022-04-27 21:48:02,900 - Sites: 565,096 active (6.4%), 8,281,343 inactive (93.6%)
+2022-04-27 21:48:04,114 - Loading NECN Succession extension ...
+2022-04-27 21:48:04,174 -    Registering Data:  Succession.LeafBiomassCohorts.
+2022-04-27 21:48:04,175 -    Registering Data:  Succession.AgeCohorts.
+2022-04-27 21:48:04,175 -    Registering Data:  Succession.BiomassCohorts.
+2022-04-27 21:48:04,175 -    Registering Data:  Succession.FineFuels.
+2022-04-27 21:48:04,175 -    Registering Data:  Succession.SmolderConsumption.
+2022-04-27 21:48:04,175 -    Registering Data:  Succession.FlamingConsumption.
+2022-04-27 21:48:04,175 -    Registering Data:  Succession.CWD.
+2022-04-27 21:48:04,175 -    Registering Data:  Succession.PET.
+2022-04-27 21:48:09,022 -    Begin parsing NECN SPECIES table.
+2022-04-27 21:48:09,055 -    Begin parsing FUNCTIONAL GROUP table.
+2022-04-27 21:48:09,065 -    Begin reading FIRE REDUCTION parameters.
+2022-04-27 21:48:09,070 -    Begin reading HARVEST REDUCTION parameters.
+2022-04-27 21:48:09,076 - Initializing NECN Succession ...
+2022-04-27 21:48:09,153 -   Read in data from ../../LANDIS inputs/input rasters/soil_depth.tif
+2022-04-27 21:48:11,262 -   Read in data from ../../LANDIS inputs/input rasters/soil_drain.tif
+2022-04-27 21:48:12,610 -   Read in data from ../../LANDIS inputs/input rasters/baseflow.tif
+2022-04-27 21:48:13,710 -   Read in data from ../../LANDIS inputs/input rasters/stormflow.tif
+2022-04-27 21:48:14,775 -   Read in data from ../../LANDIS inputs/input rasters/field_capacity.tif
+2022-04-27 21:48:15,882 -   Read in data from ../../LANDIS inputs/input rasters/wilt_point.tif
+2022-04-27 21:48:16,974 -   Read in data from ../../LANDIS inputs/input rasters/sand.tif
+2022-04-27 21:48:18,038 -   Read in data from ../../LANDIS inputs/input rasters/clay.tif
+2022-04-27 21:48:19,137 -   Read in data from ../../LANDIS inputs/input rasters/SOM1surfC.tif
+2022-04-27 21:48:20,331 -   Read in data from ../../LANDIS inputs/input rasters/SOM1surfN.tif
+2022-04-27 21:48:21,474 -   Read in data from ../../LANDIS inputs/input rasters/SOM1soilC.tif
+2022-04-27 21:48:22,605 -   Read in data from ../../LANDIS inputs/input rasters/SOM1soilN.tif
+2022-04-27 21:48:23,748 -   Read in data from ../../LANDIS inputs/input rasters/SOM2C.tif
+2022-04-27 21:48:24,911 -   Read in data from ../../LANDIS inputs/input rasters/SOM2N.tif
+2022-04-27 21:48:26,140 -   Read in data from ../../LANDIS inputs/input rasters/SOM3C.tif
+2022-04-27 21:48:27,305 -   Read in data from ../../LANDIS inputs/input rasters/SOM3N.tif
+2022-04-27 21:48:28,467 -   Read in data from ../../LANDIS inputs/input rasters/dead_wood.tif
+2022-04-27 21:48:29,809 -   Read in data from ../../LANDIS inputs/input rasters/coarse_roots.tif
+2022-04-27 21:48:30,974 -    Loading weather data ...
+2022-04-27 21:49:27,760 -    Registering Data:  TimeOfLastSuccession.
+2022-04-27 21:49:27,763 -    Registering Data:  Shade.
+2022-04-27 21:49:27,768 -    Creating Dispersal Neighborhood List.
+2022-04-27 21:49:27,768 -    Dispersal:  NeighborRadius=5015, CellLength=30, numCellRadius=167
+2022-04-27 21:49:29,343 -    Loading initial communities from file "../../LANDIS inputs/NECN files/initial_communities_pointer.txt" ...
+2022-04-27 21:49:29,658 -    Reading initial communities map "../../LANDIS inputs/input rasters/initial_communities.tif" ...
+2022-04-27 21:49:58,182 - Loading Base Wind extension ...
+2022-04-27 21:49:58,219 -    Registering Data:  Wind.TimeOfLastEvent.
+2022-04-27 21:49:58,220 -    Registering Data:  Wind.Severity.
+2022-04-27 21:49:58,223 - Using the following extensions ...
+   Extension Name            Extension Filename       
+   --------------            ------------------       
+   NECN Succession           NECN_Succession.txt      
+   Base Wind                 ../../LANDIS inputs/other inputs/BaseWind.txt
+
+2022-04-27 21:49:58,224 - Current time: 1
+2022-04-27 21:49:58,225 - Running NECN Succession ...
+2022-04-27 22:32:23,929 - Current time: 2
+2022-04-27 22:32:23,930 - Running NECN Succession ...
+2022-04-27 23:19:37,033 - Current time: 3
+2022-04-27 23:19:37,034 - Running NECN Succession ...
+2022-04-28 00:18:02,306 - Current time: 4
+2022-04-28 00:18:02,307 - Running NECN Succession ...
+2022-04-28 01:37:38,152 - Current time: 5
+2022-04-28 01:37:38,153 - Running NECN Succession ...
+2022-04-28 03:04:43,640 - Current time: 6
+2022-04-28 03:04:43,641 - Running NECN Succession ...
+2022-04-28 04:22:37,657 - Current time: 7
+2022-04-28 04:22:37,658 - Running NECN Succession ...
+2022-04-28 05:59:33,712 - Current time: 8
+2022-04-28 05:59:33,714 - Running NECN Succession ...
+2022-04-28 08:00:58,080 - Current time: 9
+2022-04-28 08:00:58,081 - Running NECN Succession ...
+2022-04-28 09:16:05,511 - Current time: 10
+2022-04-28 09:16:05,513 - Running Base Wind ...
+2022-04-28 09:16:05,592 - Processing landscape for wind events ...
+2022-04-28 09:16:07,362 -   Wind events: 29
+2022-04-28 09:16:08,467 - Running NECN Succession ...

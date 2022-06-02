@@ -1,0 +1,17 @@
+LandisData Scenario
+
+Duration 100
+
+Species 		"species.txt"
+
+Ecoregions 		"ecoregions_one_cell.txt"
+EcoregionsMap 		"./rasters/single3.tif"
+
+CellLength 1000 << meters
+
+>> Succession Extension Initialization File
+>> -------------------- -------------------
+
+"NECN Succession"	NECN_Succession.txt
+
+"Biomass Browse"	"DynamicUngulateBrowse_1_cell.txt"

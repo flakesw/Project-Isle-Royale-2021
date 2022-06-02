@@ -1,0 +1,23 @@
+2022-04-29 10:56:30,603 - LANDIS-II 7.0 (7)
+2022-04-29 10:56:30,613 - 
+2022-04-29 10:56:30,681 - Loading scenario from file "Scenario1.txt" ...
+2022-04-29 10:56:30,744 - Initialized random number generator with seed = 2,435,457,209
+2022-04-29 10:56:30,745 - Loading species data from file "species.txt" ...
+2022-04-29 10:56:30,769 - Loading ecoregions from file "ecoregions.txt" ...
+2022-04-29 10:56:30,786 - Initializing landscape from ecoregions map "./rasters/ecoregions.tif" ...
+2022-04-29 10:56:30,801 - Cell length = 30 m, cell area = 0.09 ha
+2022-04-29 10:56:30,803 - Map dimensions: 1 row by 1 column = 1 cell
+2022-04-29 10:56:30,811 - Sites: 1 active (100.0%), 0 inactive (0.0%)
+2022-04-29 10:56:30,819 - Loading NECN Succession extension ...
+2022-04-29 10:56:30,838 -    Registering Data:  Succession.LeafBiomassCohorts.
+2022-04-29 10:56:30,838 -    Registering Data:  Succession.AgeCohorts.
+2022-04-29 10:56:30,838 -    Registering Data:  Succession.BiomassCohorts.
+2022-04-29 10:56:30,838 -    Registering Data:  Succession.FineFuels.
+2022-04-29 10:56:30,839 -    Registering Data:  Succession.SmolderConsumption.
+2022-04-29 10:56:30,839 -    Registering Data:  Succession.FlamingConsumption.
+2022-04-29 10:56:30,839 -    Registering Data:  Succession.CWD.
+2022-04-29 10:56:30,839 -    Registering Data:  Succession.PET.
+2022-04-29 10:56:30,870 -    Begin parsing NECN SPECIES table.
+2022-04-29 10:56:30,877 - Error at line 70 of file "NECN_Succession.txt":
+  Error reading input value for SpeciesParameters:
+    Missing value

@@ -1,0 +1,6 @@
+LandisData	"Ecoregions"		
+
+>> 	Map Code		
+>>Active	Name	Description
+>>--------------------------------------------------------			
+yes	3	eco1		"active"

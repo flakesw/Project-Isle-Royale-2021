@@ -1,0 +1,11 @@
+LandisData "Climate Config"				
+		
+>>-----daily_ipccclimate_degC_mm/day-units-----and----monthly_PRISM-------
+
+ClimateTimeSeries			Daily_RandomYears
+ClimateFile				"../../LANDIS inputs/NECN files/UofIdaho_DailyBaseline_Lucash_test.csv"
+ClimateFileFormat			Daily_Temp-K_Precip-mmDay
+
+SpinUpClimateTimeSeries			Daily_RandomYears
+SpinUpClimateFile			"../../LANDIS inputs/NECN files/UofIdaho_DailyBaseline_Lucash_test.csv"
+SpinUpClimateFileFormat			Daily_Temp-K_Precip-mmDay

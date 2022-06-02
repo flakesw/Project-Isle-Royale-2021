@@ -1,0 +1,5 @@
+LandisData "Defined Population"
+
+>>Year	Zone	Browser Density Index
+>>----	----	---------------------
+   0	  1	  40

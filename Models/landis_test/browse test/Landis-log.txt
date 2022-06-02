@@ -1,0 +1,19 @@
+2022-05-06 08:25:14,655 - LANDIS-II 7.0 (7)
+2022-05-06 08:25:14,665 - 
+2022-05-06 08:25:14,756 - Loading scenario from file "Scenario1.txt" ...
+2022-05-06 08:25:14,833 - Initialized random number generator with seed = 1,610,137,710
+2022-05-06 08:25:14,834 - Loading species data from file "../../LANDIS inputs/other inputs/species.txt" ...
+2022-05-06 08:25:14,861 - Loading ecoregions from file "../../LANDIS inputs/NECN files/ecoregions.txt" ...
+2022-05-06 08:25:14,879 - Initializing landscape from ecoregions map "../../LANDIS inputs/input rasters/ecoregions.tif" ...
+2022-05-06 08:25:14,898 - Cell length = 30 m, cell area = 0.09 ha
+2022-05-06 08:25:14,900 - Map dimensions: 2,667 rows by 3,317 columns = 8,846,439 cells
+2022-05-06 08:25:15,466 - Sites: 565,096 active (6.4%), 8,281,343 inactive (93.6%)
+2022-05-06 08:25:16,516 - Loading NECN Succession extension ...
+2022-05-06 08:25:16,596 -    Registering Data:  Succession.LeafBiomassCohorts.
+2022-05-06 08:25:16,597 -    Registering Data:  Succession.AgeCohorts.
+2022-05-06 08:25:16,597 -    Registering Data:  Succession.BiomassCohorts.
+2022-05-06 08:25:16,597 -    Registering Data:  Succession.FineFuels.
+2022-05-06 08:25:16,597 -    Registering Data:  Succession.SmolderConsumption.
+2022-05-06 08:25:16,597 -    Registering Data:  Succession.FlamingConsumption.
+2022-05-06 08:25:16,598 -    Registering Data:  Succession.CWD.
+2022-05-06 08:25:16,598 -    Registering Data:  Succession.PET.

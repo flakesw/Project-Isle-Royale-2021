@@ -1,1 +1,0 @@
-Original Landis v6.2 version

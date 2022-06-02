@@ -1,0 +1,5 @@
+Time,TotalSites,TotalPopulation,PopulationDensity,TotalForage,TotalK,TotalEffectivePopulation,TotalSitesDamaged,AverageBiomassRemoved,AverageBiomassKilled,TotalCohortsKilled,
+1, 565096, 1552, 3.05159555977116, 5552462, 2386, 1552, 564768, 7, 8, 5364, 
+2, 565096, 1621, 3.18726572318882, 5071610, 2179, 1621, 564768, 7, 9, 9377, 
+3, 565096, 1654, 3.25215145351901, 5581894, 2398, 1654, 564768, 7, 9, 14217, 
+4, 565096, 1676, 3.29540860707247, 5962224, 2562, 1676, 564768, 7, 9, 19469, 
