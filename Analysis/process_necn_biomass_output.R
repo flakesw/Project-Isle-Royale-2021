@@ -8,7 +8,7 @@
 library(tidyverse)
 
 #what folder do all the runs to be analyzed live in?
-scenario_folder <- "E:/ISRO LANDIS/"
+scenario_folder <- "E:/ISRO LANDIS/new runs"
 # scenario_folder <- "C:/Users/swflake/Documents/LANDIS inputs/Model runs"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
   # `[`(grep("Scenario", .))
@@ -44,7 +44,7 @@ scenario_type <- data.frame(run_name = character(length(scenarios)),
 scenario_type <- scenario_type %>%
   mutate(run_name = unlist(map(strsplit(scenarios, split = "/"), pluck(4, 1)))) %>%
   mutate(browse = ifelse(grepl(pattern = "no browse", run_name), "No Browse", "Browse")) %>%
-  mutate(climate = ifelse(grepl(pattern = "no cc", run_name), "Historical", "MIROC"))
+  mutate(climate = ifelse(grepl(pattern = "historical", run_name), "Historical", "MIROC"))
 
 # scenario_type$fire_model <- rep(c("fixed", "mixed"), each = 3)
 
@@ -111,9 +111,9 @@ ggplot(data = necn_summaries2, mapping = aes(x = Time, y = TotalAGB)) +
 
 ggplot(data = necn_summaries2, mapping = aes(x = Time, y = TotalSOMTC)) + 
   geom_point(color="steelblue") + 
-  labs(title = "Aboveground biomass",
+  labs(title = "Soil total organic matter stocks",
        subtitle = "by management scenario and climate scenario",
-       y = "Average AGB (g m-2)", x = "Timestep") + 
+       y = "Soil C (g m-2)", x = "Timestep") + 
   geom_smooth( color = "black") + 
   facet_wrap(~ browse + climate, nrow = 3, ncol = 2)
 

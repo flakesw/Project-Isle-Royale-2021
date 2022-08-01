@@ -5,7 +5,7 @@ library("tidyverse")
 library("terra")
 
 #what folder do all the runs to be analyzed live in?
-scenario_folder <- "E:/ISRO LANDIS/"
+scenario_folder <- "E:/ISRO LANDIS/new runs"
 # scenario_folder <- "C:/Users/swflake/Documents/LANDIS inputs/Model runs"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
 # `[`(grep("Scenario", .))
@@ -39,9 +39,11 @@ scenario_type <- data.frame(run_name = character(length(scenarios)),
                             climate = character(length(scenarios))) %>%
   mutate(run_name = unlist(map(strsplit(scenarios, split = "/"), pluck(4, 1)))) %>%
   mutate(browse = ifelse(grepl(pattern = "no browse", run_name), "No Browse", "Browse")) %>%
-  mutate(climate = ifelse(grepl(pattern = "no cc", run_name), "MIROC", "Historical"))
+  mutate(climate = ifelse(grepl(pattern = "historical", run_name), "MIROC", "Historical"))
 
 
 scen <- scenarios[1]
 
-biomass_layers <- list.files(paste0(scen, "/", "biomass"))
+biomass_layers <- list.files(paste0(scen, "/", "output_20"))
+
+
