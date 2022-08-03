@@ -4,23 +4,23 @@ Timestep 1
 
 << Species Inputs >>
 SpeciesTable
->>				--GrowthReduction--	----Mortality-----     Biomass
->> Name		Preference	Threshold	Max	Threshold	Max      Max
->> --------	----------	---------	---	---------	---    -------
-ABBA		0.15		0.3		0.4	0.8		0.01   5000
-ACSA3		0.15		0.3		0.4	0.8		0.01   5000
-BEAL2		0.15		0.3		0.4	0.8		0.01   5000
-BEPA		0.25		0.4		0.3	0.9		0.01   5000
-PIGL		0		0		1	0.8		0.01   5000
-PIBA2		0		0		1	0.8		0.01   5000
-POTR5		0.30		0.4		0.3	0.9		0.01   5000
-THOC2		0.05		0.3		0.4	0.8		0.01   5000
-FRNI		0		0		1	0.8		0.01   5000
-PIMA		0		0		1	0.8		0.01   5000
-PIST             0.05            0.3		0.4	0.8		0.01   5000
-QURU		0.05		0.3		0.4	0.8		0.01   5000
-SFTWD		0.15		0.3		0.4	0.8		0.01   5000
-HRDWD		0.15		0.3		0.4	0.8		0.01   5000
+>>				--GrowthReduction--     ----Mortality-----     Biomass
+>> Name	Preference	Threshold	Max		Threshold	Max           Max
+>> --------	----------	---------	---		---------	---        -------
+ABBA		0.15		0.3		0.4		0.8		0.01   	5000
+ACSA3		0.15		0.3		0.4		0.8		0.01   	5000
+BEAL2		0.15		0.3		0.4		0.8		0.01   	5000
+BEPA		0.25		0.4		0.3		0.9		0.01  	5000
+PIGL		0		0		1		0.8		0.01  	5000
+PIBA2		0		0		1		0.8		0.01  	5000
+POTR5		0.30		0.4		0.3		0.9		0.01   	5000
+THOC2		0.05		0.3		0.4		0.8		0.01   	5000
+FRNI		0		0		1		0.8		0.01   	5000
+PIMA		0		0		1		0.8		0.01   	5000
+PIST        0.05        0.3		0.4		0.8		0.01   	5000
+QURU		0.05		0.3		0.4		0.8		0.01   	5000
+SFTWD		0.15		0.3		0.4		0.8		0.01   	5000
+HRDWD		0.15		0.3		0.4		0.8		0.01   	5000
 
 << Browser population Inputs >>
 ZoneMap  "../../LANDIS inputs/input rasters/ecoregions.tif" <<same as ecoregions right now; every active cell can be browsed. sf 2021-12-20

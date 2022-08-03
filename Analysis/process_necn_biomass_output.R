@@ -60,38 +60,6 @@ necn_summaries2 <- necn_summaries %>%
             climate = climate[1])
 
 
-
-
-# #---------------------
-# #do it manually if needed
-# scenarios <- c("./Analysis/Test/scen1/scrapple-summary-log.csv",
-#                "./Analysis/Test/scen1/scrapple-summary-log (1).csv",
-#                "./Analysis/Test/scen1/scrapple-summary-log (2).csv",
-#                "./Analysis/Test/scen1/scrapple-summary-log (3).csv",
-#                "./Analysis/Test/scen1/scrapple-summary-log (4).csv",
-#                "./Analysis/Test/scen6/scrapple-summary-log.csv",
-#                "./Analysis/Test/scen6/scrapple-summary-log (1).csv",
-#                "./Analysis/Test/scen6/scrapple-summary-log (2).csv",
-#                "./Analysis/Test/scen6/scrapple-summary-log (3).csv",
-#                "./Analysis/Test/scen6/scrapple-summary-log (4).csv",
-#                "./Analysis/Test/scen1miroc/scrapple-summary-log.csv",
-#                "./Analysis/Test/scen1miroc/scrapple-summary-log (1).csv",
-#                "./Analysis/Test/scen1miroc/scrapple-summary-log (2).csv",
-#                "./Analysis/Test/scen1miroc/scrapple-summary-log (3).csv",
-#                "./Analysis/Test/scen1miroc/scrapple-summary-log.csv",
-#                "./Analysis/Test/scen6miroc/scrapple-summary-log.csv",
-#                "./Analysis/Test/scen6miroc/scrapple-summary-log (1).csv",
-#                "./Analysis/Test/scen6miroc/scrapple-summary-log (2).csv",
-#                "./Analysis/Test/scen6miroc/scrapple-summary-log (3).csv",
-#                "./Analysis/Test/scen6miroc/scrapple-summary-log (4).csv")
-# 
-# fire_summaries <- scenarios %>%
-#   purrr::map_df(~read_plus(.))
-# 
-# scenario_type <- data.frame(filename = scenarios,
-#                             mgmt = rep(c(1,1,1,1,1,6,6,6,6,6), times = 2),
-#                             climate = rep(c("historical", "miroc"), each = 10))
-
 #-------------------------------------------------------------------------------
 # Figures
 #-------------------------------------------------------------------------------

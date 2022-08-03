@@ -18,13 +18,6 @@ read_plus <- function(flnm) {
   
 }
 
-# get_browse <- function(scenario){
-#   list.files(scenario, pattern = "Scenario") %>%
-#     pluck(1) %>%
-#     as.character() %>%
-#     strsplit(x = ., split = "[.]") %>%
-#     pluck(1, 1)
-# }
 
 get_climate <- function(scenario){
   list.files(scenario, pattern = "NECN_Succession") %>%
@@ -42,8 +35,40 @@ scenario_type <- data.frame(run_name = character(length(scenarios)),
   mutate(climate = ifelse(grepl(pattern = "historical", run_name), "MIROC", "Historical"))
 
 
-scen <- scenarios[1]
+biomass_summaries <- paste0(scenarios, "/spp-biomass-log.csv")  %>%
+  purrr::map_df(~read_plus(.)) %>%
+  left_join(scenario_type, c("run_name" = "run_name")) %>%
+  filter(EcoName == "eco1")
 
-biomass_layers <- list.files(paste0(scen, "/", "output_20"))
+names(biomass_summaries)
+sp <- "AboveGroundBiomass_PIMA"
+for(sp in names(biomass_summaries)[4:17]){
+  
+  ggplot(data = biomass_summaries, mapping = aes(x = Time, y = AboveGroundBiomass_FRNI)) + 
+    geom_point(color="steelblue") + 
+    labs(title = paste("Aboveground biomass"),
+         subtitle = "by browse scenario and climate scenario",
+         y = "Average AGB (g m-2)", x = "Timestep") + 
+    geom_smooth( color = "black") + 
+    facet_wrap(~ browse + climate, nrow = 3, ncol = 2)
+  
+}
 
 
+
+## process rasters
+
+biomass_layers <- list.files(paste0(scen, "/", "output_20"), full.names = TRUE)
+
+biomass_df <- data.frame(biomass_layers = biomass_layers,
+                         species = map(strsplit(biomass_layers, split = "-"), pluck(3,1)) %>% #revise this for other naming conventions
+                           unlist(),
+                         years = str_extract_all(biomass_layers,"[0-9]+(?=\\.)") %>% unlist())
+
+species_list <- unique(biomass_df$species)
+year_list <- unique(biomass_df$years)
+sp <- species_list[8]
+for(sp in species_list){
+  test <- rast(biomass_df[biomass_df$species == sp, "biomass_layers"])
+
+}
