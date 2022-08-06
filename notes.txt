@@ -42,7 +42,10 @@ Fixed Nitrogen problem --denitrification rates were too low
 
 
 2022-8-1
-To do: reduce resolution
+To do: 
+	new ic
+	reduce resolution
+	Mask wetlands
 	address issue with too much forage
-	Replace initial biomass with Keeling curve 
+	Replace initial biomass with Keeling curve  -- done
 	

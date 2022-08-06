@@ -38,19 +38,23 @@ scenario_type <- data.frame(run_name = character(length(scenarios)),
 biomass_summaries <- paste0(scenarios, "/spp-biomass-log.csv")  %>%
   purrr::map_df(~read_plus(.)) %>%
   left_join(scenario_type, c("run_name" = "run_name")) %>%
-  filter(EcoName == "eco1")
-
-names(biomass_summaries)
-sp <- "AboveGroundBiomass_PIMA"
-for(sp in names(biomass_summaries)[4:17]){
+  filter(EcoName == "eco1") %>%
+  pivot_longer(cols =  starts_with("AboveGroundBiomass"),
+               names_prefix = "AboveGroundBiomass_",
+               names_to = "Species",
+               values_to = "Biomass")
   
-  ggplot(data = biomass_summaries, mapping = aes(x = Time, y = AboveGroundBiomass_FRNI)) + 
+
+spp <- unique(biomass_summaries$Species)
+for(sp in spp){
+  
+  print(ggplot(data = filter(biomass_summaries, Species == sp), mapping = aes(x = Time, y = Biomass)) + 
     geom_point(color="steelblue") + 
-    labs(title = paste("Aboveground biomass"),
+    labs(title = paste("Aboveground biomass", sp),
          subtitle = "by browse scenario and climate scenario",
          y = "Average AGB (g m-2)", x = "Timestep") + 
     geom_smooth( color = "black") + 
-    facet_wrap(~ browse + climate, nrow = 3, ncol = 2)
+    facet_wrap(~ browse + climate, nrow = 3, ncol = 2) )
   
 }
 
@@ -70,5 +74,4 @@ year_list <- unique(biomass_df$years)
 sp <- species_list[8]
 for(sp in species_list){
   test <- rast(biomass_df[biomass_df$species == sp, "biomass_layers"])
-
 }
