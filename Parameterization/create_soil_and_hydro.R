@@ -180,7 +180,7 @@ component[is.na(component$soilDepth), "soilDepth"] <- 200 #if no restrictive lay
 #TODO validate this
 
 drain_lookup <- read.csv("./Parameterization/Parameterization data/necn_parameterize/soil drainage/drain_coef_lookup_2021-09-16.csv")
-component$soilDrain <- drain_lookup$drain_coef[base::match(component$drainagecl, drain_lookup$ï..Drainage_class)]
+component$soilDrain <- drain_lookup$drain_coef[base::match(component$drainagecl, drain_lookup$Drainage_class)]
 
 # For the rest of the SSURGO data, we need to extract the proper data from each horizon, aggregate to the 
 # component, and then aggregate to the map unit. Component -> mapunit we aggregate
@@ -210,12 +210,13 @@ component <- hori %>%
   dplyr::mutate(hzthk_r = ifelse(!is.na(hzthk_r), hzthk_r, hzdepb_r - hzdept_r)) %>%  #there are a few NAs for thickness; replace with the depth to top minus depth to bottom
   dplyr::select(cokey, hzthk_r, wthirdbar_r, wfifteenbar_r, sandtotal_r, claytotal_r, ksat_r) %>%
   dplyr::group_by(cokey) %>%
-  dplyr::summarise(across(c(wthirdbar_r, wfifteenbar_r, sandtotal_r, claytotal_r, ksat_r), 
+  dplyr::summarise(across(where(is.numeric), 
                    ~stats::weighted.mean(., w = hzthk_r, na.rm = TRUE))) %>%
-  dplyr::mutate(across(everything(), ~replace_na(.x, 1))) %>% #replace NAs where any are left -- just on rocky outcrops and beaches. Replace with 1 instead of 0 so that the sites can still be active
-  dplyr::mutate(across(c(wthirdbar_r, wfifteenbar_r, sandtotal_r, claytotal_r), .fns = ~ `*`(.x, 0.01))) %>% #multiply some columns by 0.01 to convert from percent to proportion
+  dplyr::mutate(across(wthirdbar_r:claytotal_r, ~replace_na(.x, replace = 1.0))) %>% #replace NAs where any are left -- just on rocky outcrops and beaches. Replace with 1 instead of 0 so that the sites can still be active
+  dplyr::mutate(across(c(wthirdbar_r:claytotal_r), .fns = ~ `*`(.x, 0.01))) %>% #multiply some columns by 0.01 to convert from percent to proportion
   dplyr::right_join(component, by = "cokey") %>%
-  dplyr::mutate(across(everything(), ~replace_na(.x, 0.001))) %>% #TODO check out what's weird with the last three entries -- no horizon data?
+  dplyr::mutate(across(where(is.double), ~replace_na(.x, 0.001))) %>% #TODO check out what's weird with the last three entries -- no horizon data?
+  dplyr::mutate(across(where(is.integer), ~as.double(replace_na(.x, 1)))) %>% #this is dumb -- dealing with new tidyr issue
   dplyr::mutate(wthirdbar_r = ifelse(wthirdbar_r <= wfifteenbar_r, wfifteenbar_r + 0.02, wthirdbar_r)) #fix a few sites where field capacity is less than wilt point for some reason
   
 #add our extracted data to the mapunit layer
@@ -283,7 +284,7 @@ soil_mat <- data.frame(OID = mapunits_data$OID,
   na.omit()
 
 #classify soils by texture
-texture <- TT.points.in.classes(soil_mat, class.sys = "USDA.TT")
+texture <- soiltexture::TT.points.in.classes(soil_mat, class.sys = "USDA.TT")
 
 names(texture) <- c("Clay", "Silty clay", "Sandy clay", "Clay loam", "Silty clay loam", "Sandy clay loam", "Loam", "Silt loam", "Sandy loam", "Silt", "Loamy sand", "Sand")
 
@@ -508,82 +509,82 @@ crs(template_raster) #check that we're in NAD 83 Zone 17N
 
 
 #TODO make into a loop to extract everything, since it all comes from the same dataframe
-field_capacity <- terra::rasterize(mapunits_data, template_raster, field = "wthirdbar_r", fun="mean")
+field_capacity <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "wthirdbar_r", fun="mean")
 values(field_capacity) <- ifelse(is.na(values(field_capacity)), 0, values(field_capacity))
-writeRaster(field_capacity, "./Models/LANDIS inputs/input rasters/field_capacity.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+terra::writeRaster(field_capacity, "./Models/LANDIS inputs/input rasters/field_capacity.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
-wilt_point <- rasterize(mapunits_data, template_raster, field = "wfifteenbar_r", fun="mean")
+wilt_point <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "wfifteenbar_r", fun="mean")
 values(wilt_point) <- ifelse(is.na(values(wilt_point)), 0, values(wilt_point))
-writeRaster(wilt_point, "./Models/LANDIS inputs/input rasters/wilt_point.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+terra::writeRaster(wilt_point, "./Models/LANDIS inputs/input rasters/wilt_point.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
-sand <- rasterize(mapunits_data, template_raster, field = "sandtotal_r", fun="mean")
+sand <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "sandtotal_r", fun="mean")
 values(sand) <- ifelse(is.na(values(sand)), 0, values(sand))
 values(sand) <- ifelse(values(sand) > 1, 1, values(sand))
-writeRaster(sand, "./Models/LANDIS inputs/input rasters/sand.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+terra::writeRaster(sand, "./Models/LANDIS inputs/input rasters/sand.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
-clay <- rasterize(mapunits_data, template_raster, field = "claytotal_r", fun="mean")
+clay <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "claytotal_r", fun="mean")
 values(clay) <- ifelse(is.na(values(clay)), 0, values(clay))
-writeRaster(clay, "./Models/LANDIS inputs/input rasters/clay.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+terra::writeRaster(clay, "./Models/LANDIS inputs/input rasters/clay.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
-soilDrain <- rasterize(mapunits_data, template_raster, field = "soilDrain", fun="mean")
+soilDrain <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "soilDrain", fun="mean")
 values(soilDrain) <- ifelse(is.na(values(soilDrain)), 0, values(soilDrain))
-writeRaster(soilDrain, "./Models/LANDIS inputs/input rasters/soil_drain.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+terra::writeRaster(soilDrain, "./Models/LANDIS inputs/input rasters/soil_drain.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
-soilDepth <- rasterize(mapunits_data, template_raster, field = "soilDepth", fun="mean")
+soilDepth <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "soilDepth", fun="mean")
 values(soilDepth) <- ifelse(is.na(values(soilDepth)), 0, values(soilDepth))
-writeRaster(soilDepth, "./Models/LANDIS inputs/input rasters/soil_depth.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+terra::writeRaster(soilDepth, "./Models/LANDIS inputs/input rasters/soil_depth.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
-baseflow <- rasterize(mapunits_data, template_raster, field = "baseFlow", fun="mean") 
+baseflow <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "baseFlow", fun="mean") 
 values(baseflow) <- ifelse(is.na(values(baseflow)), 0, values(baseflow))
-writeRaster(baseflow, "./Models/LANDIS inputs/input rasters/baseflow.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+terra::writeRaster(baseflow, "./Models/LANDIS inputs/input rasters/baseflow.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
-stormflow <- rasterize(mapunits_data, template_raster, field = "runoff", fun="mean") 
+stormflow <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "runoff", fun="mean") 
 values(stormflow) <- ifelse(is.na(values(stormflow)), 0, values(stormflow))
-writeRaster(stormflow, "./Models/LANDIS inputs/input rasters/stormflow.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+terra::writeRaster(stormflow, "./Models/LANDIS inputs/input rasters/stormflow.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
-SOM1surfC <- rasterize(mapunits_data, template_raster, field = "SOM1surfC", fun="mean") 
+SOM1surfC <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "SOM1surfC", fun="mean") 
 values(SOM1surfC) <- ifelse(is.na(values(SOM1surfC)), 0, values(SOM1surfC))
-writeRaster(SOM1surfC, "./Models/LANDIS inputs/input rasters/SOM1surfC.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+terra::writeRaster(SOM1surfC, "./Models/LANDIS inputs/input rasters/SOM1surfC.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
-SOM1soilC <- rasterize(mapunits_data, template_raster, field = "SOM1soilC", fun="mean") 
+SOM1soilC <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "SOM1soilC", fun="mean") 
 values(SOM1soilC) <- ifelse(is.na(values(SOM1soilC)), 0, values(SOM1soilC))
-writeRaster(SOM1soilC, "./Models/LANDIS inputs/input rasters/SOM1soilC.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+terra::writeRaster(SOM1soilC, "./Models/LANDIS inputs/input rasters/SOM1soilC.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
-SOM2C <- rasterize(mapunits_data, template_raster, field = "SOM2C", fun="mean") 
+SOM2C <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "SOM2C", fun="mean") 
 values(SOM2C) <- ifelse(is.na(values(SOM2C)), 0, values(SOM2C))
 values(SOM2C) <- ifelse(values(SOM2C) >= 25000, 24499, values(SOM2C)) #TODO fix this
-writeRaster(SOM2C, "./Models/LANDIS inputs/input rasters/SOM2C.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+terra::writeRaster(SOM2C, "./Models/LANDIS inputs/input rasters/SOM2C.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
-SOM3C <- rasterize(mapunits_data, template_raster, field = "SOM3C", fun="mean")
+SOM3C <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "SOM3C", fun="mean")
 values(SOM3C) <- ifelse(is.na(values(SOM3C)), 0, values(SOM3C))
 values(SOM3C) <- ifelse(values(SOM3C) >= 20000, 19999, values(SOM3C)) #TODO fix this
-writeRaster(SOM3C, "./Models/LANDIS inputs/input rasters/SOM3C.tif", datatype = "FLT4S", NAvalue = 0, overwrite = TRUE)
+terra::writeRaster(SOM3C, "./Models/LANDIS inputs/input rasters/SOM3C.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
 SOM1surfN <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "SOM1surfN", fun="mean") %>%
   terra::mask(template_raster, inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
 terra::NAflag(SOM1surfN) <- 0
 # values(SOM1surfN) <- ifelse(is.na(values(SOM1surfN)), 100, values(SOM1surfN))
 values(SOM1surfN) <- ifelse(values(SOM1surfN) >= 500, 499, values(SOM1surfN)) #TODO fix this
-terra::writeRaster(SOM1surfN, "./Models/LANDIS inputs/input rasters/SOM1surfN.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
+terra::terra::writeRaster(SOM1surfN, "./Models/LANDIS inputs/input rasters/SOM1surfN.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
 SOM1soilN <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "SOM1soilN", fun="mean") %>%
   terra::mask(template_raster, inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
 terra::NAflag(SOM1surfN) <- 0
 # values(SOM1soilN) <- ifelse(is.na(values(SOM1soilN)), 0, values(SOM1soilN))
 values(SOM1soilN) <- ifelse(values(SOM1soilN) >= 500, 499, values(SOM1soilN)) #TODO fix this
-terra::writeRaster(SOM1soilN, "./Models/LANDIS inputs/input rasters/SOM1soilN.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
+terra::terra::writeRaster(SOM1soilN, "./Models/LANDIS inputs/input rasters/SOM1soilN.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
 SOM2N <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "SOM2N", fun="mean") %>%
   terra::mask(template_raster, inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
 terra::NAflag(SOM2N) <- 0
 # values(SOM1soilN) <- ifelse(is.na(values(SOM1soilN)), 0, values(SOM1soilN))
 values(SOM2N) <- ifelse(values(SOM2N) >= 1000, 999, values(SOM2N)) #TODO fix this
-terra::writeRaster(SOM2N, "./Models/LANDIS inputs/input rasters/SOM2N.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
+terra::terra::writeRaster(SOM2N, "./Models/LANDIS inputs/input rasters/SOM2N.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
 SOM3N <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "SOM3N", fun="mean") %>%
   terra::mask(template_raster, inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
 terra::NAflag(SOM3N) <- 0
 # values(SOM1soilN) <- ifelse(is.na(values(SOM1soilN)), 0, values(SOM1soilN))
 values(SOM3N) <- ifelse(values(SOM3N) >= 1000, 999, values(SOM3N)) #TODO fix this
-terra::writeRaster(SOM3N, "./Models/LANDIS inputs/input rasters/SOM3N.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
+terra::terra::writeRaster(SOM3N, "./Models/LANDIS inputs/input rasters/SOM3N.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 

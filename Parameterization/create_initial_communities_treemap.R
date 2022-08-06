@@ -10,7 +10,7 @@ setwd("C:/Users/Sam/Documents/Research/Isle Royale/")
 
 # TODO add in alder, willow, herbs
 
-# This script creates initial communities, 
+# This script creates initial communities, using Riley's TreeMap
 
 
 #we'll use data from FIA for the initial communities, 
@@ -28,7 +28,7 @@ treemap_isro <- terra::crop(treemap, isro_bound) %>%
   terra::project("EPSG:26917", method = "near")
 
 template <- terra::rast(extent = terra::ext(treemap_isro),
-                        resolution = 30,
+                        resolution = 60,
                         crs = "EPSG:26917")
 treemap_isro <- terra::resample(treemap_isro, template, method = "near")
 
@@ -61,13 +61,14 @@ tl_trees <- read.csv("./Parameterization/Parameterization data/treemap/RDS-2019-
   filter(tl_id %in% values(treemap_isro))
 
 #inventory data from study area, to ground-truth which species are important
-isro_inv <- read.csv("./Parameterization/Parameterization data/inventory_data/5_isro_spcov.csv")
+isro_inv <- readxl::read_excel("./Parameterization/Parameterization data/inventory_data/5_isro_spcov.xls")
 
 
 #-------------------------------------------------------------------------------
 #create ecoregions
 ecoregions <- raster::reclassify(treemap_isro, c(0,0,0,1,99999,1)) #just two ecoregions, active and inactive
-raster::writeRaster(ecoregions, "./Models/LANDIS inputs/input rasters/ecoregions.tif", datatype = "INT2S", overwrite = TRUE)
+raster::writeRaster(ecoregions, "./Models/LANDIS inputs/input rasters/ecoregions.tif", 
+                    datatype = "INT2S", overwrite = TRUE, NAvalue = 0)
 
 #-------------------------------------------------------------------------------
 # download michigan FIA data and reference data from the datamart:
@@ -87,11 +88,11 @@ tl_trees_ba <- tl_trees %>%
   dplyr::group_by(SPCD) %>%
   dplyr::summarise(species_ba_total = sum(study_area_ba)/10000) %>%
   dplyr::arrange(species_ba_total) %>%
-  dplyr::left_join(select(sp_ref, c("SPCD", "SPECIES_SYMBOL", "GENUS", "SPECIES"))) %>%
+  dplyr::left_join(dplyr::select(sp_ref, c("SPCD", "SPECIES_SYMBOL", "GENUS", "SPECIES"))) %>%
   dplyr::mutate(species_ba_pct = species_ba_total / sum(species_ba_total))
 
 #TODO reconcile these datasets
-tl_trees_ba$in_isro <- tl_trees_ba$SPECIES_SYMBOL %in% isro_inv$Plant.Symbol
+tl_trees_ba$in_isro <- tl_trees_ba$SPECIES_SYMBOL %in% isro_inv$`Plant Symbol`
   
 # remove rare species
 # TODO replace with functional type
@@ -248,9 +249,9 @@ site_total_biomass <- site_biomass %>%
   dplyr::summarise(total_biomass = sum(CohortBiomass)) %>%
   dplyr::mutate(total_biomass_tonnes_ha = total_biomass * 0.01) #convert to tonnes ha-1
 
-density <- tl_trees_clean %>%
-  group_by(CN) %>%
-  summarize(dens = sum(TPA_UNADJ))
+# density <- tl_trees_clean %>%
+#   group_by(CN) %>%
+#   summarize(dens = sum(TPA_UNADJ))
 
 
 
@@ -338,7 +339,7 @@ tl_trees_ba <- bind_rows(tl_trees_ba,
 
 site_biomass <- site_biomass %>%
   mutate(MapCode = tl_plots[match(PLT_CN, tl_plots$CN), "tl_id"]) %>%
-  left_join(tl_trees_ba %>% select(c("SPCD", "SPECIES_SYMBOL")), by = "SPCD") %>%
+  left_join(tl_trees_ba %>% dplyr::select(c("SPCD", "SPECIES_SYMBOL")), by = "SPCD") %>%
   dplyr::rename(SpeciesName = SPECIES_SYMBOL)
   
 site_total_biomass$MapCode <- tl_plots[match(site_total_biomass$PLT_CN, tl_plots$CN), "tl_id"] #replace CNs with tl_ids
