@@ -1,27 +1,14 @@
-## Welcome to the Isle Royale Project Page
+## Welcome to the Isle Royale LANDIS Project Page
 
-You can use the [editor on GitHub](https://github.com/LANDIS-II-Foundation/Project-Isle-Royale-2021/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+Isle Royale has been the site of research into moose, wolf, and vegetation dynamics for decades. Our most recent project builds on that past work to create projections for future dynamics of vegetation, soil carbon, and moose populations into the future. The project is driven by the uncertainties of how climate and browsing -- both hugely important processes in northern and boreal forests -- will interact to determine the future vegetation states and carbon stocks in the boreal zone. 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Past research
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
+The simulation model we use here is a continuation of work by Nathan De Jager, Matthew Duvenick, Brian Miranda, Eric Gustafson, and others. See citations:
 
 1. Numbered
 2. List
 
-**Bold** and _Italic_ and `Code` text
 
 [Link](url) and ![Image](src)
 ```
