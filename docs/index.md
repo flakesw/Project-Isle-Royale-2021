@@ -4,14 +4,6 @@ Isle Royale has been the site of research into moose, wolf, and vegetation dynam
 
 This project is still under development, and the model results should not be interpreted as the final product of this project. Rather, we interpret them broadly as a demonstration of the model development and potential behavior of the model. 
 
-### Past research
-
-The simulation model we use here is a continuation of work by Nathan De Jager, Matthew Duvenick, Brian Miranda, Eric Gustafson, and others. See citations:
-
-1. De Jager, N. R., P. J. Drohan, B. M. Miranda, B. R. Sturtevant, S. L. Stout, A. A. Royo, E. J. Gustafson, and M. C. Romanski. 2017a. Simulating ungulate herbivory across forest landscapes: A browsing extension for LANDIS-II. Ecological Modelling 350:11–29.
-2. De Jager, N. R., J. J. Rohweder, and M. J. Duveneck. 2020. Climate Change Is Likely to Alter Future Wolf – Moose – Forest Interactions at Isle Royale National Park, United States. Frontiers in Ecology and Evolution 8:290.
-3. De Jager, N. R., J. J. Rohweder, B. R. Miranda, B. R. Sturtevant, T. J. Fox, and M. C. Romanski. 2017b. Modelling moose–forest interactions under different predation scenarios at Isle Royale National Park, USA. Ecological Applications 27:1317–1337.
-
 ### Background
 
 Northern forests (boreal forest and northern hardwood forest types) play an important role in the terrestrial carbon cycle. They have a high aboveground biomass, but moreover, the soils of these forests store more carbon than most sites in the world, especially in poorly drained lowlands. Despite the importance of these ecosystems for carbon storage, they are also uniquely sensitive to climate change. Temperatures are rising faster in the boreal zone than elsewhere. Elevated temperatures may increase productivity in these some of these temperature-limited northern forests, but productivity may be reduced due to high temperatures or drought (Ruiz-Pérez and Vico 2020) or by increased disturbance (Reyer et al. 2017). At the same time, increased soil respiration may reduce soil carbon stocks (Davidson and Janssens 2006) and increased nitrogen volatilization may reduce tree growth rates. Forecasting future carbon dynamics relies upon disentangling the potential complex interactions between stand dynamics, soil dynamics, and disturbance and herbivory (Davidson and Janssens 2006, Didion et al. 2011, Chen and Frank 2020). 
@@ -22,6 +14,26 @@ We use a simulation modeling approach to investigate the sensitivity of above- a
 Hypotheses
 a.	Carbon stocks will increase under a climate change scenario as greater forest productivity increases aboveground biomass and organic matter deposition, though this effect may be reduced by temperature-induced increases in soil respiration.
 b.	Herbivores will reduce soil carbon through reducing forest productivity and preferentially foraging on fast-growing hardwood species. 
+
+## Study Site
+
+Isle Royale, MI provides a uniquely suitable location to explore hypotheses around climate change and browsing. It is located within the ecotone between northern hardwoods and boreal forests, and is thus likely to rapidly respond to changes in climate or disturbance. It also hosts a healthy population of both moose and wolves, and has an extensive history of research into moose and vegetation interactions. It has also been the site of previous LANDIS-II modeling efforts, the foundation on which we built our current project. 
+
+### Past research
+
+The simulation model we use here is a continuation of work by Nathan De Jager, Matthew Duvenick, Brian Miranda, Eric Gustafson, and others. See citations:
+
+1. De Jager, N. R., P. J. Drohan, B. M. Miranda, B. R. Sturtevant, S. L. Stout, A. A. Royo, E. J. Gustafson, and M. C. Romanski. 2017a. Simulating ungulate herbivory across forest landscapes: A browsing extension for LANDIS-II. Ecological Modelling 350:11–29.
+2. De Jager, N. R., J. J. Rohweder, and M. J. Duveneck. 2020. Climate Change Is Likely to Alter Future Wolf – Moose – Forest Interactions at Isle Royale National Park, United States. Frontiers in Ecology and Evolution 8:290.
+3. De Jager, N. R., J. J. Rohweder, B. R. Miranda, B. R. Sturtevant, T. J. Fox, and M. C. Romanski. 2017b. Modelling moose–forest interactions under different predation scenarios at Isle Royale National Park, USA. Ecological Applications 27:1317–1337.
+
+## Modeling
+
+In order to investigate potential interactions between climate change and moose browsing on ecosystem carbon stocks, we used the LANDIS-II model with the [NECN succession extension](https://github.com/LANDIS-II-Foundation/Extension-NECN-Succession). NECN tracks cohorts of trees as they grow, senesce, reproduce, and establish. These processes depend on weather, soil moisture, and soil nitrogen stocks, and the traits of the species present. NECN tracks biomass in several compartments, including four belowground C compartments.
+We updated the [Biomass Browse extension](https://github.com/LANDIS-II-Foundation/Extension-Biomass-Browse) (De Jager et al. 2017a) to be compatible with NECN Succession. Biomass Browse simulates ungulate population dynamics and foraging processes. Each tree cohort supports a given amount of forage, which may be removed by browsers according to their population size, forage needs, and the habitat suitability of the neighborhood around each cell.
+We implemented wind disturbance using the [Base Wind extension](https://github.com/LANDIS-II-Foundation/Extension-Base-Wind). 
+
+
 
 
 [Link](url) and ![Image](src)
