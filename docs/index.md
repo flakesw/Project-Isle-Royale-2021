@@ -32,11 +32,20 @@ The simulation model we use here is a continuation of work by Nathan De Jager, M
 In order to investigate potential interactions between climate change and moose browsing on ecosystem carbon stocks, we used the LANDIS-II model with the [NECN succession extension](https://github.com/LANDIS-II-Foundation/Extension-NECN-Succession). NECN tracks cohorts of trees as they grow, senesce, reproduce, and establish. These processes depend on weather, soil moisture, and soil nitrogen stocks, and the traits of the species present. NECN tracks biomass in several compartments, including four belowground C compartments.
 We updated the [Biomass Browse extension](https://github.com/LANDIS-II-Foundation/Extension-Biomass-Browse) (De Jager et al. 2017a) to be compatible with NECN Succession. Biomass Browse simulates ungulate population dynamics and foraging processes. Each tree cohort supports a given amount of forage, which may be removed by browsers according to their population size, forage needs, and the habitat suitability of the neighborhood around each cell.
 We implemented wind disturbance using the [Base Wind extension](https://github.com/LANDIS-II-Foundation/Extension-Base-Wind). 
+The model was parameterized from a variety of sources, including SSURGO soils data, TreeMap initial communities data, GridMET climate data, and species parameters previously developed for other LANDIS-II projects (https://github.com/LANDIS-II-Foundation/Project-MN-Climate-Change-2017). For more details on parameterization see this folder in the ISRO project page (https://github.com/LANDIS-II-Foundation/Project-Isle-Royale-2021/tree/main/Parameterization).
+
+We ran the model for 80 simulated years under four conditions: with and without browsing, and with present climate and an RCP8.5 climate change scenario (MIROC-5). 
+
+## Results
+
+**These results are preliminary, and should only be interpreted as a proof-of-concept for the model behavior**
 
 
 
 
-[Link](url) and ![Image](src)
+
+
+
 ```
 
 For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
