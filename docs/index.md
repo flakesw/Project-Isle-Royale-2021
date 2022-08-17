@@ -11,9 +11,9 @@ Effects of CC on forests. Shift in species composition (boreal -> northern hardw
 Effects of CC on soils. The interior wetlands of the USA are a vitally important carbon stock, sequestering over 500 tonnes/ha of carbon in deep organic soils (Nahlik and Fennessy 2016). Soil respiration depends on temperature – higher temperatures speed up respiration. Water is also necessary for decomposition, so changes to precipitation may alter decomposition and respiration. Water can also lead to elevated rates of denitrification in waterlogged soils, preventing respiration through nitrogen limitation (and allowing deep histisols such as peat bogs to develop).  
 Effects of herbivores, moose. Ungulate herbivores may have large effects on forest dynamics, and thus on carbon and nitrogen cycles. However, in contrast to other herbivores such as bark beetles, projections of climate and browsing interactions are limited. Browsing by moose may affect biomass of trees directly, by consuming biomass, and indirectly, by preferentially browsing on young stems of preferred species and preventing their recruitment. The direct effects of moose have been estimated at xxx, suggesting that reintroduction of wolves might increase aboveground carbon storage substantially (Wilmers and Schmitz 2016). Because moose are selective browsers, they may cause shifts in species composition towards less palatable species (xx cite), and may have especially large effects on species like balsam fir (Abies balsamea) which persists in the understory at a browsable height (Charron and Hermanutz 2016). These shifts may affect aboveground and belowground carbon stocks. Moose may also have less direct effects by mediating the availability of nitrogen (Pastor et al. 1993), which is limiting in many northern soils. Given the potentially large effects of herbivore population dynamics on carbon storage, it is important to understand how they will interact with climate change. Several possibilities exist: herbivory could accelerate shifts to more heat-tolerant species or slow forest change by suppressing regeneration of replacement species, leaving stands susceptible to regeneration failure. Depending upon the productivity of future stands and the recalcitrance of future biomass, herbivory and climate change could have unexpected interactive effects on soil carbon.  
 We use a simulation modeling approach to investigate the sensitivity of above- and belowground carbon stocks to climate change and herbivory. This study was conducted as Isle Royale National Park (ISRO), a highly heterogeneous archipelago with large variation in soils and vegetation. ISRO represents a mesocosm of the broader heterogeneity of northern landscapes and is a model landscape for predator-herbivore-forest interactions. Past work at the site has indicated that climate change and moose browsing will likely have interacting effects on forest structure (De Jager et al. 2020). In this study, we extend that work by considering belowground processes, including carbon sequestration and respiration and nitrogen uptake and volatilization, which will likely have emergent effects on stand structure and potential feedbacks with productivity.  
-Hypotheses
-a.	Carbon stocks will increase under a climate change scenario as greater forest productivity increases aboveground biomass and organic matter deposition, though this effect may be reduced by temperature-induced increases in soil respiration.
-b.	Herbivores will reduce soil carbon through reducing forest productivity and preferentially foraging on fast-growing hardwood species. 
+###Hypotheses
+1. Carbon stocks will increase under a climate change scenario as greater forest productivity increases aboveground biomass and organic matter deposition, though this effect may be reduced by temperature-induced increases in soil respiration.
+2. Herbivores will reduce soil carbon through reducing forest productivity and preferentially foraging on fast-growing hardwood species. 
 
 ## Study Site
 
@@ -29,9 +29,10 @@ The simulation model we use here is a continuation of work by Nathan De Jager, M
 
 ## Modeling
 
-In order to investigate potential interactions between climate change and moose browsing on ecosystem carbon stocks, we used the LANDIS-II model with the [NECN succession extension](https://github.com/LANDIS-II-Foundation/Extension-NECN-Succession). NECN tracks cohorts of trees as they grow, senesce, reproduce, and establish. These processes depend on weather, soil moisture, and soil nitrogen stocks, and the traits of the species present. NECN tracks biomass in several compartments, including four belowground C compartments.
-We updated the [Biomass Browse extension](https://github.com/LANDIS-II-Foundation/Extension-Biomass-Browse) (De Jager et al. 2017a) to be compatible with NECN Succession. Biomass Browse simulates ungulate population dynamics and foraging processes. Each tree cohort supports a given amount of forage, which may be removed by browsers according to their population size, forage needs, and the habitat suitability of the neighborhood around each cell.
-We implemented wind disturbance using the [Base Wind extension](https://github.com/LANDIS-II-Foundation/Extension-Base-Wind). 
+In order to investigate potential interactions between climate change and moose browsing on ecosystem carbon stocks, we used the LANDIS-II forest landscape model. LANDIS-II is a very flexible model framework which accommodates one of several succession extensions, which provide the main logic of tree growth, reproduction, and mortality, and multiple disturbance extensions, which might simulate processes such as fire, wind, bark beetles, or browsing by ungulate herbivores. For this project, we used: 
+1. [NECN succession extension](https://github.com/LANDIS-II-Foundation/Extension-NECN-Succession). NECN tracks cohorts of trees as they grow, senesce, reproduce, and establish. These processes depend on weather, soil moisture, and soil nitrogen stocks, and the traits of the species present. NECN tracks biomass in several compartments, including four belowground C compartments.
+2. [Biomass Browse extension](https://github.com/LANDIS-II-Foundation/Extension-Biomass-Browse) (De Jager et al. 2017a) We updated Biomass Browse to be compatible with NECN Succession. Biomass Browse simulates ungulate population dynamics and foraging processes. Each tree cohort supports a given amount of forage, which may be removed by browsers according to their population size, forage needs, and the habitat suitability of the neighborhood around each cell.
+3. [Base Wind extension](https://github.com/LANDIS-II-Foundation/Extension-Base-Wind). 
 The model was parameterized from a variety of sources, including SSURGO soils data, TreeMap initial communities data, GridMET climate data, and species parameters previously developed for other LANDIS-II projects (https://github.com/LANDIS-II-Foundation/Project-MN-Climate-Change-2017). For more details on parameterization see this folder in the ISRO project page (https://github.com/LANDIS-II-Foundation/Project-Isle-Royale-2021/tree/main/Parameterization).
 
 We ran the model for 80 simulated years under four conditions: with and without browsing, and with present climate and an RCP8.5 climate change scenario (MIROC-5). 
@@ -44,16 +45,3 @@ We ran the model for 80 simulated years under four conditions: with and without 
 
 
 
-
-
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/LANDIS-II-Foundation/Project-Isle-Royale-2021/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
