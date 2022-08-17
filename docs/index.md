@@ -47,7 +47,7 @@ We ran the model for 80 simulated years under four conditions: with and without 
 **These results are preliminary, and should only be interpreted as a proof-of-concept for the model behavior**
 Without including browsing, climate change is projected to have large effects on the forests of Isle Royale. 
 
-![AGB image no browse]( ./docs/images/agb_nobrowse.svg)
+![AGB image no browse]( ./images/agb_nobrowse.svg)
 
 
 In our simulated landscape, moose have several effects: they remove biomass; they kill cohorts that are heavily browsed; and they suppress growth of cohorts that have been browsed. Moose have a carrying capacity that is determined by the amount of available forage and the amount of forage needed to sustain an individual moose. 
