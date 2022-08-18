@@ -2,10 +2,16 @@
 
 Isle Royale has been the site of research into moose, wolf, and vegetation dynamics for decades. Our most recent project builds on that past work to create projections for future dynamics of vegetation, soil carbon, and moose populations into the future. The project is motivated by the uncertainties of how climate and browsing -- both hugely important processes in northern and boreal forests -- will interact to determine the future vegetation states and carbon stocks in the boreal zone. 
 
+Isle Royale, image courtesy Dan Licht
+
+!(isro)[Isle-Royale-National-Park-is-located-in-western-Lake-Superior_W640.jpg]
+
 Moose populations at Isle Royale (courtesy NPS)
 !(moose pop)[./images/Wolf-Moose_Population_2019_2.jpg]
 
 This project is still under development, and the model results should not be interpreted as the final product of this project. Rather, we interpret them broadly as a demonstration of the model development and potential behavior of the model. 
+
+Please check back here in a few months, or email swflake@ncsu.edu for  more information as the project continues to develop.
 
 ### Background
 
@@ -64,6 +70,27 @@ In our simulated landscape, moose have several effects: they remove biomass; the
 
 Over the two model runs presented here that included browsing (historical climate and RCP8.5 future climate), moose carrying capacity tended to increase over time. 
 
+
+## References
+
+Charron, L., and L. Hermanutz. 2016. Prioritizing boreal forest restoration sites based on disturbance regime. Forest Ecology and Management 361:90–98.
+Chen, J., and D. A. Frank. 2020. Herbivores stimulate respiration from labile and recalcitrant soil carbon pools in grasslands of Yellowstone National Park. Land Degradation & Development 31:2620–2634.
+Davidson, E. A., and I. A. Janssens. 2006. Temperature sensitivity of soil carbon decomposition and feedbacks to climate change. Nature 440:165–173.
+De Jager, N. R., J. J. Rohweder, and M. J. Duveneck. 2020. Climate Change Is Likely to Alter Future Wolf – Moose – Forest Interactions at Isle Royale National Park, United States. Frontiers in Ecology and Evolution 8:290.
+De Jager, N. R., J. J. Rohweder, B. R. Miranda, B. R. Sturtevant, T. J. Fox, and M. C. Romanski. 2017. Modelling moose–forest interactions under different predation scenarios at Isle Royale National Park, USA. Ecological Applications 27:1317–1337.
+De Jager, N. R., M. Van Appledorn, T. J. Fox, J. J. Rohweder, L. J. Guyon, A. R. Meier, R. J. Cosgriff, and B. J. Vandermyde. 2019. Spatially explicit modelling of floodplain forest succession: interactions among flood inundation, forest successional processes, and other disturbances in the Upper Mississippi River floodplain, USA. Ecological Modelling 405:15–32.
+Didion, M., A. D. Kupferschmid, A. Wolf, and H. Bugmann. 2011. Ungulate herbivory modifies the effects of climate change on mountain forests. Climatic Change 109:647–669.
+Gustafson, A., P. A. Miller, R. G. Björk, S. Olin, and B. Smith. 2021. Nitrogen restricts future sub-arctic treeline advance in an individual-based dynamic vegetation model. Biogeosciences 18:6329–6347.
+Matthews, S. N., L. R. Iverson, M. P. Peters, and A. M. Prasad. (n.d.). Climate change pressures for the conterminous United States: plant hardiness zones, heat zones, growing degree days, and cumulative drought severity. Forest Service Research Data Archive.
+Morin, X., L. Fahse, H. Jactel, M. Scherer-Lorenzen, R. García-Valdés, and H. Bugmann. 2018. Long-term response of forest productivity to climate change is mostly driven by change in tree species composition. Scientific Reports 8:5627.
+Nahlik, A. M., and M. S. Fennessy. 2016. Carbon storage in US wetlands. Nature Communications 7:13835.
+Nathan, R., G. Perry, J. Cronin, A. Strand, and M. Cain. 2003. Methods for estimating long-distance dispersal. Oikos 103:261–273.
+Pastor, J., B. Dewey, R. J. Naiman, P. F. McInnes, and Y. Cohen. 1993. Moose Browsing and Soil Fertility in the Boreal Forests of Isle Royale National Park. Ecology 74:467–480.
+Reyer, C. P. O., S. Bathgate, K. Blennow, J. G. Borges, H. Bugmann, S. Delzon, S. P. Faias, J. Garcia-Gonzalo, B. Gardiner, J. R. Gonzalez-Olabarria, C. Gracia, J. G. Hernández, S. Kellomäki, K. Kramer, M. J. Lexer, M. Lindner, E. van der Maaten, M. Maroschek, B. Muys, B. Nicoll, M. Palahi, J. H. Palma, J. A. Paulo, H. Peltola, T. Pukkala, W. Rammer, D. Ray, S. Sabaté, M.-J. Schelhaas, R. Seidl, C. Temperli, M. Tomé, R. Yousefpour, N. E. Zimmermann, and M. Hanewinkel. 2017. Are forest disturbances amplifying or canceling out climate change-induced productivity changes in European forests? Environmental Research Letters 12:034027.
+Riley, K. L., I. C. Grenfell, M. A. Finney, and J. M. Wiener. 2021. TreeMap, a tree-level model of conterminous US forests circa 2014 produced by imputation of FIA plot data. Scientific Data 8:11.
+Ruiz-Pérez, G., and G. Vico. 2020. Effects of Temperature and Water Availability on Northern European Boreal Forests. Frontiers in Forests and Global Change 3:34.
+Wilmers, C. C., and O. J. Schmitz. 2016. Effects of gray wolf-induced trophic cascades on ecosystem carbon cycling. Ecosphere 7:e01501.
+Wolf, E. C., D. J. Cooper, and N. T. Hobbs. 2007. Hydrologic Regime and Herbivory Stabilize an Alternative State in Yellowstone National Park. Ecological Applications 17:1572–1587.
 
 
 
