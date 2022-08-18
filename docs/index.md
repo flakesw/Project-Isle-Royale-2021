@@ -34,6 +34,10 @@ We use a simulation modeling approach to investigate the sensitivity of above- a
 
 Isle Royale, MI provides a uniquely suitable location to explore hypotheses around climate change and browsing. It is located within the ecotone between northern hardwoods and boreal forests, and is thus likely to rapidly respond to changes in climate or disturbance. It also hosts a healthy population of both moose and wolves, and has an extensive history of research into moose and vegetation interactions. It has also been the site of previous LANDIS-II modeling efforts, the foundation on which we built our current project. 
 
+Ecosystem C is primarily made up of carbon stored in soils. Soil C at Isle Royale is very spatially variable; lowland soils might store up to 500 Mg/ha of soil carbon, while thin upland soils might only hold a few Mg/ha. 
+
+![initial C](./images/initial_totalc.svg)
+
 ### Past research
 
 The simulation model we use here is a continuation of work by Nathan De Jager, Matthew Duvenick, Brian Miranda, Eric Gustafson, and others. See citations:
@@ -72,6 +76,12 @@ In our simulated landscape, moose have several effects: they remove biomass; the
 Over the two model runs presented here that included browsing (historical climate and RCP8.5 future climate), moose carrying capacity tended to increase over time. 
 
 ![carrying capacity](./images/mooseK.svg)
+
+Contrary to our expectations, moose browsing was associated with increases in total ecosystem C stocks.
+
+![totalc_future](./images/moose browse difference map.svg)
+
+However, we **do not want to overinterpret this result**; it is sensitive to an error that we discovered in the model. The error resulted in too much establishment of balsam fir, which is edible for moose. The lower losses of belowground C associated with browsing are likely to be caused by this erroneous increased establishment, which decreased NEEC and added litter to surface C pools. This will be fixed soon and I'll update this page when it is fixed! 
 
 This page is a work in progress, but please email Sam Flake at swflake@ncsu.edu with any questions, and check back later when the project is further along. Thanks for reading this far!
 
