@@ -2,6 +2,9 @@
 
 Isle Royale has been the site of research into moose, wolf, and vegetation dynamics for decades. Our most recent project builds on that past work to create projections for future dynamics of vegetation, soil carbon, and moose populations into the future. The project is motivated by the uncertainties of how climate and browsing -- both hugely important processes in northern and boreal forests -- will interact to determine the future vegetation states and carbon stocks in the boreal zone. 
 
+Moose populations at Isle Royale (courtesy NPS)
+!(moose pop)[./images/Wolf-Moose_Population_2019_2.jpg]
+
 This project is still under development, and the model results should not be interpreted as the final product of this project. Rather, we interpret them broadly as a demonstration of the model development and potential behavior of the model. 
 
 ### Background
@@ -38,6 +41,7 @@ In order to investigate potential interactions between climate change and moose 
 1. [NECN succession extension](https://github.com/LANDIS-II-Foundation/Extension-NECN-Succession). NECN tracks cohorts of trees as they grow, senesce, reproduce, and establish. These processes depend on weather, soil moisture, and soil nitrogen stocks, and the traits of the species present. NECN tracks biomass in several compartments, including four belowground C compartments.
 2. [Biomass Browse extension](https://github.com/LANDIS-II-Foundation/Extension-Biomass-Browse) (De Jager et al. 2017a) We updated Biomass Browse to be compatible with NECN Succession. Biomass Browse simulates ungulate population dynamics and foraging processes. Each tree cohort supports a given amount of forage, which may be removed by browsers according to their population size, forage needs, and the habitat suitability of the neighborhood around each cell.
 3. [Base Wind extension](https://github.com/LANDIS-II-Foundation/Extension-Base-Wind). 
+
 The model was parameterized from a variety of sources, including SSURGO soils data, TreeMap initial communities data, GridMET climate data, and species parameters previously developed for [other LANDIS-II projects] (https://github.com/LANDIS-II-Foundation/Project-MN-Climate-Change-2017). For more details on parameterization see this folder in the [ISRO project page](https://github.com/LANDIS-II-Foundation/Project-Isle-Royale-2021/tree/main/Parameterization).
 
 We ran the model for 80 simulated years under four conditions: with and without browsing, and with present climate and an RCP8.5 climate change scenario (MIROC-5). 
@@ -45,9 +49,15 @@ We ran the model for 80 simulated years under four conditions: with and without 
 ## Results
 
 **These results are preliminary, and should only be interpreted as a proof-of-concept for the model behavior**
-Without including browsing, climate change is projected to have large effects on the forests of Isle Royale. 
+
+
+Without including browsing, climate change is projected to have large effects on the forests of Isle Royale. While under a present climate, aboveground biomass is projected to increase by ~15% as forests recover from historical harvest and disturbance, climate change limits the pace of biomass accumulation.
 
 ![AGB image no browse]( ./images/agb_nobrowse.svg)
+
+However, this aboveground growth comes at a cost to belowground carbon stocks. While the C cycle of the model still needs some calibration, it is apparent that higher temperatures will likely result in greater soil respiration, and this effect outweighs the influence of litter deposition from the greater tree biomass. The model projects declines in soil C even under present climate, which might indicate 1) our initial C estimates are too high, 2) the model is producing too much nitrogen, 3) the present climate has already caused a “soil carbon debt”, 4) 
+
+
 
 
 In our simulated landscape, moose have several effects: they remove biomass; they kill cohorts that are heavily browsed; and they suppress growth of cohorts that have been browsed. Moose have a carrying capacity that is determined by the amount of available forage and the amount of forage needed to sustain an individual moose. 

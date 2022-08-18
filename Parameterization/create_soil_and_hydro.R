@@ -565,26 +565,26 @@ SOM1surfN <- terra::rasterize(terra::vect(mapunits_data), template_raster, field
 terra::NAflag(SOM1surfN) <- 0
 # values(SOM1surfN) <- ifelse(is.na(values(SOM1surfN)), 100, values(SOM1surfN))
 values(SOM1surfN) <- ifelse(values(SOM1surfN) >= 500, 499, values(SOM1surfN)) #TODO fix this
-terra::terra::writeRaster(SOM1surfN, "./Models/LANDIS inputs/input rasters/SOM1surfN.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
+terra::writeRaster(SOM1surfN, "./Models/LANDIS inputs/input rasters/SOM1surfN.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
 SOM1soilN <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "SOM1soilN", fun="mean") %>%
   terra::mask(template_raster, inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
 terra::NAflag(SOM1surfN) <- 0
 # values(SOM1soilN) <- ifelse(is.na(values(SOM1soilN)), 0, values(SOM1soilN))
 values(SOM1soilN) <- ifelse(values(SOM1soilN) >= 500, 499, values(SOM1soilN)) #TODO fix this
-terra::terra::writeRaster(SOM1soilN, "./Models/LANDIS inputs/input rasters/SOM1soilN.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
+terra::writeRaster(SOM1soilN, "./Models/LANDIS inputs/input rasters/SOM1soilN.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
 SOM2N <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "SOM2N", fun="mean") %>%
   terra::mask(template_raster, inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
 terra::NAflag(SOM2N) <- 0
 # values(SOM1soilN) <- ifelse(is.na(values(SOM1soilN)), 0, values(SOM1soilN))
 values(SOM2N) <- ifelse(values(SOM2N) >= 1000, 999, values(SOM2N)) #TODO fix this
-terra::terra::writeRaster(SOM2N, "./Models/LANDIS inputs/input rasters/SOM2N.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
+terra::writeRaster(SOM2N, "./Models/LANDIS inputs/input rasters/SOM2N.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
 SOM3N <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "SOM3N", fun="mean") %>%
   terra::mask(template_raster, inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
 terra::NAflag(SOM3N) <- 0
 # values(SOM1soilN) <- ifelse(is.na(values(SOM1soilN)), 0, values(SOM1soilN))
 values(SOM3N) <- ifelse(values(SOM3N) >= 1000, 999, values(SOM3N)) #TODO fix this
-terra::terra::writeRaster(SOM3N, "./Models/LANDIS inputs/input rasters/SOM3N.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
+terra::writeRaster(SOM3N, "./Models/LANDIS inputs/input rasters/SOM3N.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 

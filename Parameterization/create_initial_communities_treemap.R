@@ -44,8 +44,8 @@ treemap_isro <- raster(treemap_isro) #turn into a raster package object
 
 # write the raster for IC 
 # raster package was having trouble here for some reason, so I'm using terra
-raster::writeRaster(treemap_isro, filename = "./Models/LANDIS inputs/input rasters/initial_communities_treemap.tif", datatype = "INT4S", overwrite = TRUE, NAvalue = 0)
-# 
+raster::writeRaster(treemap_isro, filename = "./Models/LANDIS inputs/input rasters/initial_communities.tif", datatype = "INT4S", overwrite = TRUE, NAvalue = 0)
+ 
 # test <- raster("./Models/LANDIS inputs/input rasters/initial_communities.tif")
 # table(values(test))
 # unique(values(test)) %in% tl_plots$tl_id
