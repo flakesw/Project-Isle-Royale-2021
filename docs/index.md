@@ -1,5 +1,7 @@
 ## Welcome to the Isle Royale LANDIS Project Page
 
+Authors: Samuel Flake (NC State University), Nathan De Jager (USGS), and Rob Scheller (NCSU)
+
 Isle Royale has been the site of research into moose, wolf, and vegetation dynamics for decades. Our most recent project builds on that past work to create projections for future dynamics of vegetation, soil carbon, and moose populations into the future. The project is motivated by the uncertainties of how climate and browsing -- both hugely important processes in northern and boreal forests -- will interact to determine the future vegetation states and carbon stocks in the boreal zone. 
 
 Isle Royale, image courtesy Dan Licht
