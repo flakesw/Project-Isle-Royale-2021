@@ -66,11 +66,11 @@ However, this aboveground growth comes at a cost to belowground carbon stocks. W
 ![AGB image no browse]( ./images/somtc.svg)
 
 
-
-
 In our simulated landscape, moose have several effects: they remove biomass; they kill cohorts that are heavily browsed; and they suppress growth of cohorts that have been browsed. Moose have a carrying capacity that is determined by the amount of available forage and the amount of forage needed to sustain an individual moose. 
 
 Over the two model runs presented here that included browsing (historical climate and RCP8.5 future climate), moose carrying capacity tended to increase over time. 
+
+![carrying capacity](./images/
 
 
 ## References
