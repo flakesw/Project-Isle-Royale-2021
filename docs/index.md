@@ -4,10 +4,10 @@ Isle Royale has been the site of research into moose, wolf, and vegetation dynam
 
 Isle Royale, image courtesy Dan Licht
 
-!(isro)[Isle-Royale-National-Park-is-located-in-western-Lake-Superior_W640.jpg]
+![isro](Isle-Royale-National-Park-is-located-in-western-Lake-Superior_W640.jpg)
 
 Moose populations at Isle Royale (courtesy NPS)
-!(moose pop)[./images/Wolf-Moose_Population_2019_2.jpg]
+![moose pop](./images/Wolf-Moose_Population_2019_2.jpg)
 
 This project is still under development, and the model results should not be interpreted as the final product of this project. Rather, we interpret them broadly as a demonstration of the model development and potential behavior of the model. 
 
@@ -19,15 +19,15 @@ Northern forests (boreal forest and northern hardwood forest types) play an impo
 
 **Climate change will have large effects on forests.** There will be both direct effects on productivity and establishment, and indirect effects driven by shifts in species compositional (Morin et al. 2018). The capacity for forests to adapt to climate change may be limited by site conditions such as soil characteristics, so underlying environmental gradients are expected to temper the response of forests to increased temperatures (Gustafson et al. 2021). 
 
-**Climate change will also have large effects on soil C and N cycles.**  In addition to changes in forest productivity – and thus inputs into the soil – increased temperatures will also affect soil C and N. The interior wetlands of the USA are a vitally important carbon stock, sequestering over 500 tonnes/ha of carbon in deep organic soils (Nahlik and Fennessy 2016). Soil respiration depends on temperature – higher temperatures speed up respiration. Water is also necessary for decomposition, so changes to precipitation may alter decomposition and respiration. Water can also lead to elevated rates of denitrification in waterlogged soils, preventing respiration through nitrogen limitation (and allowing deep histisols such as peat bogs to develop). Respiration also requires nitrogen, and increased moisture and temperature may reduce soil N, thus indirectly reducing the productivity of forests.
+**Climate change will also have large effects on soil C and N cycles.**  In addition to changes in forest productivity – and thus inputs into the soil – increased temperatures will also affect soil C and N. The interior wetlands of North America are a vitally important carbon stock, sequestering over 500 tonnes/ha of carbon in deep organic soils (Nahlik and Fennessy 2016). Soil respiration depends on temperature – higher temperatures speed up respiration. Water is also necessary for decomposition, so changes to precipitation may alter decomposition and respiration. Water can also lead to elevated rates of denitrification in waterlogged soils, preventing respiration through nitrogen limitation (and allowing deep histisols such as peat bogs to develop). Respiration also requires nitrogen, and increased moisture and temperature may reduce soil N, thus indirectly reducing the productivity of forests.
 
 **In this context, browsers may have unexpected effects.** Ungulate herbivores may have large effects on forest dynamics, and thus on carbon and nitrogen cycles. However, in contrast to other herbivores such as bark beetles, projections of climate and browsing interactions are limited. Browsing by moose may affect biomass of trees directly, by consuming biomass, and indirectly, by preferentially browsing on young stems of preferred species and preventing their recruitment. The direct effects of moose have been estimated at xxx, suggesting that reintroduction of wolves might increase aboveground carbon storage substantially (Wilmers and Schmitz 2016). Because moose are selective browsers, they may cause shifts in species composition towards less palatable species, and may have especially large effects on species like balsam fir (Abies balsamea) which persists in the understory at a browsable height (Charron and Hermanutz 2016). These shifts may affect aboveground and belowground carbon stocks. Moose may also have less direct effects by mediating the availability of nitrogen (Pastor et al. 1993), which is limiting in many northern soils. Given the potentially large effects of herbivore population dynamics on carbon storage, it is important to understand how they will interact with climate change. Several possibilities exist: herbivory could accelerate shifts to more heat-tolerant species or slow forest change by suppressing regeneration of replacement species, leaving stands susceptible to regeneration failure. Depending upon the productivity of future stands and the recalcitrance of future biomass, herbivory and climate change could have unexpected interactive effects on soil carbon.  
 
 We use a simulation modeling approach to investigate the sensitivity of above- and belowground carbon stocks to climate change and herbivory. This study was conducted as Isle Royale National Park (ISRO), a highly heterogeneous archipelago with large variation in soils and vegetation. ISRO represents a mesocosm of the broader heterogeneity of northern landscapes and is a model landscape for predator-herbivore-forest interactions. Past work at the site has indicated that climate change and moose browsing will likely have interacting effects on forest structure (De Jager et al. 2020). In this study, we extend that work by considering belowground processes, including carbon sequestration and respiration and nitrogen uptake and volatilization, which will likely have emergent effects on stand structure and potential feedbacks with productivity.  
 
-###Hypotheses
-1. Carbon stocks will increase under a climate change scenario as greater forest productivity increases aboveground biomass and organic matter deposition, though this effect may be reduced by temperature-induced increases in soil respiration.
-2. Herbivores will reduce soil carbon through reducing forest productivity and preferentially foraging on fast-growing hardwood species. 
+##Questions
+1. How will climate change affect ecosystem carbon stocks? To what degree is it mediated by aboveground effects (e.g., changes in productivity or species composition) versus belowground effects (i.e., greater soil respiration rates)?
+2. How will simulated browsing by herbivores affect the influence of climate change on soil C? 
 
 ## Study Site
 
@@ -52,7 +52,7 @@ The model was parameterized from a variety of sources, including SSURGO soils da
 
 We ran the model for 80 simulated years under four conditions: with and without browsing, and with present climate and an RCP8.5 climate change scenario (MIROC-5). 
 
-## Results
+## Results and discussion
 
 **These results are preliminary, and should only be interpreted as a proof-of-concept for the model behavior**
 
@@ -61,7 +61,9 @@ Without including browsing, climate change is projected to have large effects on
 
 ![AGB image no browse]( ./images/agb_nobrowse.svg)
 
-However, this aboveground growth comes at a cost to belowground carbon stocks. While the C cycle of the model still needs some calibration, it is apparent that higher temperatures will likely result in greater soil respiration, and this effect outweighs the influence of litter deposition from the greater tree biomass. The model projects declines in soil C even under present climate, which might indicate 1) our initial C estimates are too high, 2) the model is producing too much nitrogen, 3) the present climate has already caused a “soil carbon debt”, 4) 
+However, this aboveground growth comes at a cost to belowground carbon stocks. While the C cycle of the model still needs some calibration, it is apparent that higher temperatures will likely result in greater soil respiration, and this effect outweighs the influence of litter deposition from the greater tree biomass. The model projects declines in soil C even under present climate, which might indicate 1) our initial C estimates are too high, 2) the model is producing too much nitrogen, 3) the present climate has already caused a “soil carbon debt”. Regardless, the differences between the trajectories of present climate and an RCP8.5 climate change scenario are likely to remain, even once the model is fully calibrated.
+
+![AGB image no browse]( ./images/somtc.svg)
 
 
 
