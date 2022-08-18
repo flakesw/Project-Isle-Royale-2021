@@ -4,7 +4,7 @@ Isle Royale has been the site of research into moose, wolf, and vegetation dynam
 
 Isle Royale, image courtesy Dan Licht
 
-![isro](Isle-Royale-National-Park-is-located-in-western-Lake-Superior_W640.jpg)
+![isro](./images/Isle-Royale-National-Park-is-located-in-western-Lake-Superior_W640.jpg)
 
 Moose populations at Isle Royale (courtesy NPS)
 ![moose pop](./images/Wolf-Moose_Population_2019_2.jpg)
@@ -70,7 +70,9 @@ In our simulated landscape, moose have several effects: they remove biomass; the
 
 Over the two model runs presented here that included browsing (historical climate and RCP8.5 future climate), moose carrying capacity tended to increase over time. 
 
-![carrying capacity](./images/
+![carrying capacity](./images/mooseK.svg)
+
+This page is a work in progress, but please email Sam Flake at swflake@ncsu.edu with any questions, and check back later when the project is further along. Thanks for reading this far!
 
 
 ## References
