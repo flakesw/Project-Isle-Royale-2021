@@ -67,6 +67,7 @@ browse_summaries2 <- browse_summaries %>%
             AverageForage =  TotalForage/ TotalSites, #g m-2
             AverageBiomassKilled = weighted.mean(AverageBiomassKilled, TotalSites),
             AverageBiomassRemoved = weighted.mean(AverageBiomassRemoved, TotalSites),
+            TotalK = TotalK,
             browse = browse[1],
             climate = climate[1])
 
@@ -85,12 +86,24 @@ moosepop <- ggplot(data = browse_summaries2, mapping = aes(x = Time+2020, y = To
 plot(moosepop)
 ggsave(file="moosepop.svg", plot=moosepop, width=5, height=4)
 
+
+mooseK <- ggplot(data = browse_summaries2, mapping = aes(x = Time+2020, y = TotalK)) + 
+  geom_point(aes(colour = climate, shape = climate)) + 
+  labs(title = "Total Moose Population",
+       subtitle = "by browse scenario and climate scenario",
+       y = "Total Moose Population", x = "Simulation Year") + 
+  geom_smooth(aes(linetype = climate, colour = climate)) + 
+  geom_smooth(aes(x = Time + 2020, y = TotalPopulation, linetype = climate, colour = climate))
+plot(mooseK)
+
 ggplot(data = browse_summaries2, mapping = aes(x = Time, y = AverageForage)) + 
   geom_point(aes(colour = climate, shape = climate)) + 
   labs(title = "Average forage density (g m-2)",
        subtitle = "by browse scenario and climate scenario",
        y = "Average Forage (g m-2)", x = "Timestep") + 
   geom_smooth(aes(linetype = climate, colour = climate))
+
+
 
 browse_kill <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2020, y = AverageBiomassKilled)) + 
   geom_point(aes(colour = climate, shape = climate)) + 

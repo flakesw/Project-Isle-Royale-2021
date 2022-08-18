@@ -88,7 +88,7 @@ agb_over_time <- ggplot(data = necn_summaries2[necn_summaries2$browse == "No Bro
   theme(panel.grid.minor = element_blank())
 plot(agb_over_time)
 #This actually save the plot in a image
-ggsave(file="agb_nobrowse.svg", plot=agb_over_time, width=5, height=4)
+ggsave(file="./docs/images/agb_nobrowse.svg", plot=agb_over_time, width=5, height=4)
 
 
 #TOtal C
