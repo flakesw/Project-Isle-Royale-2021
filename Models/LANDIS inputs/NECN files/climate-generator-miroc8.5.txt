@@ -1,10 +1,10 @@
 LandisData "Climate Config"				
 		
-ClimateTimeSeries			Daily_RandomYears
+ClimateTimeSeries			Daily_SequencedYears
 ClimateFile				"../../LANDIS inputs/NECN files/MACA_MIROC_rcp8_5.csv"
 ClimateFileFormat			Daily_Temp-C_Precip-mmDay
 
-SpinUpClimateTimeSeries			Daily_RandomYears
+SpinUpClimateTimeSeries			Daily_SequencedYears
 SpinUpClimateFile			"../../LANDIS inputs/NECN files/MACA_MIROC_rcp8_5.csv"
 SpinUpClimateFileFormat			Daily_Temp-C_Precip-mmDay
 

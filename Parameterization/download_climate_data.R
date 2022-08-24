@@ -7,7 +7,7 @@ library("sp")
 library("tidyverse")
 
 #shapefile for study area
-isro_boundary <- sf::st_read("./calibration_data/isle_royale_boundary_buffer/isle_royale_boundary_buffer.shp") %>%
+isro_boundary <- sf::st_read("./Parameterization/Parameterization data/isle_royale_boundary_buffer/isle_royale_boundary_buffer.shp") %>%
   sf::st_buffer(dist = 10000) %>% #the study area was too small to calculate variance! 
   # Try adding a buffer if you're getting NaN values for variance or st_dev
   sf::st_transform(crs = "+proj=longlat +datum=WGS84") #reproject to CRS that geoknife needs
@@ -29,10 +29,10 @@ stencil <- simplegeom(as(isro_boundary, Class = "Spatial"))
 # fabric <- webdata(webdatasets[1])
 
 # here's the MACAv2-METDATA downscaled climate data, URL from the catalog
-# fabric <- webdata(url='https://cida.usgs.gov/thredds/dodsC/macav2metdata_daily_future')
+fabric <- webdata(url='https://cida.usgs.gov/thredds/dodsC/macav2metdata_daily_future')
 
 #here's the U of Idaho METDATA historic data
-fabric <- webdata(url = 'https://cida.usgs.gov/thredds/dodsC/UofIMETDATA')
+# fabric <- webdata(url = 'https://cida.usgs.gov/thredds/dodsC/UofIMETDATA')
 
 # see what variables are available -- 
 # for MACA data, variables are identified by a concatenation of 
@@ -67,7 +67,7 @@ query(fabric, 'times') #what times are available?
 # wait = TRUE has R wait while job is processed
 # email =TRUE emails you when process is done. 
 knife <- webprocess(wait = TRUE, email = "your.address@email.com")
-query(knife, 'algorithms')
+query(knife, 'algorithms') #what algorithms are available?
 
 # area grid statistics are the default, but we can change it if we  (we don't)
 algorithm(knife) <- list('Area Grid Statistics (weighted)' = 
@@ -131,7 +131,7 @@ saveRDS(job_results, file = "climate_raw.RDS")
 str(job_results[[1]]) 
 
 #check on one of our datasets
-ppt <- job_results[[1]]
+ppt <- job_results[[1]] #ppt is in mm
 
 #reshape the data into the format we need
 job_results_reform <- job_results %>% 

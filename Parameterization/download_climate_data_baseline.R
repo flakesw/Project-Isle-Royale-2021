@@ -88,6 +88,13 @@ str(job_results[[1]])
 
 #check on one of our datasets
 ppt <- job_results[[1]]
+ppt$year <- format(ppt$DateTime, "%Y")
+test <- ppt %>% 
+  filter(statistic == "MEAN") %>%
+  group_by(year) %>%
+  summarise(MAP = sum(`1`)) #precip is in mm
+
+t <- job_results[2] # temps are in K
 
 #reshape the data into the format we need
 job_results_reform <- job_results %>% 
