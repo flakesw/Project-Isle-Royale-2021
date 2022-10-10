@@ -1,0 +1,87 @@
+"","SITE_ID","SITE_NAME","DATA_START","DATA_END"
+"1","CA-ARB","Attawapiskat River Bog",2011,2015
+"2","CA-ARF","Attawapiskat River Fen",2011,2015
+"3","CA-Ca1","British Columbia - 1949 Douglas-fir stand",1996,2010
+"4","CA-Ca2","British Columbia - Clearcut Douglas-fir stand (harvested winter 1999/2000)",1999,2010
+"5","CA-Ca3","British Columbia - Pole sapling Douglas-fir stand",2001,2021
+"6","CA-Cbo","Ontario - Mixed Deciduous, Borden Forest Site",1994,2020
+"7","CA-Cha","New Brunswick - Charlie Lake site 01 (immature balsam fir forest to be thinned in year 3)",2004,2005
+"8","CA-LP1","British Columbia - Mountain pine beetle-attacked lodgepole pine stand ",2007,2020
+"9","CA-Man","Manitoba - Northern Old Black Spruce (former BOREAS Northern Study Area)",1994,2008
+"10","CA-Na1","New Brunswick - 1967 Balsam Fir - Nashwaak Lake Site 01 (Mature balsam fir forest)",2003,2005
+"11","CA-Oas","Saskatchewan - Western Boreal, Mature Aspen",1996,2010
+"12","CA-Obs","Saskatchewan - Western Boreal, Mature Black Spruce",1997,2010
+"13","CA-SF1","Saskatchewan - Western Boreal, forest burned in 1977",2003,2006
+"14","CA-SF2","Saskatchewan - Western Boreal, forest burned in 1989",2001,2006
+"15","CA-SF3","Saskatchewan - Western Boreal, forest burned in 1998",2001,2006
+"16","CA-TP1","Ontario - Turkey Point 2002 Plantation White Pine",2002,2017
+"17","CA-TP2","Ontario - Turkey Point 1989 Plantation White Pine",2002,2008
+"18","CA-TP3","Ontario - Turkey Point 1974 Plantation White Pine",2002,2017
+"19","CA-TP4","Ontario - Turkey Point 1939 Plantation White Pine",2002,2017
+"20","CA-TPD","Ontario - Turkey Point Mature Deciduous",2012,2017
+"21","US-Bar","Bartlett Experimental Forest",2004,2017
+"22","US-Bsg","Burns Sagebrush",2014,2015
+"23","US-BZB","Bonanza Creek Thermokarst Bog",2011,2021
+"24","US-BZF","Bonanza Creek Rich Fen",2011,2021
+"25","US-BZo","Bonanza Creek Old Thermokarst Bog",2018,2021
+"26","US-BZS","Bonanza Creek Black Spruce",2010,2021
+"27","US-CPk","Chimney Park",2009,2013
+"28","US-CS2","Tri county school Pine Forest",2018,2021
+"29","US-EML","Eight Mile Lake Permafrost thaw gradient, Healy Alaska.",2008,2020
+"30","US-Fcr","Cascaden Ridge Fire Scar",2011,2014
+"31","US-GBT","GLEES Brooklyn Tower",1999,2006
+"32","US-GLE","GLEES",1999,2020
+"33","US-HBK","Hubbard Brook Experimental Forest",2016,2020
+"34","US-Hn3","Hanford 100H sagebrush",2017,2018
+"35","US-Ho1","Howland Forest (main tower)",1995,2020
+"36","US-Ho3","Howland Forest (harvest site)",2003,2009
+"37","US-ICh","Imnavait Creek Watershed Heath Tundra",2007,2021
+"38","US-ICs","Imnavait Creek Watershed Wet Sedge Tundra",2007,2021
+"39","US-ICt","Imnavait Creek Watershed Tussock Tundra",2007,2021
+"40","US-KPL","Lily Lake Fen",2021,2021
+"41","US-Me2","Metolius mature ponderosa pine",2002,2022
+"42","US-Me6","Metolius Young Pine Burn",2010,2021
+"43","US-Oho","Oak Openings",2004,2013
+"44","US-PFa","Park Falls/WLEF",1995,2022
+"45","US-PFb","NW1 Pine-1 CHEESEHEAD 2019",2019,2019
+"46","US-PFc","NW2 Aspen-1 CHEESEHEAD 2019",2019,2019
+"47","US-PFd","NW3 Tussock-1 CHEESEHEAD 2019",2019,2019
+"48","US-PFg","NE1 Pine-2 CHEESEHEAD 2019",2019,2019
+"49","US-PFh","NE2 Pine-3 CHEESEHEAD 2019",2019,2019
+"50","US-PFi","NE3 Hardwood-1 CHEESEHEAD 2019",2019,2019
+"51","US-PFj","NE4 Maple-1 CHEESEHEAD 2019",2019,2019
+"52","US-PFk","SW1 Aspen-2 CHEESEHEAD 2019",2019,2019
+"53","US-PFL","SW2 Aspen-3 CHEESEHEAD 2019",2019,2019
+"54","US-PFm","SW3 Hardwood-2 CHEESEHEAD 2019",2019,2019
+"55","US-PFn","SW4 Hardwood-3 CHEESEHEAD 2019",2019,2019
+"56","US-PFp","SE2 Hardwood-4 CHEESEHEAD 2019",2019,2019
+"57","US-PFq","SE3 Aspen-4 CHEESEHEAD 2019",2019,2019
+"58","US-PFr","SE4 Tussock-2 CHEESEHEAD 2019",2019,2019
+"59","US-PFs","SE5 Aspen-5 CHEESEHEAD 2019",2019,2019
+"60","US-PFt","SE6 Pine-4 CHEESEHEAD 2019",2019,2019
+"61","US-Prr","Poker Flat Research Range Black Spruce Forest",2010,2016
+"62","US-Rls","RCEW Low Sagebrush",2014,2020
+"63","US-Rms","RCEW Mountain Big Sagebrush",2014,2020
+"64","US-Rpf","Poker Flat Research Range: Succession from fire scar to deciduous forest",2008,2021
+"65","US-Rwe","RCEW Reynolds Mountain East",2003,2007
+"66","US-Rwf","RCEW Upper Sheep Prescibed Fire",2014,2020
+"67","US-Rws","Reynolds Creek Wyoming big sagebrush",2014,2020
+"68","US-Syv","Sylvania Wilderness Area",2001,2022
+"69","US-Uaf","University of Alaska, Fairbanks",2003,2021
+"70","US-UMB","Univ. of Mich. Biological Station",2000,2021
+"71","US-UMd","UMBS Disturbance",2007,2021
+"72","US-WCr","Willow Creek",1998,2021
+"73","US-Wrc","Wind River Crane Site",1998,2015
+"74","US-xAB","NEON Abby Road (ABBY)",2017,2022
+"75","US-xBA","NEON Barrow Environmental Observatory (BARR)",2017,2022
+"76","US-xBN","NEON Caribou Creek - Poker Flats Watershed (BONA)",2017,2022
+"77","US-xBR","NEON Bartlett Experimental Forest (BART)",2017,2022
+"78","US-xDJ","NEON Delta Junction (DEJU)",2017,2022
+"79","US-xHA","NEON Harvard Forest (HARV)",2017,2021
+"80","US-xHE","NEON Healy (HEAL)",2017,2021
+"81","US-xST","NEON Steigerwaldt Land Services (STEI)",2017,2021
+"82","US-xTL","NEON Toolik (TOOL)",2017,2021
+"83","US-xTR","NEON Treehaven (TREE)",2017,2021
+"84","US-xUN","NEON University of Notre Dame Environmental Research Center (UNDE)",2017,2021
+"85","US-xWR","NEON Wind River Experimental Forest (WREF)",2018,2021
+"86","US-xYE","NEON Yellowstone Northern Range (Frog Rock) (YELL)",2018,2021

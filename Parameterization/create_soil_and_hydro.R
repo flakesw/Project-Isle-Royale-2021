@@ -41,7 +41,7 @@
 #   * Dead Wood of Coarse Roots ^3^
 #   
 #   All of the Maps 1 are derived from the USGS ggsurgo database. The Maps 2 are derived from total soil carbon maps and estimations of each pool. The Maps 3 is interpolated from FIA data.
-# BaseFlow and Storm Flow are treated as stationary variables in this simulation. 
+#   Baseflow and stormflow are approximated from soil texture
 
 #load libraries
 library("raster")
@@ -50,7 +50,6 @@ library("tidyverse")
 library("spdep")
 library("soiltexture")
 library("ggplot2")
-# library("fasterize") #fasterize doesn't have "mean" as a built-in function -- try to figure this out?
 
 #clean up some garbage and remove loaded files. This script needs a lot of RAM
 # rm(list = ls())
@@ -98,6 +97,10 @@ isro_boundary <- sf::st_read("./Parameterization/Parameterization data/isle_roya
 # * Sand Percentage= Chorizon:sandtotal_R:RV 
 # * Clay Percentage= Chorizon:claytotal_R:RV 
 # * Soil depth = corestriction:resdept_r 
+
+#this is the grid we'll match everything to in the end
+template_raster <- terra::rast("./Models/LANDIS inputs/input rasters/initial_communities.tif")
+crs(template_raster) #check that we're in NAD 83 Zone 17N
 
 # to extract this data, we need to import the mapunit polygon (or raster),
 # mapunits, the corestriction layer that has depth to bedrock or hardpan (or other
@@ -169,15 +172,15 @@ component <- dplyr::left_join(component, rest, by = "cokey")
 component[is.na(component$soilDepth), "soilDepth"] <- 200 #if no restrictive layer, set soil depth to 2 m
 
 # soil drainage
-# the soil drainage map is used to modify rates of denitrification and carbon 
-# respiration. It is a proxy for more proximate variables like water-filled pore
+# the soil drainage map is used to modify rates of denitrification and soil carbon 
+# respiration and leaching (it is used to calculate the "anaerobic effect"). 
+# It is a proxy for more proximate variables like water-filled pore
 # space, incorporating the general tendency for poorly-drained soils to accumulate
 # carbon and lose nitrogen.
 # Here, I use SSURGO data layers describing how well-drained soils are, and 
 # use a lookup table to assign polygons a value of SoilDrain. SSURGO gives the 
 # full range of drainage values as Excessively drained to Very poorly drained,
 # which I map onto the range from 1 to 0 (with 0 being poorly drained). 
-#TODO validate this
 
 drain_lookup <- read.csv("./Parameterization/Parameterization data/necn_parameterize/soil drainage/drain_coef_lookup_2021-09-16.csv")
 component$soilDrain <- drain_lookup$drain_coef[base::match(component$drainagecl, drain_lookup$Drainage_class)]
@@ -202,8 +205,6 @@ component$soilDrain <- drain_lookup$drain_coef[base::match(component$drainagecl,
 # base flow
 # base flow represents the proportion of water that percolates to deep horizons, 
 # or percentage of excess water (above field capacity) in Henne equations.
-# use saturated hydraulic conductivity from SSURGO
-# head(hori$ksat_r)
 
 #take the weighted average of variables by the horizon thickness for each component, join with components
 component <- hori %>% 
@@ -246,26 +247,99 @@ mapunits_data$SOM2C <- 0.59 * mapunits_data$soc0_150
 mapunits_data$SOM3C <- 0.38 * mapunits_data$soc0_150
 
 # calculate baseFlow
-# assume a 2 inch rain event = 5 cm; how much of it would be absorbed in an hour?
-# I'll take this value to be the baseflow rate
-# TODO validate this, I guess
+# if using the original (not Henne version) water balance model, then baseflow
+# is important for reducing soil moisture. It's not a physical parameter that is
+# typically measured; the term is typically applied to hydrographs for streams,
+# rather than to individual plots of soil. In NECN, it's comparable to percolation
+# of water to horizons deeper than the rooting zone, groundwater recharge, or
+# some lateral flow (though some lateral flow would also come into the cell, cancelling
+# out some of the flow out of the cell). Because NECN does not have any lateral flow,
+# I used baseflow to simulate the propensity for upland soils to lose water and 
+# bottomlands to gain water. Wetlands in particular will have a very low baseflow
+# to prevent them from drying out. If baseflow is 0, then the only drying process is
+# evapotranspiration, so bottomlands in a wet area might stay permanently wet. 
 
-# ksat is in units of um per second
-# 5 cm * (1 second / x um) = seconds
-# 3600 seconds in 1 hour
+# I'm taking a page from the TOPMODEL approach, and using the area upslope of each
+# cell and the slope steepness to calculate a topographic index, which is more or
+# less proportional to soil moisture (Riihimaki et al. 2021). 
 
-# ksat/10000 #convert to cm
+# tci = ln(a/tan(s)), where a = upslope area and s = slope steepness
+# Riihimäki, H., J. Kemppinen, M. Kopecký, and M. Luoto. 2021. Topographic Wetness Index as a Proxy for Soil Moisture: The Importance of Flow-Routing Algorithm and Grid Resolution. Water Resources Research 57:e2021WR029871.
 
-mapunits_data$baseFlow <- (mapunits_data$ksat_r/10000) * 3600  #how much water can be absorbed in an hour?
-mapunits_data$baseFlow <- mapunits_data$baseFlow / 5 #What proportion of the 5cm rainfall can be absorbed?
-mapunits_data$baseFlow <- ifelse(mapunits_data$baseFlow > 1, 1, mapunits_data$baseFlow) #if more than 100%, set to 100%
+library("rgrass7")
 
+baseflow_max <- 0.5
+baseflow_min <- 0
+
+library("sf")
+library("openSTARS")
+library("terra")
+
+grass_program_path <- "C:/Program Files/GRASS GIS 7.8"
+
+mask <- terra::rast("C:/Users/Sam/Documents/Research/Isle Royale/Models/LANDIS inputs/input rasters/initial_communities.tif")
+
+rname <- 'C:/Users/Sam/Documents/Research/Isle Royale/Parameterization/Parameterization data/dem/dem_ir_60m.tif'
+r <- terra::rast(rname)
+
+initGRASS(gisBase= grass_program_path, #where the GRASS program lives; folder with bin and lib subfolders
+          gisDbase='C:/Users/Sam/Documents/Research/Isle Royale/Parameterization/Parameterization data/',  #where to open GRASS
+          location = 'dem', #subdirectory -- working directory. Not sure what the difference is between this, home, and gisDbase
+          mapset='PERMANENT',
+          SG = r,
+          override = TRUE)
+
+#change CRS to match DEM raster (I think there's a better way to do this by initializing GRASS with the right DEM?)
+execGRASS("g.proj", flags = "c", epsg = as.numeric(crs(r, describe = TRUE)$code))
+
+# Import raster to GRASS and set region
+execGRASS("r.in.gdal", flags="o", parameters=list(input=new_rname, output="elev_rast")) #import DEM raster located at "input", and add as "output"
+execGRASS("g.region", parameters=list(raster="elev_rast") ) #set region to match DEM
+execGRASS("g.region", flags = "p") #check on the CRS
+
+# calculate watershed statistics, including topographic index
+execGRASS('r.watershed', flags='overwrite', 
+          parameters = list(elevation='elev_rast', #name of elevation raster in GRASS
+                            threshold=2000,
+                            tci = "topographic_index",
+                            slope_steepness = "slope_steepness")) #name of tci output in GRASS
+
+#import from GRASS to R as a terra raster
+tci <- read_RAST(vname = "topographic_index", cat=NULL, NODATA=NULL, ignore.stderr=get.ignore.stderrOption(),
+                 return_format="terra", close_OK=TRUE, flags=NULL)
+plot(tci)
+
+hist(values(tci))
+
+#scale tci to baseflow min and max, assuming that everything over 15 is a wetland
+baseflow <- ifelse(values(tci) > 15, baseflow_min,
+                   (1 - values(tci)/15) * (baseflow_max - baseflow_min))
+hist(baseflow)                   
+
+#higher TCI -> higher water content -> less baseflow
+
+baseflow_rast <- tci
+values(baseflow_rast) <- baseflow
+
+
+# calculate slope steepness
+#We'll use this for stormflow later on
+execGRASS('r.slope.aspect', flags='overwrite', 
+          parameters = list(elevation='elev_rast', #name of elevation raster in GRASS
+                            slope = "slope_steepness")) #name of tci output in GRASS
+
+#import from GRASS to R as a terra raster
+slope <- read_RAST(vname = "slope_steepness", cat=NULL, NODATA=NULL, ignore.stderr=get.ignore.stderrOption(),
+                 return_format="terra", close_OK=TRUE, flags=NULL)
+plot(slope)
+hist(values(slope))
+
+#-------------------------------
 # storm flow
 # storm flow represents the proportion of water that runs off when soil water exceeds
 # field capacity. In original equations, stormflow happens to excess water while 
 # base flow happens only to all water; in Henne equations, both base and storm flow
 # happen only to excess water.
-
 
 # For stormflow (runoff), use Table 3.4 and eq. 3.2 in https://www.vub.be/WetSpa/downloads/WetSpa_manual.pdf
 
@@ -278,17 +352,15 @@ soil_runoff_table <- data.frame(
   )
 
 soil_mat <- data.frame(OID = mapunits_data$OID,
-                       SAND = mapunits_data$sandtotal_r,
-                       CLAY = mapunits_data$claytotal_r,
-                       SILT = 100 - mapunits_data$sandtotal_r - mapunits_data$claytotal_r) %>%
+                       SAND = mapunits_data$sandtotal_r*100,
+                       CLAY = mapunits_data$claytotal_r*100,
+                       SILT = 100 - mapunits_data$sandtotal_r*100 - mapunits_data$claytotal_r*100) %>%
   na.omit()
 
 #classify soils by texture
-texture <- soiltexture::TT.points.in.classes(soil_mat, class.sys = "USDA.TT")
+texture <- soiltexture::TT.points.in.classes(tri.data = soil_mat, class.sys = "USDA.TT")
 
 names(texture) <- c("Clay", "Silty clay", "Sandy clay", "Clay loam", "Silty clay loam", "Sandy clay loam", "Loam", "Silt loam", "Sandy loam", "Silt", "Loamy sand", "Sand")
-
-# soil_mat$class <- unlist(apply(texture, 1, function(x) unlist(names(texture)[which(x == 1)])))
 
 for(i in 1:nrow(texture)){
   soil_mat$class[i] <- names(texture)[which(texture[i, ] %in% c(1,2,3))]
@@ -296,12 +368,19 @@ for(i in 1:nrow(texture)){
 
 mapunits_data <- left_join(mapunits_data, soil_mat[c("OID", "class")], by = c("OID"))
 
-# mapunits_data$slope <- component_all$slope_r # TODO update with slope from DEM
+mapunits_data$c0 <- soil_runoff_table[base::match(mapunits_data$class, soil_runoff_table$soil_type), "c0"]
+mapunits_data$s0 <- soil_runoff_table[base::match(mapunits_data$class, soil_runoff_table$soil_type), "s0"]
 
-c0 <- soil_runoff_table[base::match(mapunits_data$class, soil_runoff_table$soil_type), "c0"]
-s0 <- soil_runoff_table[base::match(mapunits_data$class, soil_runoff_table$soil_type), "s0"]
-s <- mapunits_data$slope_r
-mapunits_data$runoff <- c0 + (1 - c0)*(s / (s + s0))
+c0_rast <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "c0", fun="mean") %>%
+  terra::mask(template_raster, inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
+s0_rast <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "s0", fun="mean") %>%
+  terra::mask(template_raster, inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
+
+
+# mapunits_data$runoff <- c0 + (1 - c0)*(s / (s + s0))
+
+stormflow_rast <- c0_rast + (1-c0_rast) * (slope / (slope + s0_rast))
+plot(stormflow_rast)
 
 #-------------------------------------------------------------------------------
 # Soil Nitrogen
@@ -506,8 +585,6 @@ hist(mapunits_data$SOM3C/mapunits_data$SOM3N)
 template_raster <- terra::rast("./Models/LANDIS inputs/input rasters/initial_communities.tif")
 crs(template_raster) #check that we're in NAD 83 Zone 17N
 
-
-
 #TODO make into a loop to extract everything, since it all comes from the same dataframe
 field_capacity <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "wthirdbar_r", fun="mean")
 values(field_capacity) <- ifelse(is.na(values(field_capacity)), 0, values(field_capacity))
@@ -534,13 +611,15 @@ soilDepth <- terra::rasterize(terra::vect(mapunits_data), template_raster, field
 values(soilDepth) <- ifelse(is.na(values(soilDepth)), 0, values(soilDepth))
 terra::writeRaster(soilDepth, "./Models/LANDIS inputs/input rasters/soil_depth.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
-baseflow <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "baseFlow", fun="mean") 
-values(baseflow) <- ifelse(is.na(values(baseflow)), 0, values(baseflow))
-terra::writeRaster(baseflow, "./Models/LANDIS inputs/input rasters/baseflow.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
+# baseflow <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "baseFlow", fun="mean") 
+# values(baseflow) <- ifelse(is.na(values(baseflow)), 0, values(baseflow))
+baseflow_rast <- terra::project(baseflow_rast, template_raster)
+terra::writeRaster(baseflow_rast, "./Models/LANDIS inputs/input rasters/baseflow.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
-stormflow <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "runoff", fun="mean") 
-values(stormflow) <- ifelse(is.na(values(stormflow)), 0, values(stormflow))
-terra::writeRaster(stormflow, "./Models/LANDIS inputs/input rasters/stormflow.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
+# stormflow <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "runoff", fun="mean") 
+# values(stormflow) <- ifelse(is.na(values(stormflow)), 0, values(stormflow))
+stormflow_rast <- terra::project(stormflow_rast, template_raster)
+terra::writeRaster(stormflow_rast, "./Models/LANDIS inputs/input rasters/stormflow.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
 SOM1surfC <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "SOM1surfC", fun="mean") 
 values(SOM1surfC) <- ifelse(is.na(values(SOM1surfC)), 0, values(SOM1surfC))

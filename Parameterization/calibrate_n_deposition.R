@@ -6,6 +6,7 @@ setwd("C:/Users/Sam/Documents/Research/Isle Royale/")
 # minimum is around 0.04 in winter and maximum is around 0.09 in summer
 # annual should be around 0.3-0.5 (Du et al. 2014)
 # annual should be around 0.3 (NPS assessment)
+# annual should be around 0.3 g/m2 (3 kg/ha) (Sottlemeyer and Toczydlowski 1999)
 
 # Actual deposition sites can be accessed here: https://nadp.slh.wisc.edu/networks/national-trends-network/
 

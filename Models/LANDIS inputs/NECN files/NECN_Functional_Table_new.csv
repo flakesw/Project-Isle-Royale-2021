@@ -1,0 +1,11 @@
+FunctionalGroupName,FunctionalGroupIndex,TemperatureCurve1,TemperatureCurve2,TemperatureCurve3,TemperatureCurve4,FractionANPPtoLeaf,LeafBiomassToLAI,KLAI,MaximumLAI,MoistureCurve2,MoistureCurve3,WoodDecayRate,MonthlyWoodMortality,LongevityMortalityShape,FoliageDropMonth,CoarseRootFraction,FineRootFraction,MinLAI
+"Dry/cold pines (jack, red)",1,20,33,1.8,2.6,0.5,-0.9,12000,7,1,0.9,0.5,0.0006,15,9,0.23,0.2,
+"Mesic/cold conifers (balsam fir, white spruce)",2,20,33,1.8,2.6,0.5,-0.9,12000,7,1,0.9,0.5,0.0006,15,9,0.23,0.2,
+Mesic/warm conifers (eastern white pine),3,25,40,1,3,0.55,-0.9,3000,5,1,0.9,0.5,0.0006,15,9,0.23,0.2,
+Wet conifer (black spruce),4,20,33,1.8,2.6,0.5,-0.9,12000,7,1,0.9,0.5,0.0006,15,9,0.23,0.2,
+"Facultative wet conifers (tamarack, cedar)",5,20,33,1.8,2.6,0.5,-0.9,12000,7,1,0.9,0.5,0.0006,15,9,0.23,0.2,
+"Northern hardwoods (sugar maple, mountain ash)",6,25,40,1.5,2.5,0.6,-0.9,7000,10,1.5,0.96,0.7,0.0006,15,9,0.2,0.5,
+Birches,7,22,38,1.2,5,0.5,-0.9,8000,10,1,0.9,0.6,0.0006,15,9,0.2,0.5,
+Aspen,8,22,38,1.2,5,0.5,-0.9,6000,10,1,0.9,0.6,0.0006,15,9,0.2,0.5,0.1
+"Temperate hardwoods (red maple, oaks)",9,27,40,1,2.5,0.6,-0.9,5000,6,1,0.9,0.6,0.0006,15,9,0.2,0.5,
+"Wet broadleaf (alder, ash, crataegus)",10,25,40,1.5,2.5,0.6,-0.9,7000,10,1.5,0.96,0.7,0.0006,15,9,0.2,0.5,

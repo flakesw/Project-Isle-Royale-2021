@@ -1,7 +1,7 @@
 # Make management area maps
 library("sf")
 library("openSTARS")
-library("raster")
+library("terra")
 library("rgrass7")
 
 setwd("C:/Users/Sam/Documents/Research/Isle Royale/")
@@ -13,53 +13,62 @@ setwd("C:/Users/Sam/Documents/Research/Isle Royale/")
 #buffer stream map to create foraging zone
 
 #digitize beaver dam locations for potential impoundments
-dem_path <- "C:/Users/Sam/Documents/Research/Isle Royale/calibration_data/dem/dem_ir.tif"
+
 
 grass_program_path <- "C:/Program Files/GRASS GIS 7.8"
 
 # setwd("D:/TMP") # Working directory 
 
+mask <- terra::rast("C:/Users/Sam/Documents/Research/Isle Royale/Models/LANDIS inputs/input rasters/initial_communities.tif")
+
 # Set on-disk raster variable
-rname <- paste(getwd(), "./calibration_data/dem/dem_ir.tif", sep="/")
+rname <- "C:/Users/Sam/Documents/Research/Isle Royale/Parameterization/Parameterization data/dem/dem_ir.tif"
+r <- terra::rast(rname) %>%
+  terra::project(mask)
+new_rname <- 'C:/Users/Sam/Documents/Research/Isle Royale/Parameterization/Parameterization data/dem/dem_ir_60m.tif'
+terra::writeRaster(r, new_rname, overwrite = TRUE)
 
-# Set GRASS environment and database location 
-loc <- initGRASS(gisBase = grass_program_path, 
-                 home=tempdir(),
-                 location = 'C:\\Users\\Sam\\Documents\\grassdata\\ir',
-                 mapset = "PERMANENT",
-                 gisDbase="GRASS_TEMP", override=TRUE )
-
-execGRASS("g.proj", flags = "c", epsg = 4269)
-
-## initialize new mapset inheriting projection info
-execGRASS("g.mapset", flags = "c", mapset = "new_mapset")
-
-
-# Import raster to GRASS and set region
-execGRASS("r.in.gdal", flags="o", parameters=list(input=rname, output="tmprast"))
-execGRASS("g.region", parameters=list(raster="tmprast") ) 
-
-# Calculate 9x9 focal mean 
-execGRASS("r.neighbors", flags="overwrite", parameters=list(input="tmprast", output="xxfm", 
-                                                            method="average", size=as.integer(9)) )
-
-r <- readRAST("xxfm")
-spplot(r)
 
 #-----------------
+# 
+initGRASS(gisBase= grass_program_path, #where the GRASS program lives; folder with bin and lib subfolders
+          gisDbase='C:/Users/Sam/Documents/Research/Isle Royale/Parameterization/Parameterization data/',  #where to open GRASS
+          location = 'dem', #subdirectory -- working directory. Not sure what the difference is between this, home, and gisDbase
+          mapset='PERMANENT',
+          SG = r,
+          override = TRUE)
 
-initGRASS(gisBase='C:/Program Files/GRASS GIS 7.8', 
-          gisDbase='C:/Users/Sam/Documents/Research/Isle Royale/calibration_data',
-          location = 'dem',
-          mapset='PERMANENT', override = TRUE)
+# unlink_.gislock() # unlock to be able to open testR database in GRASS
 
-unlink_.gislock() # unlock to be able to open testR database in GRASS
+#change CRS to match DEM raster (I think there's a better way to do this by initializing GRASS with the right DEM?)
+execGRASS("g.proj", flags = "c", epsg = as.numeric(crs(r, describe = TRUE)$code))
+
+## initialize new mapset inheriting projection info
+# execGRASS("g.mapset", flags = "c", mapset = "new_mapset")
+# execGRASS("g.mapset", flags = "c", mapset = "PERMANENT")
+# execGRASS("g.mapset", flags = "l")
+
+# Import raster to GRASS and set region
+execGRASS("r.in.gdal", flags="o", parameters=list(input=new_rname, output="elev_rast")) #import DEM raster located at "input", and add as "output"
+execGRASS("g.region", parameters=list(raster="elev_rast") ) #set region to match DEM
+execGRASS("g.region", flags = "p")
 
 # create subwatershed: 
 # input DEM is strm30_utm (stored in attached Grass database), 30 meter resolution
 # output stream raster is up_stream
-execGRASS('r.watershed', flags='overwrite',parameters = list(elevation='dem_ir.tif', threshold=2000, stream='up_stream', basin='r_basin'))
+execGRASS('r.watershed', flags='overwrite', 
+          parameters = list(elevation='elev_rast', 
+                            threshold=2000, 
+                            stream='up_stream', 
+                            basin='r_basin',
+                            tci = "topographic_index"))
 
+
+tci <- read_RAST(vname = "topographic_index", cat=NULL, NODATA=NULL, ignore.stderr=get.ignore.stderrOption(),
+                 return_format="terra", close_OK=TRUE, flags=NULL)
+plot(tci)
+
+tci
 # r.thin thins non-NULL pixels so that each line is only 1 pixel wide, required before converting to vector
 execGRASS('r.thin', flags='overwrite',parameters =  list(input='up_stream', output='r_strm_thin'))
 

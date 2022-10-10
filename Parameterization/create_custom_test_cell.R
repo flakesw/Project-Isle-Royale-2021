@@ -40,7 +40,7 @@ write_cell <- function(name){
 }
 
 #some parameters for the script
-setwd("./Models/landis_test/necn_1_cell/")
+# setwd("./Models/landis_test/necn_1_cell/")
 
 #what is the original scenario file name? (should be in the working directory)
 scenario <- readLines("Scenario1.txt")
@@ -80,7 +80,7 @@ writeRaster(template,
 #Total soil C
 #TODO warn or adjust if soil C or soil N compartments will be too large
 
-SOMtot <- 20000
+SOMtot <- 10000
 SOM1surfC <- 0.01 * SOMtot
 write_cell(SOM1surfC)
 SOM1soilC <- 0.02 * SOMtot
@@ -108,7 +108,7 @@ SOM3N <- 0.5 * SOM3N
 write_cell(SOM3N)
 
 #Soil Drain
-soil_drain <- 0
+soil_drain <- .5
 write_cell(soil_drain)
 
 #Soil Depth
@@ -132,27 +132,27 @@ clay <- 0.04
 write_cell(clay)
 
 #baseflow
-baseflow <- 0.47
+baseflow <- 0
 write_cell(baseflow)
 
 #stormflow
-stormflow <- 0.87
+stormflow <- 0
 write_cell(stormflow)
 
 # species biomass cohorts (initial communities)
 # you can put your own initial communities here to test
 # single cohort growth to calibrate against plantation data, for example
-# init_comm <- data.frame(MapCode = 1,
-#                         SpeciesName = "THOC2",
-#                         CohortAge = 10,
-#                         CohortBiomass = 150)
+init_comm <- data.frame(MapCode = 1,
+                        SpeciesName = "POTR5",
+                        CohortAge = 5,
+                        CohortBiomass = 3480)
 
 #or import data from a spreadsheet
-init_comm <- read.csv("./initial_communities_update.csv") %>%
-  filter(MapCode == 26907) %>%
-  select(!X)
-init_comm$MapCode <- 1
-write.csv(init_comm, paste0("./", new_folder_name, "init_comm.csv"))
+# init_comm <- read.csv("./initial_communities_update.csv") %>%
+#   filter(MapCode == 29613) %>%
+#   select(!X)
+# init_comm$MapCode <- 1
+# write.csv(init_comm, paste0("./", new_folder_name, "init_comm.csv"))
 
 initial_communities <- 1
 if(new_folder){
@@ -177,9 +177,9 @@ write_cell(coarse_roots)
 NECN_succession <- readLines("NECN_succession.txt")
 
 #change/write NECN variables
-NECN_succession[30:45] <- c("CalibrateMode yes",
+NECN_succession[30:45] <- c("CalibrateMode no",
                               "SmokeModelOutputs no",
-                              "Version_Henne_SoilWater yes",
+                              "Version_Henne_SoilWater no",
                               "WaterDecayFunction Ratio <<Linear or Ratio",
                               "",
                               "ProbabilityEstablishAdjust 	1.0",

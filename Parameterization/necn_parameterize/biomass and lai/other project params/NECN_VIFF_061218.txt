@@ -1,0 +1,137 @@
+LandisData	"NECN_Hydro Succession"
+
+Timestep  1
+
+SeedingAlgorithm  WardSeedDispersal
+
+InitialCommunities      	VIFF_IC_092917.txt
+InitialCommunitiesMap   	IC_Map_VIFF_100217.img
+ClimateConfigFile		climate-generator-baseline.txt
+AgeOnlyDisturbances:BiomassParameters  bio-reductions-standard.txt
+
+SoilDepthMapName		SoilDepth_v8B.img << corrected now to fill in the "holes" where SSRGO data reported a zero
+SoilDrainMapName		Drainage_041317.img <<SSRGO
+SoilBaseFlowMapName		StormFlow_30.img << All at 0.3
+SoilStormFlowMapName		StormFlow_30.img << All at 0.3
+SoilFieldCapacityMapName	FieldCapacity_052317.img << SSRGO
+SoilWiltingPointMapName		WiltPoint_041317.img << SSRGO
+SoilPercentSandMapName		Sand_041317.img << SSRGO
+SoilPercentClayMapName		Clay_041317.img << SSRGO
+InitialSOM1CsurfMapName		SOM1surf_v1.img << ORNL
+InitialSOM1NsurfMapName		SOM1soilN_v1.img << ORNL *CN
+InitialSOM1CsoilMapName		SOM1soil_v1.img << ORNL
+InitialSOM1NsoilMapName		SOM1surfN_v1.img<< ORNL *CN
+InitialSOM2CMapName		SOM2_v1.img << ORNL
+InitialSOM2NMapName		SOM2N_v1.img  <<ORNL *CN
+InitialSOM3CMapName		SOM3_v1.img << ORNL
+InitialSOM3NMapName		SOM3N_v1.img <<ORNL *CN
+InitialDeadWoodSurfaceMapName	DeadWoodSurface_v6.img <<FIA biomass maps 
+InitialDeadCoarseRootsMapName	DeadRoots_MAP_2018-02-01DeadRoots.img <<New dead coarse root map
+
+CalibrateMode 	no
+SmokeModelOutputs no
+
+WaterDecayFunction Linear <<Linear or Ratio
+
+ProbabilityEstablishAdjust 0.1 <<AFRI was 0.4, which was too low.  1.0 seemed too high, 0.6 works for 5y timestep
+InitialMineralN			3.0 <<Need to find this data, 1% of total soil N
+AtmosphericNSlope		0.0052	<<Needs calibration at landscape scale
+AtmosphericNIntercept		0.025	<<Calibration
+Latitude			45.029858	<<Used Google Maps to get this value
+DenitrificationRate		0.02  <<AFRI was 0.001, 0.03 was too high,
+DecayRateSurf			1.1  <<was a little low at 0.78
+DecayRateSOM1			0.95 <<AFRI  at 1.0, was a little high
+DecayRateSOM2			0.024  <<AFRI  was at 0.01, but was a little low, then 0.015 too low, 0.05 was too high, 0.025 was a tiny bit too high, 0.02 was too low
+DecayRateSOM3			0.0002  <<AFRI
+
+MaximumLAI
+>>Revisit this later
+>> Shade	Max LAI
+>> Class	
+>> ----------	--------------------	
+	1	1 
+	2	2.5 
+	3	3.5 
+	4	6
+	5	8
+		
+
+LightEstablishmentTable	
+<<THis came from the AFRI project, double-checked for accuracy
+					
+>>	Spp Shade	Probability					
+>>	Class		by Actual Shade					
+>>	 ----------	--------------------					
+>>		0	1	2	3	4	5
+	1	1	1	0.25	0.1	0	0
+	2	0.5	0.5	1	0.25	0.1	0
+	3	0.1	1	1	1	0.5	0.1
+	4	0.1	0.25	0.5	0.5	1	0.25
+	5	0	0.1	0.25	0.25	0.5	1
+		
+SpeciesParameters << These came from AFRI with changes to maxANPP and MaxBiomass
+			
+>>Species	Leaf	Woody	Mortality Curve	Leaf				
+>>		Long	DecayR	Shape Parameter	Lignin%				
+>>----------------------------------------------								
+>> Species  Funct	N	GDD	GDD	Min	Max	Leaf	Epi-	Leaf	FRoot	Wood	CRoot	Leaf  FRoot 	Wood  CRoot 	Littr 	Max	Max
+>>	    ional	Fixer	Min	Max	Jan	Drought	Long	cormic	Lign%	Lign%	Lign%	Lign%	CN    CN    	CN    CN    	CN	ANPP	Biomass
+>> 	    Type				Temp			re-
+AmBeech		3	N	1326	5537	-12	0.2	1	N	0.247	0.27	0.25	0.251	22.46	26	189	50	60	450	12000
+BalsamFir	5	N	560	2386	-25	0.165	3	N	0.252	0.225	0.312	0.204	35.5	43	482	84	74	475	20000
+BalsamPoplar	7	N	555	2491	-30	0.267	1	N	0.261	0.225	0.2	0.204	22.2	25	336	49	65	450	20000
+Basswood	3	N	1400	3137	-17	0.2	1	N	0.17	0.334	0.2	0.31	17.3	26	417	50	35	400	33000
+BigToothAspen	1	N	1100	3169	-18	0.2937	1	N	0.261	0.346	0.2	0.318	22.2	25	450	49	65	430	15000
+BitternutHickory 4	N	1670	5500	-7	0.2	1	N	0.187	0.27	0.2	0.251	26.67	25	417	49	43	450	20000
+BlackAsh	3	N	1000	2261	-18	0.0198	1	N	0.144	0.27	0.2018	0.251	22.9	26	189	50	65	350	25000
+BlackCherry	4	N	1200	5993	-17	0.3	1	N	0.175	0.27	0.2	0.251	18.1	25	108	49	65	450	33000
+BlackOak	4	N	1500	5076	-14	0.3	1	N	0.218	0.334	0.225	0.303	21.21	58	345	113	66	400	33000
+BlackSpruce	5	N	247	1911	-30	0.27	3	N	0.221	0.258	0.4	0.234	62.9	43	439	84	100	300	15000
+BurOak		2	N	1000	5153	-20	0.385	1	N	0.249	0.334	0.225	0.303	18.5	58	345	113	32	300	15000
+Butternut	4	N	1910	4571	-8	0.3	1	N	0.187	0.27	0.2	0.251	26.67	25	417	49	43	400	15000
+Cottonwood	7	N	555	2491	-30	0.2403	1	N	0.261	0.346	0.2	0.318	22.2	25	271	49	65	400	20000
+Elms		4	N	1204	6960	-20	0.264	1	N	0.137	0.27	0.2	0.251	25.5	26	417	50	65	320	20000
+GreenAsh	3	N	1050	5482	-23	0.114	1	N	0.144	0.27	0.2018	0.251	22.9	26	189	50	65	350	20000
+Hemlock		5	N	1000	3800	-17	0.18	3	N	0.173	0.225	0.27	0.204	32.96	43	374	84	98	275	20000
+Hophornbeam	3	N	1278	5556	-18	0.28	1	N	0.211	0.27	0.2018	0.251	22.2	26	417	50	65	320	25000
+JackPine	5	N	830	2216	-30	0.411	3	N	0.266	0.225	0.4	0.204	48.7	43	600	84	55	320	40000
+PaperBirch	7	N	484	2036	-28	0.28	1	N	0.201	0.27	0.2018	0.251	23.3	26	384	50	65	450	20000
+PinOak		2	N	2000	2234	-15	0.378	1	N	0.149	0.334	0.225	0.303	18.5	58	345	113	32	450	20000
+QuakingAspen	1	N	743	2461	-30	0.267	1	N	0.256	0.346	0.2	0.318	22.2	25	336	49	65	430	15000
+RedCedar	6	N	1721	5537	-10	0.397	3	N	0.262	0.225	0.312	0.204	41.8	43	333	84	74	320	18000
+RedMaple	3	N	1260	6600	-18	0.23	1	N	0.183	0.334	0.125	0.312	28.2	26	248	50	55	450	25000
+RedOak		2	N	1100	4571	-17	0.2025	1	N	0.249	0.334	0.225	0.303	18.5	58	345	113	32	450	25000
+RedPine		6	N	1100	2035	-20	0.385	3	N	0.266	0.225	0.3104	0.204	48.7	43	600	84	55	450	25000
+ServiceBerries	3	N	1200	5993	-17	0.3	1	N	0.175	0.27	0.2	0.251	18.1	25	189	49	65	450	30000
+ShagHickory	4	N	1670	5500	-7	0.2	1	N	0.187	0.27	0.2	0.251	26.67	25	417	49	43	450	20000
+SilverMaple	3	N	1600	4700	-12	0.268	1	N	0.175	0.334	0.125	0.312	25.1	26	388	50	55	450	20000
+SugarMaple	3	N	1222	3100	-18	0.072	1	N	0.175	0.334	0.125	0.312	25.1	26	388	50	55	450	25000
+Tamarack	5	N	280	2660	-29	0.267	1	N	0.297	0.225	0.312	0.204	20.7	26	600	50	74	340	33000
+WhiteAsh	3	N	1398	5993	-12	0.28	1	N	0.144	0.27	0.2018	0.251	22.9	26	189	50	65	350	25000
+WhiteCedar	6	N	1000	2138	-20	0.315	3	N	0.262	0.225	0.312	0.204	41.8	43	333	84	74	320	33000
+WhiteOaks	2	N	1200	5537	-14	0.35	1	N	0.176	0.334	0.225	0.303	18.5	58	298	113	32	450	25000
+WhitePine	6	N	1100	3165	-20	0.372	3	N	0.263	0.225	0.3104	0.204	40.7	43	398	84	55	460	25000
+WhiteSpruce	5	N	280	1911	-30	0.2472	3	N	0.249	0.258	0.4	0.234	45.8	43	500	84	55	320	33000
+Willows		1	N	555	2491	-30	0.267	1	N	0.261	0.346	0.2	0.318	22.2	25	271	49	65	320	25000
+YellowBirch	3	N	1100	2500	-18	0.18	1	N	0.219	0.27	0.2018	0.251	21	26	365	50	65	420	30000
+					
+FunctionalGroupParameters 
+>> Name	Index		PPDF1	PPDF2	PPDF3	PPDF4	FCFRAC	BTOLAI	KLAI	MAXLAI	PPRPTS2	PPRPTS3	Wood	Monthly	Mort	Drop    CRoot  FRoot
+>> 			T-Mean	T-Max	T-shape	T-shape	leaf						DecayR	WoodMortShape	Month	Frac	Frac
+Aspen		1	22	38	1.2	5.0	0.5	-0.9	6000	10	1	0.9	0.6	0.0006	15	9	0.2	0.5  <<LAI should be 6
+Oaks		2	25	40	1.5	2.5	0.6	-0.9	10000	9	0.1	0.8	0.5	0.0006	15	9	0.2	0.5 
+NorthHardwoods	3	25	40	1.5	2.5	0.6	-0.9	7000	10	1.5	0.96	0.7	0.0006	15	9	0.2	0.5  <<klai was 7000
+SouthHardwoods	4	27	40	1	2.5	0.6	-0.9	5000	6	1	0.9	0.6	0.0006	15	9	0.2	0.5
+NorthConifers	5	20	33	1.8	2.6	0.5	-0.9	12000	7	1	0.9	0.5	0.0006	15	9	0.23	0.2
+SouthConifers	6	25	40	1	3.0	0.55	-0.9	3000	5	1	0.9	0.5	0.0006	15	9	0.23	0.2
+Birches		7	22	38	1.2	5.0	0.5	-0.9	8000	10	1	0.9	0.6	0.0006	15	9	0.2	0.5  <<LAI should be 6
+
+FireReductionParameters
+>>	Severity 	Wood	Litter <<  from fhmem_century_succession.txt								
+>>	Number		Reduc	Reduc												
+>>	-------	------	-----												
+	1		0.0	0.5
+	2		0.05	0.75
+	3		0.2	1.0
+	4		0.5	1.0
+	5		0.8	1.0

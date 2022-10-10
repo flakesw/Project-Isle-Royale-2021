@@ -120,7 +120,6 @@ job_results_reform <- job_results %>%
 #now we need to wrangle this list of data into the format needed by the climate library
 # I haven't figured this out in an elegant way yet TODO
 
-
 vars_long #remind us what the original var names were
 
 #rewrite variables in the format the climate library needs

@@ -1,0 +1,87 @@
+,SITE_ID,SITE_NAME,Use,Saved,Reason,DATA_START,DATA_END,Species,Functional group,Moisture1,Moisture2,Moisture3,Moisture4,Comment
+1,CA-ARB,Attawapiskat River Bog,F,,no veg data,2011,2015,,,,,,,
+2,CA-ARF,Attawapiskat River Fen,F,,no NEE data,2011,2015,Black spruce,Wet conifers,,,,,no veg data -- peat with scattered conifers
+3,CA-Ca1,British Columbia - 1949 Douglas-fir stand,F,,,1996,2010,,,,,,,
+4,CA-Ca2,British Columbia - Clearcut Douglas-fir stand (harvested winter 1999/2000),F,,,1999,2010,,,,,,,
+5,CA-Ca3,British Columbia - Pole sapling Douglas-fir stand,F,,,2001,2021,,,,,,,
+6,CA-Cbo,"Ontario - Mixed Deciduous, Borden Forest Site",F,,no NEE data,1994,2020,"red maple, white pine, large-tooth aspen and white ash",Temperate hardwoods,,,,,
+7,CA-Cha,New Brunswick - Charlie Lake site 01 (immature balsam fir forest to be thinned in year 3),F,,no NEE data,2004,2005,,,,,,,
+8,CA-LP1,British Columbia - Mountain pine beetle-attacked lodgepole pine stand ,F,,wrong species,2007,2020,,,,,,,
+9,CA-Man,Manitoba - Northern Old Black Spruce (former BOREAS Northern Study Area),F,,missing most data,1994,2008,,,,,,,
+10,CA-Na1,New Brunswick - 1967 Balsam Fir - Nashwaak Lake Site 01 (Mature balsam fir forest),F,,no NEE data,2003,2005,,,,,,,
+11,CA-Oas,"Saskatchewan - Western Boreal, Mature Aspen",T,T,,1996,2010,Aspen,Northern hardwoods,0.25,0.7,200,0.01,
+12,CA-Obs,"Saskatchewan - Western Boreal, Mature Black Spruce",T,T,,1997,2010,Black spruce,Wet conifers,,,,,
+13,CA-SF1,"Saskatchewan - Western Boreal, forest burned in 1977",T,T,,2003,2006,Jack pine,Dry/cold pines,,,,,
+14,CA-SF2,"Saskatchewan - Western Boreal, forest burned in 1989",T,T,,2001,2006,"balsam poplar (Populus balsamifera L.), jack pine, trembling aspen, and birch",Northern hardwoods,,,,,
+15,CA-SF3,"Saskatchewan - Western Boreal, forest burned in 1998",T,T,,2001,2006,aspen regen with black spruce and jack pine,Northern hardwoods,,,,,
+16,CA-TP1,Ontario - Turkey Point 2002 Plantation White Pine,T,T,,2002,2017,White pine,Mesic warm conifers,-0.04,0.34,5.11,64.01,
+17,CA-TP2,Ontario - Turkey Point 1989 Plantation White Pine,F,,,2002,2008,,,,,,,
+18,CA-TP3,Ontario - Turkey Point 1974 Plantation White Pine,T,T,,2002,2017,White pine,Mesic warm conifers,0.05,0.3,3,20,
+19,CA-TP4,Ontario - Turkey Point 1939 Plantation White Pine,T,T,,2002,2017,White pine,Mesic warm conifers,0.06,0.5,3,150,
+20,CA-TPD,Ontario - Turkey Point Mature Deciduous,T,T,,2012,2017,"White oak, maples, beech, white ash",Temperate hardwoods,0.04,1,5,15,"Carolinian forest dominated by white oak with maples, beech, other oaks, white ash"
+21,US-Bar,Bartlett Experimental Forest,F,,no NEE data,2004,2017,,,,,,,
+22,US-Bsg,Burns Sagebrush,F,,wrong species,2014,2015,,,,,,,
+23,US-BZB,Bonanza Creek Thermokarst Bog,T,T,,2011,2021,bog,Wet broadleaf,0.436,1.04,110.27,0.007,"No veg data -- ""boreal bog"""
+24,US-BZF,Bonanza Creek Rich Fen,T,T,,2011,2021,bog,Wet broadleaf,1,2.747,8.772,1.575,"No veg data -- ""boreal bog"""
+25,US-BZo,Bonanza Creek Old Thermokarst Bog,T,T,,2018,2021,bog,Wet broadleaf,0.6947089,1.5398919,0.2099649,8.9059203,"No veg data -- ""boreal bog"""
+26,US-BZS,Bonanza Creek Black Spruce,T,T,,2010,2021,bog,Wet broadleaf,0.436,1.04,110.27,0.007,"No veg data -- ""boreal bog"""
+27,US-CPk,Chimney Park,F,,wrong species,2009,2013,,,,,,,
+28,US-CS2,Tri county school Pine Forest,T,T,,2018,2021,temperate pines,Mesic warm conifers,0.07469361,51.30235239,310.6148186,996.9280393,"ENF, not much information on species"
+29,US-EML,"Eight Mile Lake Permafrost thaw gradient, Healy Alaska.",F,,,2008,2020,,,,,,,
+30,US-Fcr,Cascaden Ridge Fire Scar,T,T,,2011,2014,black spruce,Wet conifers,0.35,1,2,10,Sharp cutoff ignored
+31,US-GBT,GLEES Brooklyn Tower,F,,wrong species,1999,2006,,,,,,,
+32,US-GLE,GLEES,F,,wrong species,1999,2020,,,,,,,
+33,US-HBK,Hubbard Brook Experimental Forest,F,,no NEE data,2016,2020,,,,,,,
+34,US-Hn3,Hanford 100H sagebrush,F,,,2017,2018,,,,,,,
+35,US-Ho1,Howland Forest (main tower),T,T,,1995,2020,white pine,Mesic warm conifers,,,,,
+36,US-Ho3,Howland Forest (harvest site),F,,no SWC data,2003,2009,"""ENF"" -- probably white pine and hemlock",Mesic warm conifers,,,,,
+37,US-ICh,Imnavait Creek Watershed Heath Tundra,F,,,2007,2021,,,,,,,
+38,US-ICs,Imnavait Creek Watershed Wet Sedge Tundra,F,,,2007,2021,,,,,,,
+39,US-ICt,Imnavait Creek Watershed Tussock Tundra,F,,,2007,2021,,,,,,,
+40,US-KPL,Lily Lake Fen,F,,no trees,2021,2021,,,,,,,
+41,US-Me2,Metolius mature ponderosa pine,F,,,2002,2022,,,,,,,
+42,US-Me6,Metolius Young Pine Burn,F,,,2010,2021,,,,,,,
+43,US-Oho,Oak Openings,T,T,,2004,2013,"red, white, black oaks with maple",Temperate hardwoods,,,,,
+44,US-PFa,Park Falls/WLEF,F,,,1995,2022,,,,,,,Footprint too large
+45,US-PFb,NW1 Pine-1 CHEESEHEAD 2019,T,T,,2019,2019,red pine,Dry/cold pines,0.25,0.7,100,0.05,narrow range of swc
+46,US-PFc,NW2 Aspen-1 CHEESEHEAD 2019,F,,Invalid E_0 values,2019,2019,aspen,Northern hardwoods,,,,,
+47,US-PFd,NW3 Tussock-1 CHEESEHEAD 2019,F,,,2019,2019,,,,,,,
+48,US-PFg,NE1 Pine-2 CHEESEHEAD 2019,T,T,,2019,2019,red pine,Dry/cold pines,NA,NA,NA,NA,narrow range of swc
+49,US-PFh,NE2 Pine-3 CHEESEHEAD 2019,T,T,,2019,2019,jack pine,Dry/cold pines,NA,NA,NA,NA,narrow range of swc
+50,US-PFi,NE3 Hardwood-1 CHEESEHEAD 2019,T,T,,2019,2019,mixed hardwood,Temperate hardwoods,NA,NA,NA,NA,narrow range of swc
+51,US-PFj,NE4 Maple-1 CHEESEHEAD 2019,T,T,,2019,2019,maple,Temperate hardwoods,NA,NA,NA,NA,narrow range of swc
+52,US-PFk,SW1 Aspen-2 CHEESEHEAD 2019,T,T,,2019,2019,aspen,Northern hardwoods,NA,NA,NA,NA,narrow range of swc
+53,US-PFL,SW2 Aspen-3 CHEESEHEAD 2019,T,T,,2019,2019,aspen,Northern hardwoods,NA,NA,NA,NA,narrow range of swc
+54,US-PFm,SW3 Hardwood-2 CHEESEHEAD 2019,T,T,,2019,2019,aspen and maple,Northern hardwoods,NA,NA,NA,NA,narrow range of swc
+55,US-PFn,SW4 Hardwood-3 CHEESEHEAD 2019,T,T,,2019,2019,"aspen, oak, birch, some pines",Northern hardwoods,NA,NA,NA,NA,narrow range of swc
+56,US-PFp,SE2 Hardwood-4 CHEESEHEAD 2019,T,T,,2019,2019,"black ash, red maple",Temperate hardwoods,,,,,
+57,US-PFq,SE3 Aspen-4 CHEESEHEAD 2019,T,T,,2019,2019,aspen,Northern hardwoods,,,,,
+58,US-PFr,SE4 Tussock-2 CHEESEHEAD 2019,F,,,2019,2019,,,,,,,
+59,US-PFs,SE5 Aspen-5 CHEESEHEAD 2019,F,,Cannot calculate Ustar threshold,2019,2019,,,,,,,
+60,US-PFt,SE6 Pine-4 CHEESEHEAD 2019,T,T,,2019,2019,red pine,Dry/cold pines,,,,,
+61,US-Prr,Poker Flat Research Range Black Spruce Forest,T,T,,2010,2016,black spruce,Wet conifers,0.4719274,372.3032075,201.7199402,4357.754125,
+62,US-Rls,RCEW Low Sagebrush,F,,wrong species,2014,2020,,,,,,,
+63,US-Rms,RCEW Mountain Big Sagebrush,F,,wrong species,2014,2020,,,,,,,
+64,US-Rpf,Poker Flat Research Range: Succession from fire scar to deciduous forest,T,T,,2008,2021,boreal hardwoods,Northern hardwoods,0.11001,-1161.30388,-1598.70463,-91138.23219,young regrowth
+65,US-Rwe,RCEW Reynolds Mountain East,F,,wrong species,2003,2007,,,,,,,
+66,US-Rwf,RCEW Upper Sheep Prescibed Fire,F,,wrong species,2014,2020,,,,,,,
+67,US-Rws,Reynolds Creek Wyoming big sagebrush,F,,wrong species,2014,2020,,,,,,,
+68,US-Syv,Sylvania Wilderness Area,T,T,,2001,2022,sugar maples and eastern hemlock,Northern hardwoods,0.2,1,15,0.5,sugar maples and eastern hemlock
+69,US-Uaf,"University of Alaska, Fairbanks",T,T,,2003,2021,black spruce,black spruce,0.4616238,0.8795263,0.1064208,6.5227832,
+70,US-UMB,Univ. of Mich. Biological Station,T,T,,2000,2021,northern hardwoods,Northern hardwoods,0.08,0.5,15,0.5,
+71,US-UMd,UMBS Disturbance,T,T,,2007,2021,"Red maple, sugar maple, red oak, white pine",Temperate hardwoods,0.04,0.5,20,0.5,
+72,US-WCr,Willow Creek,T,T,,1998,2021,Sugar maple,Northern hardwoods,0.3,1.2,10,3,
+73,US-Wrc,Wind River Crane Site,F,,wrong species,1998,2015,,,,,,,
+74,US-xAB,NEON Abby Road (ABBY),F,,wrong species,2017,2022,,,,,,,
+75,US-xBA,NEON Barrow Environmental Observatory (BARR),F,,,2017,2022,,,,,,,
+76,US-xBN,NEON Caribou Creek - Poker Flats Watershed (BONA),F,,,2017,2022,,,,,,,
+77,US-xBR,NEON Bartlett Experimental Forest (BART),T,T,,2017,2022,"beech, sugar maple, with smaller component of white pine, hemlock, balsam fir",Northern hardwoods,,,,,
+78,US-xDJ,NEON Delta Junction (DEJU),T,T,,2017,2022,"black spruce, white spruce, with some hardwoods",Wet conifers,,,,,
+79,US-xHA,NEON Harvard Forest (HARV),T,T,,2017,2021,"red oak, red maple, white pine",Temperate hardwoods,,,,,
+80,US-xHE,NEON Healy (HEAL),F,,wrong species,2017,2021,,,,,,,
+81,US-xST,NEON Steigerwaldt Land Services (STEI),T,T,,2017,2021,"early successional, even-aged aspen stand, interspersed with red maple and balsam fir trees",Northern hardwoods,,,,,
+82,US-xTL,NEON Toolik (TOOL),F,,wrong species,2017,2021,,,,,,,
+83,US-xTR,NEON Treehaven (TREE),T,T,,2017,2021,"Overall, sugar maple (Acer saccharum), red maple (Acer Rubrum), balsam fir (Abies balsamea), grey alder (Alnus incana), and Pennsylvania sedge (Carex pensylvanica) are the most dominant species in this site",Northern hardwoods,,,,,
+84,US-xUN,NEON University of Notre Dame Environmental Research Center (UNDE),T,T,,2017,2021," sugar maple (Acer rubrum and saccharum), aspen (Populus tremuloides and P. grandidentata), and paper birch",Northern hardwoods,,,,,
+85,US-xWR,NEON Wind River Experimental Forest (WREF),F,,,2018,2021,,,,,,,
+86,US-xYE,NEON Yellowstone Northern Range (Frog Rock) (YELL),F,,,2018,2021,,,,,,,
