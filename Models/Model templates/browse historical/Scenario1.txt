@@ -7,7 +7,7 @@ Species 		"../../LANDIS inputs/other inputs/species.txt"
 Ecoregions 		"../../LANDIS inputs/NECN files/ecoregions.txt"
 EcoregionsMap 		"../../LANDIS inputs/input rasters/ecoregions.tif"
 
-CellLength 30 << meters
+CellLength 60 << meters
 
 >> Succession Extension Initialization File
 >> -------------------- -------------------

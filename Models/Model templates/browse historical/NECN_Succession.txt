@@ -6,7 +6,7 @@ SeedingAlgorithm  WardSeedDispersal
 
 InitialCommunities      	"../../LANDIS inputs/NECN files/initial_communities_pointer.txt"
 InitialCommunitiesMap   	"../../LANDIS inputs/input rasters/initial_communities.tif"
-ClimateConfigFile		"climate-generator-gridmet.txt"
+ClimateConfigFile		"../../LANDIS inputs/NECN files/climate-generator-gridmet.txt"
 
 SoilDepthMapName				"../../LANDIS inputs/input rasters/soil_depth.tif" 
 SoilDrainMapName				"../../LANDIS inputs/input rasters/soil_drain.tif"
