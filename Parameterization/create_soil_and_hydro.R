@@ -119,6 +119,7 @@ if(!file.exists("./Parameterization/Parameterization data/ssurgo/mapunits.shp"))
 
 #after we've made the subset mapunits file, we can just read it in.
 mapunits <- sf::read_sf("./Parameterization/Parameterization data/ssurgo/mapunits.shp")
+mapunits <- sf::st_transform(mapunits, crs(template_raster))
 plot(sf::st_geometry(mapunits)) #looks good!
 
 #this has the component data; each map unit has several soil components/
@@ -293,7 +294,7 @@ initGRASS(gisBase= grass_program_path, #where the GRASS program lives; folder wi
 execGRASS("g.proj", flags = "c", epsg = as.numeric(crs(r, describe = TRUE)$code))
 
 # Import raster to GRASS and set region
-execGRASS("r.in.gdal", flags="o", parameters=list(input=new_rname, output="elev_rast")) #import DEM raster located at "input", and add as "output"
+execGRASS("r.in.gdal", flags="o", parameters=list(input=rname, output="elev_rast")) #import DEM raster located at "input", and add as "output"
 execGRASS("g.region", parameters=list(raster="elev_rast") ) #set region to match DEM
 execGRASS("g.region", flags = "p") #check on the CRS
 
@@ -320,7 +321,8 @@ hist(baseflow)
 
 baseflow_rast <- tci
 values(baseflow_rast) <- baseflow
-
+values(baseflow_rast)[values(baseflow_rast) < 0.01] <- 0.01
+values(baseflow_rast)[values(baseflow_rast) > 1] <- 1
 
 # calculate slope steepness
 #We'll use this for stormflow later on
@@ -333,6 +335,7 @@ slope <- read_RAST(vname = "slope_steepness", cat=NULL, NODATA=NULL, ignore.stde
                  return_format="terra", close_OK=TRUE, flags=NULL)
 plot(slope)
 hist(values(slope))
+crs(slope)
 
 #-------------------------------
 # storm flow
@@ -371,17 +374,19 @@ mapunits_data <- left_join(mapunits_data, soil_mat[c("OID", "class")], by = c("O
 mapunits_data$c0 <- soil_runoff_table[base::match(mapunits_data$class, soil_runoff_table$soil_type), "c0"]
 mapunits_data$s0 <- soil_runoff_table[base::match(mapunits_data$class, soil_runoff_table$soil_type), "s0"]
 
-c0_rast <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "c0", fun="mean") %>%
-  terra::mask(template_raster, inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
-s0_rast <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "s0", fun="mean") %>%
-  terra::mask(template_raster, inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
+c0_rast <- terra::rasterize(terra::vect(mapunits_data), rast(template_raster), field = "c0", fun="mean") # %>%
+  #terra::mask(rast(template_raster), inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
+s0_rast <- terra::rasterize(terra::vect(mapunits_data), rast(template_raster), field = "s0", fun="mean") # %>%
+  #terra::mask(rast(template_raster), inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
 
 
 # mapunits_data$runoff <- c0 + (1 - c0)*(s / (s + s0))
 
 stormflow_rast <- c0_rast + (1-c0_rast) * (slope / (slope + s0_rast))
+values(stormflow_rast)[values(stormflow_rast) < 0.01] <- 0.01
+values(stormflow_rast)[values(stormflow_rast) > 1] <- 1
 plot(stormflow_rast)
-
+hist(stormflow_rast)
 #-------------------------------------------------------------------------------
 # Soil Nitrogen
 #-------------------------------------------------------------------------------
@@ -462,7 +467,9 @@ for(i in 1:nrow(mapunits)){
     `*`(10000) #convert from cm2 to m2
 }
 
+mapunits$cn_ratio <- mapunits$c_total/mapunits$n_total
 
+#get average values for the mapunits, from soilgrids data:
 mapunit_n <- mapunits[,"n_total"] %>%
   sf::st_set_geometry(NULL) %>%
   stats::aggregate(by = list(mapunits$MUKEY), FUN = function(x){mean(x, na.rm = TRUE)}) %>%
@@ -471,15 +478,17 @@ mapunit_c <- mapunits[,"c_total"] %>%
   sf::st_set_geometry(NULL) %>%
   stats::aggregate(by = list(mapunits$MUKEY), FUN = function(x){mean(x, na.rm = TRUE)}) %>%
   dplyr::rename("MUKEY" = "Group.1")
-mapunit_cn <- mapunits[,"cn_ratio_ssurgo"] %>%
+mapunit_cn <- mapunits[,"cn_ratio"] %>%
   sf::st_set_geometry(NULL) %>%
   stats::aggregate(by = list(mapunits$MUKEY), FUN = function(x){mean(x, na.rm = TRUE)}) %>%
   dplyr::rename("MUKEY" = "Group.1")
 
 
 #compare soil C from SSURGO vs from soilgrids
+#soilgrids
 ggplot() + 
   geom_sf(mapping = aes(colour = c_total, fill = c_total), data = mapunits)
+#ssurgo
 ggplot() + 
   geom_sf(mapping = aes(colour = soc0_999, fill = soc0_999), data = mapunits_data)
 ggplot() + 
@@ -488,9 +497,10 @@ ggplot() +
   geom_sf(mapping = aes(colour = soilDrain, fill = soilDrain), data = mapunits_data)
 
 #compare soilgrids and ssurgo
-mapunits$cn_ratio <- mapunits$c_total/mapunits$n_total
+#from soilgrids; looks pretty reasonable:
 hist(mapunits$cn_ratio)
 
+#calculate cn from ssurgo
 mapunits$cn_ratio_ssurgo <- mapunits_data$soc0_150 / mapunits$n_total
 hist(mapunits$cn_ratio_ssurgo) #some crazy high values here -- what's with the soc0_999 value?
 
@@ -504,7 +514,8 @@ mapunits$cn_ratio_ssurgo[mapunits$cn_ratio_ssurgo < 8] <- 8
 # Fill in NA values
 
 # #for NA values of cn_ratio_ssurgo, add the average of the other mapunits with the same MUKEY
-mapunits[is.na(mapunits$cn_ratio_ssurgo), "cn_ratio_ssurgo"] <- mapunit_cn[match(mapunits$MUKEY, mapunit_cn$MUKEY), "cn_ratio_ssurgo"] %>%
+mapunits[is.na(mapunits$cn_ratio_ssurgo), "cn_ratio_ssurgo"] <- 
+  mapunit_cn[match(mapunits$MUKEY, mapunit_cn$MUKEY), "cn_ratio"] %>%
   subset(is.na(mapunits$cn_ratio_ssurgo))
 
 
@@ -520,7 +531,8 @@ for(i in 1:nrow(mapunits)){
 
 #assign values from neighbors
 mapunits$cn_ratio_ssurgo <- ifelse(is.na(mapunits$cn_ratio_ssurgo), neighbor_n, mapunits$cn_ratio_ssurgo)
-#for the remaining 4 polygons, just assign them a 10 I guess TODO
+
+#for the remaining 4 polygons, just assign them a 10 I guess?
 mapunits[is.na(mapunits$cn_ratio_ssurgo), "cn_ratio_ssurgo"] <- 10
 mapunits[mapunits$cn_ratio_ssurgo == 0, "cn_ratio_ssurgo"] <- 10
 
@@ -534,7 +546,6 @@ mapunits[is.na(mapunits$n_adjusted), ]
 
 #-------------------------------------------------------------------------------
 #create the soil N maps using soil C and C:N ratio
-#TODO have C:N ratios change with soil layers
 
 # Carbon is apportioned like so: 
 # SOM1surfC = 0.01
@@ -542,30 +553,39 @@ mapunits[is.na(mapunits$n_adjusted), ]
 # SOM2C = 0.59 
 # SOM3C = 0.38 
 
-# Nitrogen as a proportion of carbon
+# Nitrogen as a proportion of carbon, from Zachary or Melissa TODO find where!
 # SOM1surfN=.1
 # SOM1soilN=.1
 # SOM2N=.04
 # SOM3N=.118
 # instead, let's divvy up N using the same proportions, but using soil N from soilgrids
 
-# So, N totals should be apportioned as so:
-# SOM1surfN = total N * (0.1 * 0.01)
-# SOM1soilN= total N * (0.1 * 0.02)
-# SOM2N= total N * (0.04 * 0.59)
-# SOM3N= total N * (0.118 * 0.38)
-
-# total = total N * 0.07054
+# From a previous model run on this landscape, N was a somewhat lower proportion on average
+# than those numbers above
+#mapunits_data$SOM1surfN <- mapunits_data$SOM1surfC * 0.015
+#mapunits_data$SOM1soilN <- mapunits_data$SOM1soilC * 0.099
+#mapunits_data$SOM2N <- mapunits_data$SOM2C * 0.052
+#mapunits_data$SOM3N <- mapunits_data$SOM3C * 0.073
 
 # So we need to divide each layer by 0.07054 to retrieve the original amount of N per site
+
+
+# So, N totals should be apportioned as so:
+# SOM1surfN = total N * (0.015 * 0.01)
+# SOM1soilN= total N * (0.099 * 0.02)
+# SOM2N= total N * (0.052 * 0.59)
+# SOM3N= total N * (0.073 * 0.38)
+
+# total = total N * 0.06055
 
 #------------------
 # Using N directly from soilgrids, then distributing N between layers
 
-mapunits_data$SOM1surfN <- mapunits$n_adjusted * (0.1 * 0.01) / 0.07054
-mapunits_data$SOM1soilN <- mapunits$n_adjusted * (0.1 * 0.02)/ 0.07054
-mapunits_data$SOM2N <- mapunits$n_adjusted * (0.04 * 0.59)/ 0.07054
-mapunits_data$SOM3N <- mapunits$n_adjusted * (0.118 * 0.38)/ 0.07054
+mapunits_data$SOM1surfN <- mapunits$n_adjusted * (0.015 * 0.01) / 0.06055
+mapunits_data$SOM1soilN <- mapunits$n_adjusted * (0.099 * 0.02)/ 0.06055
+mapunits_data$SOM2N <- mapunits$n_adjusted * (0.052 * 0.59)/ 0.06055
+mapunits_data$SOM3N <- mapunits$n_adjusted * (0.073 * 0.38)/ 0.06055
+
 
 mapunits_data <- sf::st_transform(mapunits_data, "EPSG:26917") #reproject to NAD83 Zone 17N
 
@@ -614,11 +634,13 @@ terra::writeRaster(soilDepth, "./Models/LANDIS inputs/input rasters/soil_depth.t
 # baseflow <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "baseFlow", fun="mean") 
 # values(baseflow) <- ifelse(is.na(values(baseflow)), 0, values(baseflow))
 baseflow_rast <- terra::project(baseflow_rast, template_raster)
+values(baseflow_rast) <- ifelse(is.na(values(baseflow_rast)), 0, values(baseflow_rast))
 terra::writeRaster(baseflow_rast, "./Models/LANDIS inputs/input rasters/baseflow.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
 # stormflow <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "runoff", fun="mean") 
 # values(stormflow) <- ifelse(is.na(values(stormflow)), 0, values(stormflow))
 stormflow_rast <- terra::project(stormflow_rast, template_raster)
+values(stormflow_rast) <- ifelse(is.na(values(stormflow_rast)), 0, values(stormflow_rast))
 terra::writeRaster(stormflow_rast, "./Models/LANDIS inputs/input rasters/stormflow.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
 SOM1surfC <- terra::rasterize(terra::vect(mapunits_data), template_raster, field = "SOM1surfC", fun="mean") 

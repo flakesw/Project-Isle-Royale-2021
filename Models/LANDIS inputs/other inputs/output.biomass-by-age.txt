@@ -1,19 +1,19 @@
 LandisData  "Output Biomass-by-Age"
 
-Timestep   5
+Timestep   10
 
 MapNames   spp-bio-age/{species}-{ageclass}-{timestep}.img
 
 Species		QURU 	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
             	FRNI	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
-			ACSA3	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
-			PIMA	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
-			PIGL	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
-			ABBA	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
-			PIST	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
-			BEAL2 ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
-			POTR5	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
-			THOC2 ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
-			BEPA 	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
+		ACSA3	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
+		PIMA	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
+		PIGL	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
+		ABBA	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
+		PIST	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
+		BEAL2 	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
+		POTR5	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
+		THOC2 	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
+		BEPA 	ageclass1(0-10) ageclass2(10-20) ageclass3(20-40) ageclass4(40-80) ageclass5(80-150) ageclass6(150-500)
 			
 

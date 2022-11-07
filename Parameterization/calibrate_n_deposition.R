@@ -14,12 +14,12 @@ setwd("C:/Users/Sam/Documents/Research/Isle Royale/")
 # download the data and fit the regression needed by NECN
 
 #LANDIS data (uncalibrated)
-monthly_precip <- read.csv("C:/Users/Sam/Documents/Research/Isle Royale/landis_test/necn_1_cell/test/NECN-succession-monthly-log.csv") %>%
+monthly_precip <- read.csv("C:/Users/Sam/Documents/Research/Isle Royale/Models/landis_test/necn_1_cell/test/NECN-succession-monthly-log.csv") %>%
   group_by(Month) %>%
   summarise(mean_ppt = mean(Precipitation))
 
 # calibration data (NADP sites)
-nadp <- read.csv("./calibration_data/nadp/NTN-mi97-s-mgl.csv")
+nadp <- read.csv("./Parameterization/Parameterization data/nadp/NTN-mi97-s-mgl.csv")
 nadp$totalN <- (nadp$NH4/1.28 + nadp$NO3/4.43)/10 #convert to Nitrogen equivalent, and from from kg/ha to g/m2
 nadp <- subset(nadp, Criteria1 > 0 & Criteria2 > 0 & Criteria3 > 0 & totalN >= 0)
 nadp$ppt <- nadp$ppt*10 #convert from cm to mm
@@ -32,7 +32,7 @@ summary(lm(nadp$totalN ~ nadp$ppt))
 # are deposited. This is about half of the deposition for the mainland site
 # nearby in minnesota, so it's important to have local data
 
-nadp_mn <- read.csv("./calibration_data/nadp/NTN-mn08-i-mgl.csv")
+nadp_mn <- read.csv("./Parameterization/Parameterization data/nadp/NTN-mn08-i-mgl.csv")
 nadp_mn$totalN <- (nadp_mn$NH4/1.28 + nadp_mn$NO3/4.43)/10
 nadp_mn <- subset(nadp_mn, Criteria1 > 0 & Criteria2 > 0 & Criteria3 > 0 & totalN >= 0)
 

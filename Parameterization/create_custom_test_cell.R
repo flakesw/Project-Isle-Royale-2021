@@ -40,7 +40,7 @@ write_cell <- function(name){
 }
 
 #some parameters for the script
-# setwd("./Models/landis_test/necn_1_cell/")
+setwd("./Models/landis_test/necn_1_cell/")
 
 #what is the original scenario file name? (should be in the working directory)
 scenario <- readLines("Scenario1.txt")
@@ -142,17 +142,17 @@ write_cell(stormflow)
 # species biomass cohorts (initial communities)
 # you can put your own initial communities here to test
 # single cohort growth to calibrate against plantation data, for example
-init_comm <- data.frame(MapCode = 1,
-                        SpeciesName = "POTR5",
-                        CohortAge = 5,
-                        CohortBiomass = 3480)
+# init_comm <- data.frame(MapCode = 1,
+#                         SpeciesName = "POTR5",
+#                         CohortAge = 5,
+#                         CohortBiomass = 3480)
 
 #or import data from a spreadsheet
-# init_comm <- read.csv("./initial_communities_update.csv") %>%
-#   filter(MapCode == 29613) %>%
-#   select(!X)
-# init_comm$MapCode <- 1
-# write.csv(init_comm, paste0("./", new_folder_name, "init_comm.csv"))
+init_comm <- read.csv("./initial_communities_update.csv") %>%
+  filter(MapCode == 29613) %>%
+  select(!X)
+init_comm$MapCode <- 1
+write.csv(init_comm, paste0("./", new_folder_name, "init_comm.csv"))
 
 initial_communities <- 1
 if(new_folder){

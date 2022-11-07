@@ -27,22 +27,24 @@ InitialSOM3NMapName				"../../LANDIS inputs/input rasters/SOM3N.tif"
 InitialDeadWoodSurfaceMapName			"../../LANDIS inputs/input rasters/dead_wood.tif" 
 InitialDeadCoarseRootsMapName			"../../LANDIS inputs/input rasters/coarse_roots.tif"
 
-CalibrateMode 	no
+CalibrateMode no
 SmokeModelOutputs no
-Version_Henne_SoilWater yes
-WaterDecayFunction Ratio <<Linear or Ratio
+Version_Henne_SoilWater no
+WaterDecayFunction Linear <<Linear or Ratio
 
 ProbabilityEstablishAdjust 	1.0
-InitialMineralN			5.0
+InitialMineralN			0.7
 InitialFineFuels		0.75
 AtmosphericNSlope		-0.000109 <<updated for ISRO 2021-12-20
 AtmosphericNIntercept		0.0589 <<updated for ISRO 2021-12-20
 Latitude			48
-DenitrificationRate		0.6 <<was 0.5
-DecayRateSurf			0.88
-DecayRateSOM1			0.95 << increased from 0.9 sf 2021-12-8
-DecayRateSOM2			0.02 << changed back to 0.02 sf 2021-12-8 <<0.06 << Was 0.02 from Louise. changed 2/5
-DecayRateSOM3			0.0002
+DenitrificationRate		0.02 
+DecayRateSurf			1.5
+DecayRateSOM1			1.0 
+DecayRateSOM2			0.001
+DecayRateSOM3			0.00001 
+
+
 
 MaximumLAI
 

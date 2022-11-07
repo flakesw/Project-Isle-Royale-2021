@@ -1,5 +1,0 @@
-Time, Zone, Population, PopulationDensity(ha-1), TotalForage(kg), K, EffectivePop, DamagedSites, BiomassRemoved(g/m2), BiomassMortality(g/m2), CohortsKilled, BiomassRemoved_ABBA, BiomassRemoved_ACSA3, BiomassRemoved_BEAL2, BiomassRemoved_BEPA, BiomassRemoved_FRNI, BiomassRemoved_PIGL, BiomassRemoved_PIMA, BiomassRemoved_PIBA2, BiomassRemoved_PIST, BiomassRemoved_POTR5, BiomassRemoved_QURU, BiomassRemoved_THOC2, BiomassRemoved_HRDWD, BiomassRemoved_SFTWD, CohortsKilled_ABBA, CohortsKilled_ACSA3, CohortsKilled_BEAL2, CohortsKilled_BEPA, CohortsKilled_FRNI, CohortsKilled_PIGL, CohortsKilled_PIMA, CohortsKilled_PIBA2, CohortsKilled_PIST, CohortsKilled_POTR5, CohortsKilled_QURU, CohortsKilled_THOC2, CohortsKilled_HRDWD, CohortsKilled_SFTWD
-1,-1,509,0.0100081323448681,18549566.42218,7971.45097644177,509,564768,0,0,0
-1,1,509,0.0100081323448681,18549566.42218,7971.45097644177,509,564768,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-2,-1,564,0.0110895611837045,18211829.8427945,7826.31278160487,564,564768,0,0,0
-2,1,564,0.0110895611837045,18211829.8427945,7826.31278160487,564,564768,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

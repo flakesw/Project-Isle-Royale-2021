@@ -1,11 +1,11 @@
 LandisData "Climate Config"				
 		
 ClimateTimeSeries			Daily_RandomYears
-ClimateFile				"historical_gridmet.csv"
+ClimateFile				"../../LANDIS inputs/NECN files/historical_gridmet.csv"
 ClimateFileFormat			Daily_Temp-C_Precip-mmDay
 
 SpinUpClimateTimeSeries			Daily_RandomYears
-SpinUpClimateFile			"historical_gridmet.csv"
+SpinUpClimateFile			"../../LANDIS inputs/NECN files/historical_gridmet.csv"
 SpinUpClimateFileFormat			Daily_Temp-C_Precip-mmDay
 
 UsingFireClimate			yes

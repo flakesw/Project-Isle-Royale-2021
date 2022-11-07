@@ -13,9 +13,10 @@ theme_set(theme_bw())
 
 #what folder do all the runs to be analyzed live in?
 # scenario_folder <- "E:/ISRO LANDIS/new runs"
-scenario_folder <- "./Models/Model templates"
+scenario_folder <- "./Models/landis_test"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
 # `[`(grep("Scenario", .))
+# scenarios <- scenarios[c(2,4)]
 
 #some helper functions
 read_plus <- function(flnm) {
@@ -55,7 +56,7 @@ scenario_type <- scenario_type %>%
 
 browse_summaries <- scenario_type %>%
   filter(scenario_type$browse == "Browse") %>%
-  select(run_location) %>%
+  dplyr::select(run_location) %>%
   map(., .f = ~ paste0(., "/browse-summary-log.csv"))  %>%
   unlist() %>%
   purrr::map_df(~read_plus(.)) %>%
@@ -64,7 +65,7 @@ browse_summaries <- scenario_type %>%
 browse_summaries2 <- browse_summaries %>%
   group_by(run_name, Time) %>%
   summarise(TotalPopulation = weighted.mean(TotalPopulation, TotalSites),
-            AverageForage =  TotalForage/ TotalSites, #g m-2
+            AverageForage =  weighted.mean(MeanForage, TotalSites),
             AverageBiomassKilled = weighted.mean(AverageBiomassKilled, TotalSites),
             AverageBiomassRemoved = weighted.mean(AverageBiomassRemoved, TotalSites),
             TotalK = TotalK,
@@ -92,22 +93,20 @@ ggsave(file="moosepop.svg", plot=moosepop, width=5, height=4)
 
 mooseK <- ggplot(data = browse_summaries_melt[browse_summaries_melt$Variable %in% c("TotalPopulation","TotalK"),], 
                  mapping = aes(x = Time+2020, y = value)) + 
-  geom_point(aes(colour = climate, shape = climate)) + 
+  geom_point(aes(colour = run_name, shape = Variable)) + 
   labs(title = "Total Moose Population and Carrying Capacity",
        subtitle = "by browse scenario and climate scenario",
        y = "Number of moose", x = "Simulation Year") + 
-  geom_smooth(aes(colour = climate, linetype = Variable))
+  geom_smooth(aes(colour = run_name, linetype = Variable))
 plot(mooseK)
 ggsave(file="mooseK.svg", plot=mooseK, width=5, height=4)
 
 ggplot(data = browse_summaries2, mapping = aes(x = Time, y = AverageForage)) + 
-  geom_point(aes(colour = climate, shape = climate)) + 
+  geom_point(aes(colour = run_name, shape = climate)) + 
   labs(title = "Average forage density (g m-2)",
        subtitle = "by browse scenario and climate scenario",
        y = "Average Forage (g m-2)", x = "Timestep") + 
-  geom_smooth(aes(linetype = climate, colour = climate))
-
-
+  geom_smooth(aes(linetype = run_name, colour = run_name))
 
 browse_kill <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2020, y = AverageBiomassKilled)) + 
   geom_point(aes(colour = climate, shape = climate)) + 

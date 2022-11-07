@@ -94,31 +94,35 @@ tl_trees_ba <- tl_trees %>%
 #TODO reconcile these datasets
 tl_trees_ba$in_isro <- tl_trees_ba$SPECIES_SYMBOL %in% isro_inv$`Plant Symbol`
   
+spp_to_use <- c("ABBA",
+                "ACRU",
+                "ACSA3",
+                "ACSP2",
+                "ALIN2",
+                "BEAL2",
+                "BEPA",
+                "CRDO2",
+                "FRNI",
+                "LALA",
+                "PIBA2",
+                "PIGL",
+                "PIMA",
+                "PIST",
+                "PIRE",
+                "POBA2",
+                "POGR4",
+                "POTR5",
+                "PRVI",
+                "QURU",
+                "SODE3",
+                "THOC2")
+
 # remove rare species
 # TODO replace with functional type
 # e.g. combine sorbus spp. into one Sorbus type; change rare species to genus or 
-tl_trees_reduced <- tl_trees_ba[tl_trees_ba$species_ba_pct > 0.01, ] 
+# tl_trees_reduced <- tl_trees_ba[tl_trees_ba$species_ba_pct > 0.01, ] 
+tl_trees_reduced <- tl_trees_ba[tl_trees_ba$SPECIES_SYMBOL %in% spp_to_use, ]
 
-# tl_trees_clean <- tl_trees %>%
-#   mutate(other_species = ifelse(SPCD %in% tl_trees_reduced$SPCD, SPCD,
-#                                 sp_ref[match(SPCD, sp_ref$SPCD), "SFTWD_HRDWD"])) %>%
-#   mutate(SPCD = ifelse(other_species == "H", 001,
-#                        ifelse(other_species == "S", 002, 
-#                               SPCD))) %>%
-#   left_join(select(sp_ref, c("SPCD", "SPECIES_SYMBOL", "GENUS", "SPECIES"))) %>%
-#   dplyr::filter(
-#     !is.na(DIA),
-#     !is.na(TPA_UNADJ),
-#     STATUSCD == 1
-#   ) %>%
-#   mutate(SPECIES_SYMBOL = ifelse(SPCD == "H", "HRDWD",
-#                                  ifelse(SPCD == "S", "SFTWD",
-#                                         SPECIES_SYMBOL)))
-
-
-# TODO
-# Get all TREE data for the plots needed, and get biomass from table
-# Get functional types for rare species
 
 # getFIA(states = c(unique(tl_trees$State_Abbreviation)),
 #        tables = c('TREE', 'PLOT'),
@@ -145,6 +149,7 @@ for(state in unique(tl_trees$State_Abbreviation)){
 #take out trees with  no diameter data and replace rare species with softwood orhardwood
 fia_trees <- fia_trees %>% 
   filter(!is.na(DIA)) %>%
+  filter(!is.na(SPCD)) %>%
   mutate(other_species = ifelse(SPCD %in% tl_trees_reduced$SPCD, 
                                 SPCD,
                                 sp_ref[match(SPCD, sp_ref$SPCD), "SFTWD_HRDWD"])) %>%
@@ -194,7 +199,7 @@ sitetrees <- readFIA(states = c(unique(tl_trees$State_Abbreviation)),
                      tables = c('SITETREE'),
                      dir = 'D:/Data/fia/rFIA_downloads/') %>%
   '[['("SITETREE") %>%
-  filter(PLT_CN %in% tl_plots$CN) %>%
+  # filter(PLT_CN %in% tl_plots$CN) %>%
   mutate(SFTWD_HRDWD = sp_ref[match(SPCD, sp_ref$SPCD), "SFTWD_HRDWD"]) #add a softwood/hardwood column for later
 
 #fit a linear regression 
@@ -211,22 +216,32 @@ softwood_regression <- lm(AGEDIA ~ log(DIA) + 0, data = sitetrees[sitetrees$SFTW
 tree_regressions <- tibble(SPCD = c(1,2),
                model = list(hardwood_regression, softwood_regression)) %>%
   bind_rows(tree_regressions, .)
+
   
   
 
 # TODO check on functional shape between age and diameter
 for(i in 1:nrow(fia_trees)){
-  #estimate age from diameter for each tree
-  model <- tree_regressions[match(fia_trees$SPCD[i], tree_regressions$SPCD), ] %>% 
-    pluck('model', 1)
-  fia_trees$age[i] <- predict(model, newdata = list(DIA = fia_trees$DIA[i]))
+  
+  if(fia_trees$SPCD[i] %in% tree_regressions$SPCD){
+    #estimate age from diameter for each tree
+    model <- tree_regressions[match(fia_trees$SPCD[i], tree_regressions$SPCD), ] %>% 
+      pluck('model', 1)
+    fia_trees$age[i] <- predict(model, newdata = list(DIA = fia_trees$DIA[i]))
+  } else{
+    #estimate age from diameter for each tree
+    model <- tree_regressions[tree_regressions$SPCD == 2, ] %>% 
+      pluck('model', 1)
+    fia_trees$age[i] <- predict(model, newdata = list(DIA = fia_trees$DIA[i]))
+    }
+  
   if(fia_trees$age[i] < 1) fia_trees$age[i] <- 1
 }
 
 plot(fia_trees$age ~ fia_trees$DIA)
 
 #set range of ages for cohorts
-# the weird expression in here rounds up the nearest 10
+# the weird expression in here rounds up max value the nearest 10
 breaks <- seq(0, max(fia_trees$age) + (10 - max(fia_trees$age) %% 10), by = 5)
 # breaks[1] <- 1
 
