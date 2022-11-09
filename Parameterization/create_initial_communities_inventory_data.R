@@ -10,6 +10,15 @@ setwd("C:/Users/Sam/Documents/Research/Isle Royale")
 
 options(warn=1)
 
+
+#We need to do a few things: 
+#1. map the plot data we have to the digitized polygons of vegetative community
+#2. Get ages for each tree in the plot data
+#3. Get biomass for each tree in the plot data
+#4. Convert cover to diameter (or directly to biomass) for shrubs and saplings
+#5. Convert diameter to biomass and age
+
+
 total_ba_from_DBH <- function(DBH_vector){
   #calculate total basal area in square inches from a vector of DBH
   if(is.na(DBH_vector) | DBH_vector == ""){
@@ -27,9 +36,6 @@ total_ba_from_DBH <- function(DBH_vector){
   }
 }
 
-for(i in 1:nrow(isro_inv)){
-  print(total_ba_from_DBH(isro_inv$DBH[i]))
-}
 
 
 
@@ -41,7 +47,6 @@ inventory_shape <- sf::st_read("./Parameterization/Parameterization data/invento
 plot(sf::st_geometry(inventory_shape))
 table(inventory_shape$PI)
 
-
 #for large trees, convert to biomass and age
 #for smaller trees, convert from cover to biomass; use weibull distribution to get diameters; diameters to age
 
@@ -50,7 +55,6 @@ table(inventory_shape$PI)
 #MacDonald et al. 2012 has allometries for understory for a Canadian boreal riparian site
 #Chieppa et al. 2020 has allometries for herbs/grasses and a few woody shrubs, from Australian rangelands
 #Quint and Dech 2010: allometric equations for Canada yew in central Ontario
-
 
 #diameter-biomass allometry
 #Berner et al. 2015: alder and willow
@@ -125,7 +129,7 @@ hist(values(initial_communities))
 table(values(initial_communities))
 
 terra::writeRaster(initial_communities, 
-                   "./Models/LANDIS inputs/input rasters/initial_communities_inv_data_2022-10-27.tif")
+                   "./Models/LANDIS inputs/input rasters/initial_communities_inv_data_2022-11-9.tif")
 
 
 #*******************************************************************************
@@ -174,8 +178,8 @@ fia_cond_reduced <- left_join(fia_cond_reduced, plot_forest_type, by = "PLT_CN")
 fia_cond_reduced$forest_group <- forest_ref[match(fia_cond_reduced$FORTYPCD, forest_ref$VALUE), "TYPGRPCD"]
 
 fia_plot_reduced <- all_fia_plot %>% 
-  left_join(fia_cond_reduced, by = c("CN" = "PLT_CN")) %>%  
-  dplyr::filter(INVYR > 2006)
+  left_join(fia_cond_reduced, by = c("CN" = "PLT_CN")) #%>%  
+  #dplyr::filter(INVYR > 2006)
 
 #----
 #Trees
@@ -193,12 +197,6 @@ fia_trees <-  paste0("D:/data/fia/rFIA_downloads/", c("MI", "WI", "MN"),"_TREE.c
   dplyr::bind_rows() %>%
   dplyr::filter(PLT_CN %in% fia_plot_reduced$CN)
 
-#FIA doesn't have ages for trees, just sitetrees!
-# fia_trees <- fia_trees %>%
-#   filter(STATUSCD == 1) %>%
-#   mutate(DRYBIO_TOTAL = CARBON_AG * 2 / 2204, #convert to Mg
-#          AGE_BIN = as.numeric(base::cut(TOTAGE, breaks)),
-#          SPCD = as.character(SPCD))
 
 #------------------
 # write outputs
@@ -210,6 +208,8 @@ write.csv(fia_site_trees, "./Parameterization/Parameterization data/fia/fia_site
 
 ################################################################################
 # Estimate diameter:age regressions
+
+fia_site_trees  <- read.csv("./Parameterization/Parameterization data/fia/fia_site_trees.csv")
 
 #species used for classification
 species_class <- unique(isro_inv$`Plant Symbol`)
@@ -274,9 +274,9 @@ cub_regressions <- fia_site_trees2 %>%
 
 library(earth)
 cub_regressions <- fia_site_trees2 %>%
-  dplyr::filter(!is.na(DIA) & !is.na(TOTAGE) & !is.na(SPCD)) %>%
-  filter(SpeciesName %in% species_class) %>%
-  dplyr::group_by(SpeciesName) %>%
+  dplyr::filter(!is.na(DIA) & !is.na(TOTAGE) & !is.na(SYMBOL)) %>%
+  filter(SYMBOL %in% species_class) %>%
+  dplyr::group_by(SYMBOL) %>%
   filter(n() > 40) %>%
   dplyr::do(model = earth(log(DIA) ~ log(TOTAGE), data = .))
 
@@ -294,110 +294,10 @@ for(i in 1:18){
   abline(h = 24)
 }
 
-
-
-# 
-# nls_regressions <- fia_site_trees2 %>%
-#   dplyr::filter(!is.na(DIA) & !is.na(TOTAGE) & !is.na(SPCD)) %>%
-#   filter(SpeciesName %in% species_class) %>%
-#   dplyr::group_by(SpeciesName) %>%
-#   filter(n() > 30) %>%
-#   # dplyr::do(model = lm(log(DIA) ~ poly(log(TOTAGE), 1), data = .))
-#   dplyr::do(model = nls(log(DIA) ~ SSlogis(log(TOTAGE), Asym, xmid, scal), data = .))
-# 
-# for(i in 1:22){
-#   fia_sub <- fia_site_trees2[fia_site_trees2$SpeciesName == nls_regressions$SpeciesName[i], ]
-#   plot(DIA ~ TOTAGE, data = fia_sub,
-#        main = nls_regressions$SpeciesName[i])
-# 
-#   newdata = data.frame(TOTAGE = seq(0, max(fia_sub$TOTAGE, na.rm = TRUE), length.out = 1000))
-#   preds <- exp(predict(nls_regressions$model[i][[1]], newdata = newdata) +
-#                  var(residuals(nls_regressions$model[i][[1]])))
-#   lines(preds ~ newdata$TOTAGE)
-# }
-# 
-# 
-# mixed_model <- lme4::lmer(log(DIA) ~ poly(log(TOTAGE), 2) + (1|SpeciesName), data = fia_site_trees2[!is.na(fia_site_trees2$TOTAGE),])
-# 
-# for(i in 1:length(unique(mixed_model@frame$SpeciesName))){
-#   fia_sub <- fia_site_trees2[fia_site_trees2$SpeciesName == unique(mixed_model@frame$SpeciesName)[i], ]
-#   plot((DIA) ~ TOTAGE, data = fia_sub,
-#        main = unique(mixed_model@frame$SpeciesName)[i])
-# 
-#   newdata = data.frame(TOTAGE = seq(0, max(fia_sub$TOTAGE, na.rm = TRUE), length.out = 1000),
-#                        SpeciesName = unique(mixed_model@frame$SpeciesName)[i])
-#   preds <- exp(predict(mixed_model, newdata = newdata) + var(residuals(mixed_model))/2)
-#   lines(preds ~ newdata$TOTAGE)
-#   abline(h = 0)
-#   abline(v = 0)
-# }
-# 
-# 
-# newdata <- expand.grid(TOTAGE = seq(5, 500, by = 5),
-#                        SpeciesName = unique(mixed_model@frame$SpeciesName),
-#                        preds_lm = NA,
-#                        preds_nls = NA,
-#                        preds_mixed = NA)
-# for(i in 1:nrow(newdata)){
-#   newdata$preds_lm[i] <- exp(predict(cub_regressions$model[match(newdata$SpeciesName[i], cub_regressions[[1]])][[1]],
-#                                      newdata = data.frame(TOTAGE = newdata$TOTAGE[i]))) 
-#                              # +
-#                              #   var(residuals(cub_regressions$model[match(newdata$SpeciesName[i], cub_regressions[[1]])][[1]], na.rm = TRUE))/2)
-#   newdata$preds_nls[i] <- exp(predict(nls_regressions$model[match(newdata$SpeciesName[i], nls_regressions[[1]])][[1]],
-#                                       newdata = data.frame(TOTAGE = newdata$TOTAGE[i])) +
-#                                 var(residuals(nls_regressions$model[match(newdata$SpeciesName[i], nls_regressions[[1]])][[1]], na.rm = TRUE))/2)
-# 
-# }
-# 
-# 
-# newdata$preds_mixed <- exp(predict(mixed_model, newdata = newdata) +
-#                              var(residuals(mixed_model))/2)
-# 
-# charles_data <- read.csv("pred_values_all_spp_catrees.csv") %>%
-#   rename(TOTAGE = TOTAGE2,
-#          preds1 = exp.pmd1.) %>%
-#   left_join(species_ref[, c("COMMON_NAME", "SpeciesName")], by = c("curr_name" = "COMMON_NAME")) %>%
-#   left_join(newdata, by = c("SpeciesName", "TOTAGE"))
-# 
-# plot(charles_data$preds_lm ~ charles_data$TOTAGE, xlim = c(0,200), ylim = c(0, 50))
-# plot(charles_data$preds_nls ~ charles_data$TOTAGE, xlim = c(0,200), ylim = c(0, 50))
-# plot(charles_data$preds_mixed ~ charles_data$TOTAGE, xlim = c(0,200), ylim = c(0, 50))
-# abline(h = 24)
-# 
-# plot(charles_data$preds_lm ~ charles_data$preds1, xlim = c(0,100), ylim = c(0,100),
-#      xlab = "Charles' predicted diameter",
-#      ylab = "Sam's predicted diameter")
-# abline(0,1)
-# 
-# 
-# plot(charles_data[charles_data$TOTAGE < 250, ]$preds_lm ~ charles_data[charles_data$TOTAGE < 250, ]$preds1, 
-#      xlim = c(0,50), ylim = c(0,50),
-#      xlab = "Charles' predicted diameter (in)",
-#      ylab = "Sam's predicted diameter (in)")
-# abline(0,1)
-# 
-# plot(charles_data[charles_data$TOTAGE < 250, ]$preds_nls ~ charles_data[charles_data$TOTAGE < 250, ]$preds1, 
-#      xlim = c(0,50), ylim = c(0,50),
-#      xlab = "Charles' predicted diameter (in)",
-#      ylab = "Sam's predicted diameter (in)")
-# abline(0,1)
-# 
-# plot(charles_data[charles_data$TOTAGE < 250, ]$preds_mixed ~ charles_data[charles_data$TOTAGE < 250, ]$preds1, 
-#      xlim = c(0,50), ylim = c(0,50),
-#      xlab = "Charles' predicted diameter (in)",
-#      ylab = "Sam's predicted diameter (in)")
-# abline(0,1)
-# 
-# write.csv(charles_data, "compare_charles_sam_diameters.csv")
-# 
-# charles_data$diff <- charles_data$preds1 - charles_data$preds_lm
-# mean(charles_data$diff, na.rm = TRUE)
-
-# no_sp_regression <- gam(DIA ~ log(TOTAGE), data = fia_site_trees2)
 no_sp_regression <- earth(log(DIA) ~ log(TOTAGE), 
                           data = fia_site_trees2[!is.na(fia_site_trees2$TOTAGE) & 
                                                 !is.na(fia_site_trees2$DIA) &
-                                                !(fia_site_trees2$SpeciesName %in% cub_regressions$SpeciesName), ])
+                                                !(fia_site_trees2$SYMBOL %in% cub_regressions$SYMBOL), ])
 
 write_rds(cub_regressions, "linear_models_diam_from_age.RDS")
 write_rds(no_sp_regression, "linear_models_diam_from_age_no_sp.RDS")
@@ -407,41 +307,6 @@ write_rds(no_sp_regression, "linear_models_diam_from_age_no_sp.RDS")
 # Estimate age:diameter regressions
 
 #these are needed to convert FIA plots into LANDIS biomass-age cohorts
-species_class <- unique(isro_inv$`Plant Symbol`)
-
-species_ref <- read.csv("D:/Data/fia/FIADB_REFERENCE/REF_SPECIES.csv")
-species_ref$SpeciesName <- paste0(
-  substr(species_ref$GENUS, 1, 4),
-  substr(toupper(species_ref$SPECIES), 1, 1),
-  substr(species_ref$SPECIES, 2, 4)
-)
-
-species_ref2 <- read.csv("D:/Data/fia/FIADB_REFERENCE/REF_PLANT_DICTIONARY.csv") %>%
-  dplyr::filter(SYMBOL %in% species_ref$SPECIES_SYMBOL) %>%
-  mutate(shrub = grepl("Shrub", .$GROWTH_HABIT, ignore.case = TRUE)) %>%
-  mutate(shrub = ifelse(SYMBOL %in% c("ACSA3", "QUMA"), FALSE, shrub)) %>%
-  dplyr::select(c(SYMBOL, shrub)) %>%
-  right_join(species_ref, by = c("SYMBOL" = "SPECIES_SYMBOL"))
-
-
-#import all FIA data for
-fia_site_trees2 <- fia_site_trees %>%
-  left_join(species_ref2[, c("SPCD", "SpeciesName", "SYMBOL", "shrub", "SFTWD_HRDWD")],
-            by = "SPCD") %>%
-  dplyr::filter(SYMBOL %in% species_class &
-                  !is.na(TOTAGE)) %>%
-  dplyr::mutate(SpeciesName = ifelse(shrub, "Shrub", SpeciesName)) #replace shrub species with "Shrub" functional type
-
-table(fia_site_trees2$SYMBOL)
-
-# 
-# #import all FIA data for CA
-# fia_site_trees2 <- read.csv("D:/Data/fia/rFIA_downloads/CA_TREE.csv") %>%
-#   left_join(species_ref[, c("SPCD", "SpeciesName", "shrub", "SFTWD_HRDWD")],
-#             by = "SPCD") %>%
-#   dplyr::filter(SpeciesName %in% species_class) %>%
-#   dplyr::mutate(SpeciesName = ifelse(shrub, "Shrub", SpeciesName)) %>%#replace shrub species with "Shrub" functional type
-#   mutate(TOTAGE = BHAGE+10)
 
 #look at the diameter:age relationship for each species
 #it's nonlinear, but should be more or less linear on a log-log scale
@@ -466,12 +331,15 @@ for(i in 1:18){
   fia_sub <- fia_site_trees2[fia_site_trees2$SYMBOL == cub_regressions_age$SYMBOL[i], ]
   plot(TOTAGE ~ DIA, data = fia_sub,
        main = cub_regressions_age$SYMBOL[i],
-       ylim = c(0, 400))
+       ylim = c(0, 400),
+       xlim = c(0, 24))
   
   newdata = data.frame(DIA = seq(1, max(fia_sub$DIA, na.rm = TRUE), length.out = 1000))
   preds <- exp(predict(cub_regressions_age$model[i][[1]], newdata = newdata))
   lines(preds ~ newdata$DIA)
   abline(v = 12)
+  
+  #this has a bad functional form for most species -- small trees are too old
 }
 
 nls_regressions_age <- fia_site_trees2 %>% 
@@ -482,11 +350,14 @@ nls_regressions_age <- fia_site_trees2 %>%
   dplyr::do(model = nls(log(TOTAGE) ~ SSlogis(DIA, Asym, xmid, scal), data = ., 
                         start=list(Asym=1, xmid=10, scal=1), nls.control(warnOnly = TRUE)))
 
+  #I couldn't get this to converge
+
 for(i in 1:18){
   fia_sub <- fia_site_trees2[fia_site_trees2$SYMBOL == nls_regressions_age$SYMBOL[i], ]
   plot(TOTAGE ~ DIA, data = fia_sub,
        main = nls_regressions_age$SYMBOL[i],
-       ylim = c(0, 400))
+       ylim = c(0, 400),
+       xlim = c(0, 24))
   
   newdata = data.frame(DIA = seq(0, max(fia_sub$DIA, na.rm = TRUE), length.out = 1000))
   preds <- exp(predict(nls_regressions_age$model[i][[1]], newdata = newdata)) 
@@ -502,8 +373,7 @@ earth_regressions_age <- fia_site_trees2 %>%
   dplyr::group_by(SYMBOL) %>%
   filter(n() > 10) %>%
   filter(DIA >= 5) %>%
-  # dplyr::do(model = earth(log(TOTAGE) ~ log(DIA), data = .))
-  dplyr::do(model = lm(log(TOTAGE) ~ log(DIA + 0), data = .))
+  dplyr::do(model = earth(log(TOTAGE) ~ log(DIA), data = .))
 for(i in 1:18){
   fia_sub <- fia_site_trees2[fia_site_trees2$SYMBOL == earth_regressions_age$SYMBOL[i], ] 
   
@@ -516,60 +386,76 @@ for(i in 1:18){
   preds <- exp(predict(earth_regressions_age$model[i][[1]], newdata = newdata)) 
   lines(preds ~ newdata$DIA)
   abline(v = 24)
+  #there's a few species where this doesn't give us a great fuctional form: JUVI, LALA, PIMA, POTR5, POBA2,ABBA
 }
 
-#species which should just have a linear fit: JUVI, LALA, PIMA
-
-
-mixed_model_age <- lme4::lmer(log(TOTAGE) ~ poly(log(DIA), 3) + (1|SYMBOL), 
-                              data = fia_site_trees2[!is.na(fia_site_trees2$TOTAGE) &
-                                                       !is.na(fia_site_trees2$DIA),])
-
-for(i in 1:length(unique(mixed_model_age@frame$SYMBOL))){
-  fia_sub <- fia_site_trees2[fia_site_trees2$SYMBOL == unique(mixed_model_age@frame$SYMBOL)[i], ]
-  plot((TOTAGE) ~ DIA, data = fia_sub,
-       main = unique(mixed_model_age@frame$SYMBOL)[i],
+log_regressions_age <- fia_site_trees2 %>% 
+  dplyr::filter(!is.na(DIA) & !is.na(TOTAGE) & !is.na(SPCD)) %>%
+  filter(SYMBOL %in% species_class) %>%
+  dplyr::group_by(SYMBOL) %>%
+  filter(n() > 10) %>%
+  filter(DIA >= 5) %>%
+  dplyr::do(model = lm(log(TOTAGE) ~ log(DIA), data = .))
+for(i in 1:18){
+  fia_sub <- fia_site_trees2[fia_site_trees2$SYMBOL == earth_regressions_age$SYMBOL[i], ] 
+  
+  plot(TOTAGE ~ DIA, data = fia_sub,
+       main = earth_regressions_age$SYMBOL[i],
        ylim = c(0, 400),
        xlim = c(0, 24))
   
-  newdata = data.frame(DIA = seq(0, max(fia_sub$TOTAGE, na.rm = TRUE), length.out = 1000),
-                       SYMBOL = unique(mixed_model_age@frame$SYMBOL)[i])
-  preds <- exp(predict(mixed_model_age, newdata = newdata) + var(residuals(mixed_model_age))/2)
+  newdata = data.frame(DIA = seq(0, max(fia_sub$DIA, na.rm = TRUE), length.out = 1000))
+  preds <- exp(predict(log_regressions_age$model[i][[1]], newdata = newdata)) 
   lines(preds ~ newdata$DIA)
-  abline(h = 0)
-  abline(v = 0)
   abline(v = 24)
+  # the log-log model works well enough for most species, but not for PIMA, LALA, or JUVI -- for those, we'll just
+  # use linear regression to avoid weird functional forms messing up our ages
 }
 
-
-
-
-#compare predictions
-newdata <- expand.grid(DIA = seq(0, 200, by = 5),
-                       SpeciesName = unique(cub_regressions_age$SpeciesName),
-                       preds = NA)
-for(i in 1:nrow(newdata)){
-  newdata$preds[i] <- exp(predict(cub_regressions_age$model[match(newdata$SpeciesName[i], 
-                                                                  cub_regressions_age[[1]])][[1]],
-                                  newdata = data.frame(DIA = newdata$DIA[i])))
+linear_regressions_age <- fia_site_trees2 %>% 
+  dplyr::filter(!is.na(DIA) & !is.na(TOTAGE) & !is.na(SPCD)) %>%
+  filter(SYMBOL %in% species_class) %>%
+  dplyr::group_by(SYMBOL) %>%
+  filter(n() > 10) %>%
+  filter(DIA >= 5) %>%
+  dplyr::do(model = lm(TOTAGE ~ I(DIA*25.4) + I((DIA*25.4)^2), data = .))
+for(i in 1:18){
+  fia_sub <- fia_site_trees2[fia_site_trees2$SYMBOL == linear_regressions_age$SYMBOL[i], ] 
+  
+  plot(TOTAGE ~ DIA, data = fia_sub,
+       main = linear_regressions_age$SYMBOL[i],
+       ylim = c(0, 400),
+       xlim = c(0, 24))
+  
+  newdata = data.frame(DIA = seq(0, max(fia_sub$DIA, na.rm = TRUE), length.out = 1000))
+  preds <- predict(linear_regressions_age$model[i][[1]], newdata = newdata)
+  lines(preds ~ newdata$DIA)
+  abline(v = 24)
+  # the log-log model works well enough for most species, but not for PIMA, LALA, or JUVI -- for those, we'll just
+  # use linear regression to avoid weird functional forms messing up our ages
 }
 
+##### Did we get all the trees we need?
+isro_trees$`Plant Symbol`[!(isro_trees$`Plant Symbol` %in% log_regressions_age$SYMBOL)]
+#We just need mountain-ash, mountain maple, alder, hawthorn, and chokecherry
 
-newdata$preds_mixed <- exp(predict(mixed_model_age, newdata = newdata) + var(residuals(mixed_model_age))/2)
+#mountain maple (Leak 1985)
+# age = 6.75 + 0.2177 * diameter (in mm) = 6.75 + 5.530 (in inches)
 
-charles_data <- read.csv("pred_values_all_spp_catrees.csv") %>%
-  rename(TOTAGE = TOTAGE2,
-         DIA = exp.pmd1.) %>%
-  left_join(species_ref[, c("COMMON_NAME", "SpeciesName")], by = c("curr_name" = "COMMON_NAME"))# %>%
-# left_join(newdata, by = c("SpeciesName", "DIA"))
+#mountain ash (Leak 1985)
+# age = 4.58 + 0.0.7039 * diameter -0.002677 diameter^2 (in mm)
 
-plot(charles_data$TOTAGE ~ charles_data$DIA, xlim = c(0,50), ylim = c(0, 400))
-plot(newdata$preds ~ newdata$DIA, xlim = c(0,50), ylim = c(0, 400))
-plot(newdata$preds_mixed ~ newdata$DIA, xlim = c(0,50), ylim = c(0, 400))
-abline(h = 100)
-abline(v = 24)
+#chokecherry -- no good data available
+
+#alder
 
 
-write_rds(cub_regressions_age, "linear_models_age_from_diam.RDS")
+#hawthorn
+
+
+
+################################################################################
+# Estimate biomass from diameter
+
 
 
