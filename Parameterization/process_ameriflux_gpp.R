@@ -94,16 +94,10 @@ sites_with_swc <- crop_ls[crop_ls$SITE_ID %in% data_aval_swc$SITE_ID, ]
 # write.csv(sites_with_swc, "ameriflux_gpp_swc.csv")
 
 sites_with_nee
+
 #edited csv
 sites_to_use <- read.csv("ameriflux_gpp_swc_edit.csv")
-sites <- sites_to_use$SITE_ID
-
-
-nums <- c(23:26, 28, 30, 61, 64, 68:72)
-for(i in nums){
-
-# rm(EProc)
-
+sites <- sites_to_use[sites_to_use$Use, "SITE_ID"]
 
 
 # subset by target Site ID

@@ -16,7 +16,7 @@ theme_set(theme_bw())
 scenario_folder <- "./Models/landis_test"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
 # `[`(grep("Scenario", .))
-# scenarios <- scenarios[c(2,4)]
+scenarios <- scenarios[c(1)]
 
 #some helper functions
 read_plus <- function(flnm) {
@@ -72,16 +72,23 @@ browse_summaries2 <- browse_summaries %>%
             browse = browse[1],
             climate = climate[1])
 
+# browse_summaries2 <- browse_summaries2[which(browse_summaries2$Time <= 21), ]
+
+
+area <- browse_summaries$TotalSites[1] * 60 * 60 / 1000000
+browse_summaries2$K_density <- browse_summaries2$TotalK/area
+browse_summaries2$Pop_density <- browse_summaries2$TotalPopulation/area
+
 #-------------------------------------------------------------------------------
 # Figures
 #-------------------------------------------------------------------------------
 
-browse_summaries_melt <- pivot_longer(browse_summaries2, cols = TotalPopulation:TotalK,
+browse_summaries_melt <- pivot_longer(browse_summaries2, cols = c(TotalPopulation:TotalK, K_density, Pop_density),
                                       names_to = "Variable")
 browse_summaries_melt
 #AGB over time
 
-moosepop <- ggplot(data = browse_summaries2, mapping = aes(x = Time+2020, y = TotalPopulation)) + 
+moosepop <- ggplot(data = browse_summaries2, mapping = aes(x = Time+1998, y = TotalPopulation)) + 
   geom_point(aes(colour = climate, shape = climate)) + 
   labs(title = "Total Moose Population",
        subtitle = "by browse scenario and climate scenario",
@@ -91,12 +98,12 @@ plot(moosepop)
 ggsave(file="moosepop.svg", plot=moosepop, width=5, height=4)
 
 
-mooseK <- ggplot(data = browse_summaries_melt[browse_summaries_melt$Variable %in% c("TotalPopulation","TotalK"),], 
-                 mapping = aes(x = Time+2020, y = value)) + 
+mooseK <- ggplot(data = browse_summaries_melt[browse_summaries_melt$Variable %in% c("Pop_density","K_density"),], 
+                 mapping = aes(x = Time+1998, y = value)) + 
   geom_point(aes(colour = run_name, shape = Variable)) + 
-  labs(title = "Total Moose Population and Carrying Capacity",
+  labs(title = "Moose Population density and Carrying Capacity density",
        subtitle = "by browse scenario and climate scenario",
-       y = "Number of moose", x = "Simulation Year") + 
+       y = "Number of moose per km2", x = "Simulation Year") + 
   geom_smooth(aes(colour = run_name, linetype = Variable))
 plot(mooseK)
 ggsave(file="mooseK.svg", plot=mooseK, width=5, height=4)

@@ -1,0 +1,4 @@
+LandisData	"Initial Communities"
+>> Initial communities file using inventory data
+
+CSV_File "../../LANDIS inputs/NECN files/initial_communities_inv.csv"

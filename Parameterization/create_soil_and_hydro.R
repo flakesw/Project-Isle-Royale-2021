@@ -247,6 +247,10 @@ mapunits_data$SOM1soilC <- 0.02 * mapunits_data$soc0_150
 mapunits_data$SOM2C <- 0.59 * mapunits_data$soc0_150
 mapunits_data$SOM3C <- 0.38 * mapunits_data$soc0_150
 
+#wetland soils have more recalcitrant carbon 
+mapunits_data[mapunits_data$soilDrain < 0.1, ]$SOM2C <- 0.4 * mapunits_data[mapunits_data$soilDrain < 0.1, ]$soc0_150
+mapunits_data[mapunits_data$soilDrain < 0.1, ]$SOM3C <- 0.57 * mapunits_data[mapunits_data$soilDrain < 0.1, ]$soc0_150
+
 # calculate baseFlow
 # if using the original (not Henne version) water balance model, then baseflow
 # is important for reducing soil moisture. It's not a physical parameter that is
@@ -594,6 +598,14 @@ hist(mapunits_data$SOM1surfC/mapunits_data$SOM1surfN)
 hist(mapunits_data$SOM1soilC/mapunits_data$SOM1soilN)
 hist(mapunits_data$SOM2C/mapunits_data$SOM2N)
 hist(mapunits_data$SOM3C/mapunits_data$SOM3N)
+
+
+#fix field capacity for some poorly drained sites
+mapunits_data[mapunits_data$soilDrain < 0.1 & mapunits_data$wthirdbar_r < 0.4, 
+              "wthirdbar_r"] <- 0.4
+mapunits_data[mapunits_data$soilDrain < 0.1 & mapunits_data$wfifteenbar_r < 0.05,
+              "wfifteenbar_r"] <- 0.05
+
 
 #-------------------------------------------------------------------------------
 # write rasters!

@@ -4,7 +4,7 @@ Timestep 10
 
 MakeTable yes
 
-Species ALL
+Species all
 
 
 MapNames biomass/bio2-{species}-{timestep}.img

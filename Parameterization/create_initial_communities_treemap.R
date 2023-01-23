@@ -30,30 +30,22 @@ treemap_isro <- terra::crop(treemap, isro_bound) %>%
 template <- terra::rast(extent = terra::ext(treemap_isro),
                         resolution = 60,
                         crs = "EPSG:26917")
+
 treemap_isro <- terra::resample(treemap_isro, template, method = "near")
+cats(treemap_isro)
+levels(treemap_isro)
+
+values(treemap_isro) <- as.numeric(as.character(values(treemap_isro))) #convert factor to numeric
 
 plot_counts <- table(terra::values(treemap_isro)) %>% #summary of how many of each plot ID in the study area
   as.data.frame()
 treemap_isro[is.na(treemap_isro)] <- 0
 
-
-rm(treemap) #free up some RAM
-detach("package:terra") #get rid of masking from terra since we'll be using raster for the rest of this
-
-treemap_isro <- raster(treemap_isro) #turn into a raster package object
-
 # write the raster for IC 
 # raster package was having trouble here for some reason, so I'm using terra
-raster::writeRaster(treemap_isro, filename = "./Models/LANDIS inputs/input rasters/initial_communities.tif", datatype = "INT4S", overwrite = TRUE, NAvalue = 0)
+terra::writeRaster(treemap_isro, filename = "./Models/LANDIS inputs/input rasters/initial_communities_treemap.tif", 
+                    datatype = "INT4S", overwrite = TRUE, NAflag = 0)
  
-# test <- raster("./Models/LANDIS inputs/input rasters/initial_communities.tif")
-# table(values(test))
-# unique(values(test)) %in% tl_plots$tl_id
-# unique(values(test)) %in% site_biomass$MapCode
-# unique(site_biomass$MapCode) %in% unique(values(test))
-# length(unique(site_biomass$MapCode))
-# length(unique(values(test))) #10 lots get dropped TODO
-
 tl_plots <- read.csv("./Parameterization/Parameterization data/treemap/RDS-2019-0026_Data/Data/TL_CN_Lookup.txt") %>%
   filter(tl_id %in% values(treemap_isro))
 
@@ -66,9 +58,11 @@ isro_inv <- readxl::read_excel("./Parameterization/Parameterization data/invento
 
 #-------------------------------------------------------------------------------
 #create ecoregions
-ecoregions <- raster::reclassify(treemap_isro, c(0,0,0,1,99999,1)) #just two ecoregions, active and inactive
-raster::writeRaster(ecoregions, "./Models/LANDIS inputs/input rasters/ecoregions.tif", 
-                    datatype = "INT2S", overwrite = TRUE, NAvalue = 0)
+ecoregions <- terra::classify(treemap_isro, 
+                              matrix(c(0,0,0,1,99999,1), ncol = 3, byrow = TRUE)) #just two ecoregions, active and inactive
+
+terra::writeRaster(ecoregions, "./Models/LANDIS inputs/input rasters/ecoregions_treemap.tif", 
+                    datatype = "INT2S", overwrite = TRUE, NAflag = 0)
 
 #-------------------------------------------------------------------------------
 # download michigan FIA data and reference data from the datamart:
@@ -264,59 +258,12 @@ site_total_biomass <- site_biomass %>%
   dplyr::summarise(total_biomass = sum(CohortBiomass)) %>%
   dplyr::mutate(total_biomass_tonnes_ha = total_biomass * 0.01) #convert to tonnes ha-1
 
-# density <- tl_trees_clean %>%
-#   group_by(CN) %>%
-#   summarize(dens = sum(TPA_UNADJ))
 
+## Dead biomass
 
+#from LANDIS runs, the equilibrium value for dead wood was ~2080/10494 (one run) = 37%
 
-#-------------------------------------------------------------------------------
-# estimate dead wood from FIA
-# data is only available for a few plots with intensive sampling
-# TODO find a better way to interpolate dead wood -- kriging? Or a clustering method
-# to find most similar plots
-# expand geographic scope to find more plots to use?
-
-# TODO try using CARBON_DOWN_DEAD column in COND table
-
-
-# getFIA(states = c(unique(tl_trees$State_Abbreviation)),
-#        tables = c('DWM_COARSE_WOODY_DEBRIS', 'DWM_FINE_WOODY_DEBRIS'),
-#        dir = 'D:/Data/fia/rFIA_downloads/',
-#        load = FALSE)
-
-#TODO write a function to check if data is downloaded, and download if not
-#this table doesn't have any more information than the DWM_COARSE_WOODY_DEBRIS table -- only Phase 3 info
-# getFIA(states = c(unique(tl_trees$State_Abbreviation)),
-#        tables = c('COND_DWM_CALC'),
-#        dir = 'D:/Data/fia/rFIA_downloads/',
-#        load = FALSE)
-
-
-#TODO double check this -- there is way too much CWD in some plots
-#TODO this model doesn't really work anyway; it results in a negative relationship
-# between CWD and total biomass, with the greatest CWD in sites wiht the least biomass
-# so for now, I'm replacing it with a simple proportion of live biomass
-
-# cwd_plot <- readFIA(dir = 'D:/Data/fia/rFIA_downloads/',
-#                tables = 'DWM_COARSE_WOODY_DEBRIS') %>%
-#   '[['('DWM_COARSE_WOODY_DEBRIS') %>%
-#   dplyr::filter(PLT_CN %in% tl_plots$CN) %>%
-#   dplyr::group_by(PLT_CN) %>%
-#   dplyr::summarise(total_cwd = sum(DRYBIO_AC_PLOT)) %>%
-#   dplyr::left_join(dplyr::select(site_total_biomass, c("PLT_CN", "total_biomass")), 
-#                    by = c("PLT_CN" = "PLT_CN")) 
-# 
-# plot(cwd_plot$total_cwd ~ cwd_plot$total_biomass)
-# abline(coef(lm(cwd_plot$total_cwd ~ cwd_plot$total_biomass))) #sadly, there isn't a linear relationship between biomass and cwd
-# 
-# cwd_model <- lm(total_cwd ~ total_biomass, data = cwd_plot)
-# site_total_biomass$cwd <- predict(cwd_model, newdata = data.frame(total_biomass = site_total_biomass$total_biomass))
-# site_total_biomass$cwd <- site_total_biomass$cwd * 0.11 # convert from lb ac-1 to g m-2
-
-#from LANDIS runs, the equilibrium value for dead wood appears to be ~2300 / 6200 (one run) = 37%
-
-site_total_biomass$cwd <- site_total_biomass$total_biomass * 0.37
+site_total_biomass$cwd <- site_total_biomass$total_biomass * 0.19
 
 
 
@@ -325,7 +272,6 @@ site_total_biomass$cwd <- site_total_biomass$total_biomass * 0.37
 # coarse roots
 #-------------------------------------------------------------------------------
 # Coarse roots can be calculated per tree
-# TODO we need dead roots!
 # a good source is Yanai et al. 2006, who found ~540 g m-2 of dead root biomass
 # and that it did not vary much with stand age. For young stands, there was 
 # approximately 2 parts dead roots per 3 parts live root. Older stands more like
@@ -345,7 +291,15 @@ site_total_biomass <- fia_trees %>%
   dplyr::mutate(root_biomass = root_biomass * 0.3) %>% #scale from live roots to dead roots
   dplyr::left_join(site_total_biomass, by = "PLT_CN")
 
+site_total_biomass2 <-  mutate(site_total_biomass, MapCode = tl_plots[match(PLT_CN, tl_plots$CN), "tl_id"]) 
 
+total_biomass_treemap_rast <- terra::subst(treemap_isro, from = site_total_biomass2$MapCode, 
+                                           to = site_total_biomass2$total_biomass_tonnes_ha,
+                                           datatype = "FLT4S") %>%
+  terra::catalyze()
+table(values(total_biomass_treemap_rast))
+total_biomass_treemap_rast <- as.numeric(total_biomass_treemap_rast)
+plot(total_biomass_treemap_rast)
 
 #-------------------------------------------------------------------------------
 # Tidy up and write data
@@ -359,15 +313,17 @@ site_biomass <- site_biomass %>%
   
 site_total_biomass$MapCode <- tl_plots[match(site_total_biomass$PLT_CN, tl_plots$CN), "tl_id"] #replace CNs with tl_ids
 
-write.csv(site_biomass[, c(5,6,3,4)], "./Models/LANDIS inputs/NECN files/initial_communities_update.csv")
+write.csv(site_biomass[, c(5,6,3,4)], "./Models/LANDIS inputs/NECN files/initial_communities_treemap.csv")
 
-cwd_raster <- raster::subs(treemap_isro, site_total_biomass, by = "MapCode", which = "cwd")
+cwd_raster <- terra::subst(treemap_isro, from = site_total_biomass$MapCode, to = site_total_biomass$cwd)
 values(cwd_raster) <- ifelse(values(cwd_raster) <= 0 | is.na(values(cwd_raster)), 1, values(cwd_raster))
-writeRaster(cwd_raster, "./Models/LANDIS inputs/input rasters/dead_wood.tif", datatype = "INT2S", NAvalue = 0, overwrite = TRUE)
+terra::writeRaster(cwd_raster, "./Models/LANDIS inputs/input rasters/dead_wood.tif", 
+                   datatype = "INT2S", NAflag = 0, overwrite = TRUE)
 
-root_raster <- raster::subs(treemap_isro, site_total_biomass, by = "MapCode", which = "root_biomass")  
+root_raster <- terra::subst(treemap_isro, from = site_total_biomass$MapCode, to = site_total_biomass$root_biomass)  
 values(root_raster) <- ifelse(values(root_raster) <= 0 | is.na(values(root_raster)), 1, values(root_raster))
-writeRaster(root_raster, "./Models/LANDIS inputs/input rasters/coarse_roots.tif", datatype = "INT2S", NAvalue = 0, overwrite = TRUE)
+writeRaster(root_raster, "./Models/LANDIS inputs/input rasters/coarse_roots.tif", datatype = "INT2S", 
+            NAflag = 0, overwrite = TRUE)
 
 ################################################################################
 # Trash bin

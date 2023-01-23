@@ -1,4 +1,0 @@
-LandisData	"Initial Communities"
->> Initial communities file using Riley imputed FIA plots
-
-CSV_File "../../LANDIS inputs/NECN files/initial_communities_update.csv"

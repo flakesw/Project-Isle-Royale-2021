@@ -1,7 +1,7 @@
 library("raster")
 library("tidyverse")
 
-in_folder <- "./Models/landis_test/small landscape test - linear/spp-bio-age"
+in_folder <- "./Models/landis_test/browse historical spinup - reduce est - long run/necn"
 
 project_to_template <- function(input_raster, template){
   #function to project landis input rasters with no CRS to an input file
@@ -21,7 +21,7 @@ if(!dir.exists(paste0(in_folder, "/projected"))){
   dir.create(paste0(in_folder, "/projected"))
 }
 
-template <- raster("./Models/LANDIS inputs/input rasters subset east/ecoregions_subset.tif")
+template <- raster("./Models/LANDIS inputs/input rasters/ecoregions.tif")
 
 raster_list <- list.files(in_folder, full.names = TRUE)
 raster_list <- raster_list[extension(raster_list) %in% c(".img", ".tif", ".gis")]
