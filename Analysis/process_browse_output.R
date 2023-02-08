@@ -95,7 +95,7 @@ moosepop <- ggplot(data = browse_summaries2, mapping = aes(x = Time+1998, y = To
        y = "Total Moose Population", x = "Simulation Year") + 
   geom_smooth(aes(linetype = climate, colour = climate))
 plot(moosepop)
-ggsave(file="moosepop.svg", plot=moosepop, width=5, height=4)
+# ggsave(file="moosepop.svg", plot=moosepop, width=5, height=4)
 
 
 mooseK <- ggplot(data = browse_summaries_melt[browse_summaries_melt$Variable %in% c("Pop_density","K_density"),], 

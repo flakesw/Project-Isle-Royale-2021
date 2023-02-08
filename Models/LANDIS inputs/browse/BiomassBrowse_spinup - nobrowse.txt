@@ -34,17 +34,8 @@ Shrub		0.1		0.3		0.6		0.8		0.01	15000
 
 << Browser population Inputs >>
 ZoneMap  "../../LANDIS inputs/input rasters/ecoregions_inv.tif" <<same as ecoregions right now; every active cell can be browsed. sf 2021-12-20
-BrowseMethod "Population" <<must be either "Population" or "BDI"
-DefinedPopulationFile	"../../LANDIS inputs/browse/DefinedUngulatePop_historical.txt"  << User-defined population; must contain year-0 data which can be filler data
-DynamicPopulation  << Optional.  If exists, then the next 8 parameters must be input
-RMin 0.15
-RMax 0.25		
-MortalityMin 0
-MortalityMax 0.1
-PredationMin 0.0
-PredationMax 0.0
-HarvestMin 0.0
-HarvestMax 0.0
+BrowseMethod "BDI" <<must be either "Population" or "BDI"
+DefinedPopulationFile	"../../LANDIS inputs/browse/DefinedUngulateBDI - zero.txt"  << User-defined population; must contain year-0 data which can be filler data
 
 
 << Forage Inputs >>

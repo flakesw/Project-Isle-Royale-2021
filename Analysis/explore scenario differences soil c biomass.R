@@ -1,6 +1,14 @@
 library(terra)
 library(tidyverse)
 
+diverging_color_ramp <- function(ras){
+  the_palette_fc <- leaflet::colorNumeric(palette = "RdBu", 
+                                          domain = c(-max(abs(ras[]), na.rm = TRUE), max(abs(ras[]), na.rm = TRUE)),
+                                          reverse = TRUE)
+  the_colors <- the_palette_fc(seq(min(ras[], na.rm = TRUE), max(ras[], na.rm = TRUE), length.out = 50))
+
+}
+
 soilc_init <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/NECN/SOMTC-20.img")
 
 soilc1 <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/NECN/SOMTC-80.img")
@@ -17,8 +25,6 @@ NAflag(soilc_change) <- 0
 
 plot(soilc_change)
 
-
-
 som1surf_init <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/NECN/SOMTC-20.img")
 
 soilc1 <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/NECN/SOMTC-80.img")
@@ -32,17 +38,9 @@ plot(soilc1)
 soilc_change <- soilc1 - soilc_init
 
 NAflag(soilc_change) <- 0
-
-plot(soilc_change)
-
+plot(soilc_change, col = diverging_color_ramp(soilc_change))
 zoom(soilc_change)
 click(soilc_change)
-
-
-
-
-
-
 
 
 ## biomass over time
@@ -78,7 +76,13 @@ hist(values(biomass_change))
 plot(biomass_change)
 zoom(biomass_change)
 click(biomass_change)
+plot(biomass_change, col = diverging_color_ramp(biomass_change))
 
+
+#compare biomass change and soil c change
+plot(values(biomass_change) ~ values(soilc_change))
+#there is a group of similar plots that lost a ton of biomass and gained a lot of soil C
+#Most sites that lost a lot of soil C had little change in biomass
 
 biomass_init <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/biomass/bio2-TotalBiomass-0.img")
 plot(biomass_init)
@@ -93,10 +97,17 @@ plot(biomass_change)
 
 comm_output_end <- read_csv("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/community-input-file-80.csv")
 comm_map_end <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/output-community-80.img")
+comm_output_begin<- read_csv("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/community-input-file-0.csv")
+comm_map_begin <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/output-community-0.img")
+comm_output_init <- read_csv("./Models/LANDIS inputs/NECN files/initial_communities_inv.csv")
+comm_map_init <- rast("./Models/LANDIS inputs/input rasters/initial_communities_inv.tif")
 
-sites_low_biomass <- values(comm_map_end)[which(values(biomass_change) < -20000)]
+sites_low_biomass <- values(comm_map_end)[which(values(biomass_change) < -25000)]
 comm_low_biomass <- comm_output_end[comm_output_end$MapCode %in% sites_low_biomass, ]
-
+sites_low_biomass_begin <- values(comm_map_begin)[which(values(biomass_change) < -25000)]
+comm_low_biomass_begin <- comm_output_begin[comm_output_begin$MapCode %in% sites_low_biomass_begin, ]
+sites_low_biomass_init <- values(comm_map_init)[which(values(biomass_change) < -25000)]
+comm_low_biomass_init <- comm_output_init[which(comm_output_init$MapCode %in% sites_low_biomass_init), ]
 
 sites_high_biomass <- values(comm_map_end)[which(values(biomass_change) > 10000)]
 comm_high_biomass <- comm_output_end[comm_output_end$MapCode %in% sites_high_biomass, ]
@@ -138,7 +149,9 @@ alder_stack <- list.files("./Models/landis_test/browse historical spinup - reduc
   rast()
 
 plot(alder_stack)
-
+plot(alder_stack[[1]])
+plot(alder_stack[[2]])
+plot(alder_stack[[1]] -alder_stack[[2]])
 
 ###
 eco <- rast("./Models/LANDIS Inputs/input rasters/ecoregions_inv.tif")
