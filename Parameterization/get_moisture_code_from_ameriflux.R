@@ -4,7 +4,7 @@ library("tidyverse")
 library("minpack.lm")
 
 #edited csv
-sites_to_use <- read.csv("ameriflux_gpp_swc_edit.csv") %>%
+sites_to_use <- read.csv("./Parameterization/Parameterization data/ameriflux data/ameriflux_gpp_swc_edit.csv") %>%
   filter(Use)
 
 site_files <- paste0("./Parameterization/necn_parameterize/ameriflux_processed/", sites_to_use$SITE_ID, "_processed.csv")
@@ -26,17 +26,15 @@ read_plus <- function(flnm) {
     mutate(swc = swc/100)
 }
 
-
+ft <- unique(sites_to_use$Functional.group)
+ft
 #which of the sites should we use?
-i <- which(sites_to_use$Functional.group %in% c("Wet broadleaf"))
+#note: for facultative wet conifer, used data from wet and dry conifers
+#shrubs use data for aspen, northern hardwoods, mesic warm conifers, temperate hardwoods, dry/cold pines
+i <- which(sites_to_use$Functional.group %in% ft[c(1)])
 # i <- c(1, 18, 19, 20, 23)
 base_daily <- site_files[i]  %>%
   purrr::map_df(~read_plus(.))
-
-
-#pull out data for convenience (this is sloppy, TODO)
-# Observed_Relative_production <- base_daily$maxrelGPP
-# soilwat <- base_daily$swc
 
 
 #calculate curve for only upper percentiles -- easier to fit curve to
@@ -54,7 +52,7 @@ for(j in 1:200){ #each half-percent of volumetric water content
   out_data <- rbind(out_data, temp_data)
 }
 
-Observed_Relative_production<- out_data$maxrelGPP
+Observed_Relative_production <- out_data$maxrelGPP
 soilwat <- out_data$swc
 
 
@@ -63,6 +61,7 @@ plot(soilwat, Observed_Relative_production, col="blue", type="p",
      ylim = c(0,1),
      xlim = c(0,1))
 
+abline(v = c(0.05, 0.15, 0.5))
 # Function to fit coefficients to water curve. 
 
 #original coefficients from Shelby
@@ -72,10 +71,11 @@ plot(soilwat, Observed_Relative_production, col="blue", type="p",
 # moisture_4<- 15 #smaller numbers -- broader curve
 
 #starting coefficients
-moisture_1<- 0.4 #soilwater with maximum gpp
-moisture_2<- 0.05 #maximum soilwater with any GPP -- changes steepness of decline in gpp
-moisture_3<- 3 #higher values -- sharper dip down towards zero
-moisture_4<- 0.05 #smaller numbers -- broader curve
+moisture_1<- 0.12 #soilwater with maximum gpp
+moisture_2<- 0.02 #maximum or minimum soilwater with any GPP -- changes steepness of decline in gpp
+moisture_3<- 1 #higher values -- sharper dip down towards zero
+moisture_4<- 0.3 #smaller numbers -- broader curve
+
 
 #TSWC goes from 0 to 1
 swc_val<-sort(runif(1000, 0, 1))
@@ -89,8 +89,10 @@ lines(swc_val, Landis_Relative_production, type="l", lwd=3, ylab="Maximum Relati
 
 
 #Algorithm for calculating fitted relative production based on swc and the 4 coefficients.
-calculate_fitted_RP <- function(swc, coef_1, coef_2, coef_3, coef_4)
+calculate_fitted_RP <- function(swc, coef_3, coef_4)
 {
+  coef_1 = moisture_1
+  coef_2 = moisture_2
   fraction<-(coef_2 - swc)/(coef_2- coef_1)
   
   pred <- ifelse(fraction>0, (exp(coef_3/coef_4*(1-fraction^coef_4))*(fraction^coef_3)), 0)
@@ -105,18 +107,18 @@ names(swc_dataframe) <- c("swc", "maxrelGPP")
 # swc_dataframe$fraction <- (coef_2 - swc_dataframe$swc)/(swc_dataframe$coef_2- swc_dataframe$coef_1)
 
 #first use nlsLM to get good parameter starting points
-curve.nlslrc = nlsLM(maxrelGPP ~ calculate_fitted_RP(swc, coef_1, coef_2, coef_3, coef_4), data = swc_dataframe,
-                     start = list(coef_1= moisture_1, coef_2= moisture_2, coef_3= moisture_3, coef_4= moisture_4),
+curve.nlslrc = nlsLM(maxrelGPP ~ calculate_fitted_RP(swc, coef_3, coef_4), data = swc_dataframe,
+                     start = list(coef_3= moisture_3, coef_4= moisture_4),
                      control = list(maxiter = 1024))
 
 coef(curve.nlslrc)  #gives good starting coefs
 
 
 #reset parameters here: 
-moisture_1<-coef(curve.nlslrc)[1]
-moisture_2<-coef(curve.nlslrc)[2]
-moisture_3<-coef(curve.nlslrc)[3]
-moisture_4<-coef(curve.nlslrc)[4]
+# moisture_1<-coef(curve.nlslrc)[1]
+# moisture_2<-coef(curve.nlslrc)[2]
+moisture_3<-coef(curve.nlslrc)[1]
+moisture_4<-coef(curve.nlslrc)[2]
 
 #Calculate fraction here
 fraction_val <-(moisture_2 - swc_val)/(moisture_2 - moisture_1)

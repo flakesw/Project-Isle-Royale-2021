@@ -14,8 +14,8 @@ library("data.table")
 # some of the needed variables. 
 
 #I used this script interactively to go through a list of sites and export their 
-# data (including GPP) as a csv. Then I use another script, xxx, to summarize the data
-# for each functional group.
+# data (including GPP) as a csv. Then I use another script, get_moisture_code_from_ameriflux.R, 
+#to summarize the data for each functional group.
 
 
 sites <- amf_site_info()
@@ -96,7 +96,7 @@ sites_with_swc <- crop_ls[crop_ls$SITE_ID %in% data_aval_swc$SITE_ID, ]
 sites_with_nee
 
 #edited csv
-sites_to_use <- read.csv("ameriflux_gpp_swc_edit.csv")
+sites_to_use <- read.csv("./Parameterization/Parameterization data/ameriflux data/ameriflux_gpp_swc_edit.csv")
 sites <- sites_to_use[sites_to_use$Use, "SITE_ID"]
 
 
@@ -104,6 +104,7 @@ sites <- sites_to_use[sites_to_use$Use, "SITE_ID"]
 bif_site <- bif[bif$SITE_ID == sites[i], ]
 # pander::pandoc.table(bif[c(1:15), ])
 bif_site[bif_site$VARIABLE_GROUP == "GRP_SITE_DESC", ]$DATAVALUE
+#it's also worth checking here what the SWC method was -- it should be under the variable SWC_UNIT
 
 #-------------------------------------------------------------------------------
 
@@ -133,105 +134,6 @@ names(base_raw)
 names(base_raw[grep("NEE", names(base_raw))])
 names(base_raw[grep("TA_", names(base_raw))])
 names(base_raw[grep("GPP", names(base_raw))])
-
-
-# 
-# #------------------------------------------------------------------------------
-# base <- base_raw %>%
-#   dplyr::mutate(NEE = rowMeans(select(., contains("NEE")), na.rm = TRUE),
-#                 Rg = rowMeans(select(., contains("SW_IN")), na.rm = TRUE),
-#                 Tair = rowMeans(select(., contains("TA_")), na.rm = TRUE),
-#                 # Tair = TA,
-#                 Ustar = rowMeans(select(., contains("USTAR")), na.rm = TRUE),
-#                 rH = rowMeans(select(., contains("RH")), na.rm = TRUE)) %>%
-#   mutate(Rg = ifelse(Rg < 0, 0, Rg)) %>%
-#   mutate(rH = ifelse(rH > 100, 100, rH)) %>%
-#   dplyr::select(YEAR:TIMESTAMP_END, NEE, Rg, Tair, Ustar, rH)
-# 
-# 
-# base$GPP_PI_F <- base_raw %>%
-#   dplyr::select(contains("GPP_")) %>%
-#   rowMeans(na.rm = TRUE)
-# base$SWC <-   base_raw %>%
-#   dplyr::select(contains("SWC_")) %>%
-#   rowMeans(na.rm = TRUE)
-# 
-# write.csv(base, paste0("./Parameterization/necn_parameterize/ameriflux_processed/", sites[i], "_processed.csv"))
-# 
-# 
-# }
-# 
-# 
-# 
-# 
-# #aggregate to daily -- average SWC
-# base_daily <- base %>%
-#   group_by(YEAR, DOY) %>%
-#   summarise(swc = mean(c(SWC), na.rm = TRUE),
-#             gpp = mean(c(GPP_PI_F), na.rm = TRUE))
-# 
-# 
-# 
-# realdat <- base_daily
-# realdat$maxrelGPP <- realdat$gpp/quantile(realdat$gpp, 0.99, na.rm = TRUE)
-# realdat$maxrelGPP <- ifelse(realdat$maxrelGPP < 0, NA, realdat$maxrelGPP)
-# realdat$swc <- realdat$swc / 100
-# 
-# 
-# 
-# Observed_Relative_production<- realdat$maxrelGPP
-# 
-# swc<-sort(runif(1000, 0, 1))
-# 
-# out_data <- realdat[0, ]
-# for(j in 1:200){ #each half-percent of volumetric water content
-#   sub_data <- realdat[which(realdat$swc > ((j-1) * 0.005) & realdat$swc < j*0.05), ]
-#   
-#   val <- quantile(sub_data$maxrelGPP, .95, na.rm = TRUE)
-#   
-#   temp_data <- sub_data[which(sub_data$maxrelGPP > val), ]
-#   out_data <- rbind(out_data, temp_data)
-# }
-# 
-# # use percentile data
-# # Observed_Relative_production<- out_data$maxrelGPP
-# # soilwat <- out_data$swc
-# 
-# #or use all data
-# Observed_Relative_production<- realdat$maxrelGPP
-# soilwat <- realdat$swc
-# 
-# #plot raw data
-# plot(soilwat, Observed_Relative_production, col="blue", type="p",
-#      ylim = c(0,1),
-#      xlim = c(0,1))
-# 
-# 
-# # Function to fit coefficients to water curve. 
-# 
-# #original coefficients from Shelby
-# # moisture_1<- 0.13 #soilwater with maximum gpp
-# # moisture_2<- 1 #maximum soilwater with any GPP -- changes steepness of decline in gpp
-# # moisture_3<- 3 #higher values -- sharper dip down towards zero
-# # moisture_4<- 15
-# 
-# #starting coefficients
-# moisture_1<- 0.13 #soilwater with maximum gpp
-# moisture_2<- 1#maximum soilwater with any GPP -- changes steepness of decline in gpp
-# moisture_3<- 3 #higher values -- sharper dip down towards zero
-# moisture_4<- 15
-# 
-# #TSWC goes from 0 to 1
-# swc_val<-sort(runif(1000, 0, 1))
-# 
-# #Calculate fraction here
-# fraction_val <-(moisture_2 - swc_val)/(moisture_2 - moisture_1)
-# 
-# #This is the curve based on the coefficients listed above
-# Landis_Relative_production<-ifelse(fraction_val>0, (exp(moisture_3/moisture_4*(1-fraction_val^moisture_4))*(fraction_val^moisture_3)), 0)
-# lines(swc_val, Landis_Relative_production, type="l", lwd=3, ylab="Maximum Relative GPP", xlab="Soil Water Content")
-
-
 
 
 #*******************************************************************************

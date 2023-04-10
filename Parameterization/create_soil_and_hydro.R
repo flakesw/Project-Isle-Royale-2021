@@ -98,6 +98,39 @@ isro_boundary <- sf::st_read("./Parameterization/Parameterization data/isle_roya
 # * Clay Percentage= Chorizon:claytotal_R:RV 
 # * Soil depth = corestriction:resdept_r 
 
+
+# functions --------------------------------------------------------------------
+get_stormflow <- function(soil_type, slope_deg){
+  if(is.na(soil_type) | is.na(slope_deg)){
+    return(NA)
+  } else{
+    #see WetSpa manual
+    slope_perc <- tan(slope_deg * (2*pi/360)) * 100
+    slope_bins <- c(-1, 0.5, 5, 10, 1000)
+    s_bin <- cut(slope_perc, slope_bins, labels = FALSE)
+    
+    soil_runoff_table <- data.frame(
+      soil_type = c("Sand", "Loamy sand", "Sandy loam", "Loam", "Silt loam", "Silt", "Sandy clay loam", "Clay loam", "Silty clay loam", "Sandy clay", "Silty clay", "Clay"),
+      s0 = c(0.68, 0.65, 0.62, 0.59, 0.56, 0.53, 0.5, 0.47, 0.44, 0.41, 0.38, 0.35)
+    )
+    
+    soil_slope_table <- data.frame(
+      soil_type = c("Sand", "Loamy sand", "Sandy loam", "Loam", "Silt loam", "Silt", "Sandy clay loam", "Clay loam", "Silty clay loam", "Sandy clay", "Silty clay", "Clay"),
+      slope1 = c(0.03, 0.07, 0.10, 0.13, 0.17, 0.20, 0.23, 0.27, 0.30, 0.33, 0.37, 0.40),
+      slope2 = c(0.07, 0.11, 0.14, 0.17, 0.21, 0.24, 0.27, 0.31, 0.34, 0.37, 0.41, 0.44),
+      slope3 = c(0.13, 0.17, 0.20, 0.23, 0.27, 0.30, 0.33, 0.37, 0.40, 0.43, 0.47, 0.50),
+      slope4 = c(0.25, 0.29, 0.32, 0.35, 0.39, 0.42, 0.45, 0.49, 0.52, 0.55, 0.59, 0.62)
+    )
+    
+    s0 = soil_runoff_table[soil_runoff_table$soil_type == soil_type, "s0"]
+    c0 = soil_slope_table[soil_slope_table$soil_type == soil_type, 2]
+    c = soil_slope_table[soil_slope_table$soil_type == soil_type, s_bin]
+    stormflow = stormflow <- c0 + (1 - c0)*(s / (s + s0))
+    return(stormflow)
+  }
+}
+#-------------------------------------------------------------------------------
+
 #this is the grid we'll match everything to in the end
 template_raster <- terra::rast("./Models/LANDIS inputs/input rasters/initial_communities.tif")
 crs(template_raster) #check that we're in NAD 83 Zone 17N
@@ -349,14 +382,25 @@ crs(slope)
 # happen only to excess water.
 
 # For stormflow (runoff), use Table 3.4 and eq. 3.2 in https://www.vub.be/WetSpa/downloads/WetSpa_manual.pdf
-
-mapunits_data$OID <- 1:nrow(mapunits_data)
-
-soil_runoff_table <- data.frame(
+soil_s0_table <- data.frame(
   soil_type = c("Sand", "Loamy sand", "Sandy loam", "Loam", "Silt loam", "Silt", "Sandy clay loam", "Clay loam", "Silty clay loam", "Sandy clay", "Silty clay", "Clay"),
-  c0 = c(0.03, 0.07, 0.1, 0.13, 0.17, 0.20, 0.23, 0.27, 0.3, 0.33, 0.37, 0.4),
+  code = 1:12,
   s0 = c(0.68, 0.65, 0.62, 0.59, 0.56, 0.53, 0.5, 0.47, 0.44, 0.41, 0.38, 0.35)
-  )
+)
+
+soil_slope_table <- data.frame(
+  soil_type = c("Sand", "Loamy sand", "Sandy loam", "Loam", "Silt loam", "Silt", "Sandy clay loam", "Clay loam", "Silty clay loam", "Sandy clay", "Silty clay", "Clay"),
+  soil_type_short = c("Sa", "LoSa", "SaLo", "Lo", "SiLo", "Si", "SaClLo", "ClLo", "SiClLo", "SaCl", "SiCl", "Cl"),
+  code = 1:12,
+  slope1 = c(0.03, 0.07, 0.10, 0.13, 0.17, 0.20, 0.23, 0.27, 0.30, 0.33, 0.37, 0.40),
+  slope2 = c(0.07, 0.11, 0.14, 0.17, 0.21, 0.24, 0.27, 0.31, 0.34, 0.37, 0.41, 0.44),
+  slope3 = c(0.13, 0.17, 0.20, 0.23, 0.27, 0.30, 0.33, 0.37, 0.40, 0.43, 0.47, 0.50),
+  slope4 = c(0.25, 0.29, 0.32, 0.35, 0.39, 0.42, 0.45, 0.49, 0.52, 0.55, 0.59, 0.62)
+)
+
+
+#classify soil texture
+mapunits_data$OID <- 1:nrow(mapunits_data)
 
 soil_mat <- data.frame(OID = mapunits_data$OID,
                        SAND = mapunits_data$sandtotal_r*100,
@@ -365,28 +409,38 @@ soil_mat <- data.frame(OID = mapunits_data$OID,
   na.omit()
 
 #classify soils by texture
-texture <- soiltexture::TT.points.in.classes(tri.data = soil_mat, class.sys = "USDA.TT")
+texture <- data.frame(soiltexture::TT.points.in.classes(tri.data = soil_mat, class.sys = "USDA.TT"))
 
-names(texture) <- c("Clay", "Silty clay", "Sandy clay", "Clay loam", "Silty clay loam", "Sandy clay loam", "Loam", "Silt loam", "Sandy loam", "Silt", "Loamy sand", "Sand")
+names(texture)  <- soil_slope_table[match(names(texture), soil_slope_table$soil_type_short), "code"]
 
+#get the integer code for the soil class
 for(i in 1:nrow(texture)){
-  soil_mat$class[i] <- names(texture)[which(texture[i, ] %in% c(1,2,3))]
+  soil_mat$class[i] <- as.numeric(names(texture)[which(texture[i, ] %in% c(1,2,3))])
+}
+#join data
+mapunits_data <- left_join(mapunits_data, soil_mat[c("OID", "class")], by = c("OID"))
+mapunits_data$class <- as.numeric(mapunits_data$class)
+
+#rasterize the soil class data
+class_rast <- terra::rasterize(terra::vect(mapunits_data), rast(template_raster), field = "class")
+
+s0_rast <- terra::classify(class_rast, rcl = soil_s0_table[, c(2,3)])
+
+slope_percent <- terra::app(slope, function(x) tan(x * (2*pi/360)) * 100)
+
+#bin into groups 1:4
+slope_bin <- terra::classify(slope_percent, c(-1, 0.5, 5, 10, 1000)) + 1
+
+s_rast <- slope_percent
+c0_rast <- slope_percent
+# this is annoying and surely the wrong way to do this, but we need to get a single value for s depending on
+# the slope and soil type. Probably can be done with terra::app and the right function, but I couldn't figure it out
+for(i in 1:4){
+  values(s_rast)[which(values(slope_bin) == i)] <- soil_slope_table[values(class_rast)[which(values(slope_bin) == i)], i+3]
+  values(c0_rast)[which(values(slope_bin) == i)] <- soil_slope_table[values(class_rast)[which(values(slope_bin) == i)], 4]
 }
 
-mapunits_data <- left_join(mapunits_data, soil_mat[c("OID", "class")], by = c("OID"))
-
-mapunits_data$c0 <- soil_runoff_table[base::match(mapunits_data$class, soil_runoff_table$soil_type), "c0"]
-mapunits_data$s0 <- soil_runoff_table[base::match(mapunits_data$class, soil_runoff_table$soil_type), "s0"]
-
-c0_rast <- terra::rasterize(terra::vect(mapunits_data), rast(template_raster), field = "c0", fun="mean") # %>%
-  #terra::mask(rast(template_raster), inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
-s0_rast <- terra::rasterize(terra::vect(mapunits_data), rast(template_raster), field = "s0", fun="mean") # %>%
-  #terra::mask(rast(template_raster), inverse = FALSE, maskvalues = c(NA, 0), updatevalue = 0)
-
-
-# mapunits_data$runoff <- c0 + (1 - c0)*(s / (s + s0))
-
-stormflow_rast <- c0_rast + (1-c0_rast) * (slope / (slope + s0_rast))
+stormflow_rast <- c0_rast + (1-c0_rast) * (s_rast / (s_rast + s0_rast))
 values(stormflow_rast)[values(stormflow_rast) < 0.01] <- 0.01
 values(stormflow_rast)[values(stormflow_rast) > 1] <- 1
 plot(stormflow_rast)

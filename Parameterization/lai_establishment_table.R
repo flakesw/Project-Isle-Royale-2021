@@ -20,6 +20,8 @@ directory <- "D:/Data/fia/rFIA_downloads"
 sp_ref <- read.csv("D:/Data/fia/FIADB_REFERENCE/REF_SPECIES.csv")
 
 #import fia data
+#using rFIA package automatically knits the tables together; you could also
+# use readr::read_csv() or import several csvs then rbind() 
 fia <- readFIA(dir = directory,
                 tables = c("TREE", "SEEDLING"),
                 states = states)
@@ -27,6 +29,15 @@ fia <- readFIA(dir = directory,
 trees <- fia$TREE
 seedlings <- fia$SEEDLING
 
+# Filter what plots to use -----------------------------------------------------
+# Not all plots are in forest, some have been recently treated, etc, and we need
+# to filter those out
+
+
+
+
+
+# Assigns parameters to each species group code --------------------------------
 #TODO is there somewhere else to find this data in a tidier format?
 
 hardwoods <- seq(from=25, to=43)
@@ -45,9 +56,9 @@ S.table <- cbind(hardwoods, hardwood.S)
 S.table <- as.data.frame(S.table)
 colnames(S.table) <- c("SPGRPCD","Model.S")
 
+# Calculate leaf area per tree -------------------------------------------------
+# TODO refactor this, it's pretty bad. Hard to read and RAM-intensive
 
-#TODO refactor this, it's pretty bad
-# calculate leaf area per tree 
 
 trees$DIA.CM <- trees$DIA * 2.54
 trees$HT.M <- trees$HT / 3.2808
@@ -95,8 +106,11 @@ spp_to_use <- c("ABBA",
                 "QURU",
                 "SODE3",
                 "THOC2")
+
 #get SPCD for each species. This will be different depending on how the species are named,
-#but we want a crosswalk from the names used in LANIS to SPCD somehow
+#but we want a crosswalk from the names used in LANDIS to FIA SPCD somehow
+#In this case, I used the USDA PLANTS symbol, which is found in the FIA species reference table
+# to crosswalk to FIA species code
 spcd_to_use <- sp_ref[sp_ref$SPECIES_SYMBOL %in% spp_to_use, ] %>%
   dplyr::arrange(SPECIES_SYMBOL) %>%
   as.data.frame() %>%
@@ -117,16 +131,20 @@ for (i in 1:length(spcd_to_use)){
 
 #if a species is absent from a plot, set values to 0
 SAPPS.PLOT.TOTAL.LEAFAREA[is.na(SAPPS.PLOT.TOTAL.LEAFAREA)] <- 0
-
+#only pull out plots with LAI < 20
+SAPPS.PLOT.TOTAL.LEAFAREA <- SAPPS.PLOT.TOTAL.LEAFAREA[which(SAPPS.PLOT.TOTAL.LEAFAREA$PLOT.LAI < 20), ]
+hist(SAPPS.PLOT.TOTAL.LEAFAREA$PLOT.LAI)
 write.csv(SAPPS.PLOT.TOTAL.LEAFAREA, file = paste("SAPPS.PLOT.TOTAL.LEAFAREA.csv", sep=""))
 
-
+# assign seedlings to different LAI bins, depending on the plot LAI where they're
+# found
 mins <- seq(from=0, to= 19.8, by =0.2)
 maxs <- seq(from=0.2, to = 20.0, by=0.2)
 histogram.index <- seq(from=1, to=100)
 SAPPS.histogram <- as.data.frame(cbind(mins, maxs))
 colnames(SAPPS.histogram) <- c("min","max")
 
+#TODO refactor this loop
 for (i in 1:length(spp_to_use)){
   SP.needed <- spp_to_use[i]
   columns.needed.vec <- c("PLOT.LAI", SP.needed)
@@ -143,7 +161,8 @@ for (i in 1:length(spp_to_use)){
   SAPPS.histogram[,SP.needed] <- mean.inrange
 }
 
-for (i in length(spp_to_use)){
+#draw histograms for each species
+for (i in 1:length(spp_to_use)){
   SP.needed <- spp_to_use[i]
   SPCD.needed <- spcd_to_use[i]
   barplot(height = SAPPS.histogram[,SP.needed], names.arg = SAPPS.histogram$max, main = SP.needed, xlab = "LAI",ylab="Seedlings/plot")
@@ -171,7 +190,7 @@ for (i in 1:length(spp_to_use)){
   PLOT.LAI.LOG <- Table.NoOutliers$PLOT.LAI.LOG
   PLOT.SEEDLINGS <- Table.NoOutliers[,SP.needed]
   PLOT.SEEDLINGS.TOTAL <- sum(PLOT.SEEDLINGS)
-  weights <- PLOT.SEEDLINGS/PLOT.SEEDLINGS.TOTAL
+  weights <- PLOT.SEEDLINGS/PLOT.SEEDLINGS.TOTAL #Number of seedlings of the species divided by total seedlings of the species
   Weighted.LAI.mean <- weighted.mean(x = PLOT.LAI, w = weights)
   Weighted.LAI.var <- weighted.var(x=PLOT.LAI, w=weights)
   Weighted.LAI.log.mean <- weighted.mean(x = PLOT.LAI.LOG, w = weights)
@@ -204,6 +223,9 @@ for (i in 1:length(spp_to_use)){
 
 
 #what breaks should we use?
+#Here, we split up the data into categories based on quantiles; this might not be appropriate
+# if, e.g., you have really long tails that you might want to incorporate rather 
+# than collapsing into one category
 hist(Table.NoOutliers$PLOT.LAI)
 bins <- quantile(Table.NoOutliers$PLOT.LAI, c(1/6,2/6,3/6,4/6,5/6,1))
 

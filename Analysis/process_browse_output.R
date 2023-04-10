@@ -1,6 +1,6 @@
 #process browse
 
-# Wrangle the NECN biomass tables
+# Wrangle the browse extension output tables
 
 # This chunk of code is designed to run directly on the folder of LANDIS model runs
 # and requires additional files like the scenario.txt file to grab some information.
@@ -16,7 +16,7 @@ theme_set(theme_bw())
 scenario_folder <- "./Models/landis_test"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
 # `[`(grep("Scenario", .))
-scenarios <- scenarios[c(1)]
+scenarios <- scenarios[c(1,2,3)]
 
 #some helper functions
 read_plus <- function(flnm) {
@@ -49,8 +49,10 @@ scenario_type <- data.frame(run_location = scenarios,
 
 scenario_type <- scenario_type %>%
   mutate(run_name = unlist(map(strsplit(scenarios, split = "/"), pluck(4, 1)))) %>%
-  mutate(browse = ifelse(grepl(pattern = "no browse", run_name), "No Browse", "Browse")) %>%
-  mutate(climate = ifelse(grepl(pattern = "historical", run_name), "Present Climate", "RCP8.5"))
+  mutate(browse = ifelse(grepl(pattern = "browse", run_name), "Browse", "No Browse")) %>%
+  mutate(climate= ifelse(grepl(pattern = "linear", run_name), "Linear", "Ratio"))
+  # mutate(browse = ifelse(grepl(pattern = "no browse", run_name), "No Browse", "Browse")) %>%
+  # mutate(climate = ifelse(grepl(pattern = "historical", run_name), "Present Climate", "RCP8.5"))
 
 # scenario_type$fire_model <- rep(c("fixed", "mixed"), each = 3)
 
@@ -92,8 +94,8 @@ moosepop <- ggplot(data = browse_summaries2, mapping = aes(x = Time+1998, y = To
   geom_point(aes(colour = climate, shape = climate)) + 
   labs(title = "Total Moose Population",
        subtitle = "by browse scenario and climate scenario",
-       y = "Total Moose Population", x = "Simulation Year") + 
-  geom_smooth(aes(linetype = climate, colour = climate))
+       y = "Total Moose Population", x = "Simulation Year") 
+  # geom_smooth(aes(linetype = climate, colour = climate))
 plot(moosepop)
 # ggsave(file="moosepop.svg", plot=moosepop, width=5, height=4)
 
@@ -127,6 +129,8 @@ ggsave(file = "browsekill.svg", plot = browse_kill, width = 5, height = 4)
 
 #-------------------------------------------------------------------------------
 #Forage maps
+
+
 
 
 

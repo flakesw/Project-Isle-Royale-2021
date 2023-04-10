@@ -1,0 +1,5 @@
+name: NAD83
+datum: nad83
+ellps: grs80
+proj: ll
+no_defs: defined

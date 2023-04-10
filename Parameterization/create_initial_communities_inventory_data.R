@@ -82,7 +82,7 @@ isro_bound <- sf::st_read("./Parameterization/Parameterization data/isle_royale_
 plot(isro_bound)
 plot(sf::st_geometry(inventory_shape), add = TRUE)
 
-
+mapview::mapview(inventory_shape, layer.name = "PI") + mapview::mapview(raster(comm_map_test))
 
 #-------------------------------------------------------------------------------
 # Import data from ISRO
@@ -230,6 +230,7 @@ new_vals <- as.numeric(new_vals)
 
 initial_communities_mapcode <- initial_communities
 values(initial_communities_mapcode) <- new_vals
+
 
 terra::writeRaster(initial_communities_mapcode, 
                    "./Models/LANDIS inputs/input rasters/initial_communities_inv.tif",

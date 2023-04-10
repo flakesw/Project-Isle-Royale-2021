@@ -12,8 +12,11 @@ isro_boundary <- sf::st_read("./Parameterization/Parameterization data/isle_roya
   # Try adding a buffer if you're getting NaN values for variance or st_dev
   sf::st_transform(crs = "+proj=longlat +datum=WGS84") #reproject to CRS that geoknife needs
 
+study_area <- basemaps::draw_ext()
+
+
 #"stencil" is what geoknife uses for the extent of the data
-stencil <- simplegeom(as(isro_boundary, Class = "Spatial"))
+stencil <- simplegeom(as(study_area, Class = "Spatial"))
 
 # the "fabric" is what gets "cut out" in the stencil area, in this case a raster of climate data.
 # find the URL for the data from THREDDS catalog: https://cida.usgs.gov/thredds/catalog.html
@@ -57,6 +60,9 @@ varList <- query(fabric, 'variables') %>%
   `[`(grep(rcp, .)) %>% # what RCP to use?
   `[`(grep(paste(vars, collapse = "|"), .))
 
+
+#we can see what times are available, but it's per variable
+variables(fabric) <- varList[1]
 query(fabric, 'times') #what times are available?
 
 # set up the "knife" which tells the GeoData Portal what to do with the 
@@ -66,7 +72,7 @@ query(fabric, 'times') #what times are available?
 # by the "knife" object:
 # wait = TRUE has R wait while job is processed
 # email =TRUE emails you when process is done. 
-knife <- webprocess(wait = TRUE, email = "your.address@email.com")
+knife <- webprocess(wait = TRUE, email = "sflake@gmail.com")
 query(knife, 'algorithms') #what algorithms are available?
 
 # area grid statistics are the default, but we can change it if we  (we don't)
@@ -90,7 +96,7 @@ error(testjob)
 successful(testjob)
 
 # cancel the job if we need to
-# testjob <- cancel(testjob)
+testjob <- cancel(testjob)
 
 #extract the data from our completed job
 test <- result(testjob)

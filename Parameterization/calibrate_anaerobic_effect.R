@@ -2,9 +2,9 @@
 
 anerob_eff <- function(ratioPrecipPET, pet, drain){
   
-  aneref1 <- 1
+  aneref1 <- 1.5
   aneref2 <- 3
-  aneref3 <- 0.3
+  aneref3 <- .3
   
   anerob <- 1
   
@@ -24,4 +24,4 @@ anerob_eff <- function(ratioPrecipPET, pet, drain){
   return(anerob)
 }
 
-anerob_eff(2, 5, 0)
+anerob_eff(2, 10, 0)

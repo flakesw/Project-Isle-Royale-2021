@@ -1,5 +1,5 @@
 # subset the rasters for a reduced study area
-library("raster")
+library("terra")
 
 setwd("C:/Users/Sam/Documents/Research/Isle Royale")
 
@@ -7,31 +7,33 @@ setwd("C:/Users/Sam/Documents/Research/Isle Royale")
 raster_list  <- list.files(path = "./Models/LANDIS inputs/input rasters", pattern='.tif$', all.files=TRUE, full.names=FALSE)
 
 
-large_mask <- raster("./Models/LANDIS inputs/input rasters/ecoregions.tif")
+large_mask <- rast("./Models/LANDIS inputs/input rasters/ecoregions.tif")
 
-e <- as(extent(-69000, -66000, 5354000, 5357000), 'SpatialPolygons')
-crs(e) <- crs(large_mask)
-subset_mask <- crop(large_mask, e)
+shapes <- sf::st_read("./Parameterization/Parameterization data/browse/loc_shape.shp")
+
+subset_mask <- crop(large_mask, vect(shapes)) %>%
+  mask(vect(shapes))
 
 
 for(i in 1:length(raster_list)){
   #import original raster
-  raster1 <- raster(paste0("./Models/LANDIS inputs/input rasters/", raster_list[i]))
-  data_type <- dataType(raster1)
+  raster1 <- rast(paste0("./Models/LANDIS inputs/input rasters/", raster_list[i]))
+  data_type  <- ifelse(is.int(raster1), "INT2S", "FLT4S")
   # crs(raster1) <- "EPSG:2163"
   
     #clip and mask raster to subset mask
-  raster1_clip <- raster::crop(raster1, extent(subset_mask))
-  raster1_clip <- mask(raster1_clip, subset_mask, maskvalue = 0, updatevalue = 0)
+  raster1_clip <- terra::crop(raster1, subset_mask) %>%
+    terra::mask(subset_mask, maskvalues = NA, updatevalue = 0)
   values(raster1_clip)[is.na(values(raster1_clip))] <- 0
+  if(is.int(raster1)) values(raster1_clip) <- as.integer(values(raster1_clip))
 
   #write raster
-  raster::writeRaster(raster1_clip, 
-                      paste0("./Models/LANDIS inputs/input rasters subset east/",
+  terra::writeRaster(raster1_clip, 
+                      paste0("./Models/LANDIS inputs/input rasters hodgson/",
                              substr(raster_list[i], 1, 
                                     nchar(raster_list[i])-4),
-                             "_subset.tif"),
+                      ".tif"),
                       datatype = data_type,
-                      NAvalue = 0,
                       overwrite = TRUE)
 }
+

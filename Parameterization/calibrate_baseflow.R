@@ -1,18 +1,40 @@
-#calibrate baseflow
+#calibrate baseflow for uscrn sites
 
-#some potential sites
-#Necedah -- nope, weird soils, soil moisture is always over FC. 
-#Chatham -- had to get soils from SSURGO WSS
+#-----------------------------------------------------------------------------
+# Pedotransafer functions
 
-#TODO: fix everything before running again (sol depth, baseflow, stormflow, Henne etc.)
+peterson <- function(h, clay){
+  clay <- clay*100
+  if(h == 330){
+    theta <- 0.01 * (11.83 + 0.96 * clay - 0.008*(clay^2))
+  }
+  if(h == 15000){
+    theta <- 0.01 * (1.74 + 0.76 * clay - 0.005 * (clay^2))
+  }
+  
+  return(theta)
+}
 
+
+#calculate field capacity and pwp for different models
+brookscorey <- function(qr, f, hb, lambda, h){
+  if(h <= hb){return(1)}else{
+    return((hb/h)^lambda)
+  }
+}
+
+vangenuchten <- function(qr, qs, a, n, m, h){
+  return(1/((1 + (a * h)^n)^m))
+}
+
+#-------------------------------------------------------------------------------
 
 library("tidyverse")
 library("raster")
 
 orig_wd <- ("C:/Users/Sam/Documents/Research/Isle Royale")
 setwd(orig_wd)
-test_wd <- "C:/Users/Sam/Documents/Research/Isle Royale/Models/landis_test/necn_1_cell/"
+test_wd <- "C:/Users/Sam/Documents/Research/Isle Royale/Models/landis_test/necn_1_cell_test_mc/"
 
 #some helper functions
 read_plus <- function(flnm) {
@@ -35,6 +57,7 @@ uscrn_files <- list.files("./Parameterization/necn_parameterize/soil moisture",
                           full.names = TRUE,
                     pattern = "CRNS")
 uscrn_swc <- map_df(uscrn_files, .f = read_plus)
+site_full_name <- basename(uscrn_files)
 
 sites <- unique(uscrn_swc$WBAN_NO)
 
@@ -47,9 +70,8 @@ uscrn_monthly_swc <- uscrn_swc %>%
             month = month[1])
 
 #CHANGE for new site
-uscrn_site <- uscrn_monthly_swc[uscrn_monthly_swc$WBAN_NO == sites[5], ]
-
-first_year <- 2009
+i <- 2
+uscrn_site <- uscrn_monthly_swc[uscrn_monthly_swc$WBAN_NO == sites[i], ]
 
 #for climate data
 uscrn_monthly_files <- list.files("./Parameterization/necn_parameterize/soil moisture",
@@ -64,14 +86,14 @@ headers <- scan("./Parameterization/necn_parameterize/soil moisture/headers_mont
 
 #make sure climate and soil data match!
 #TODO figure out what the WBAN_NOs are; we need those to link tables
-uscrn_monthly_clim <- read_table(uscrn_monthly_files[5],  col_names = headers) %>%
+uscrn_monthly_clim <- read_table(uscrn_monthly_files[i],  col_names = headers) %>%
   rename(WBAN_NO = WBANNO) %>%
   mutate(across(everything(), ~na_if(., "-9999"))) %>%
   mutate(across(everything(), ~as.double(.)))
 
-soil_data <- readxl::read_xls("./Parameterization/necn_parameterize/soil moisture/Supplemental_Table_T1_edit.xls")
+soil_data <- readxl::read_xls("./Parameterization/necn_parameterize/soil moisture/baseflow_params.xls")
 soil_data <- as.data.frame(apply(soil_data, 2, function(y) gsub("±.*","",y)))
-soildat <- soil_data[70, ] #CHANGE FOR EACH SITE
+soildat <- soil_data[72, ] #CHANGE FOR EACH SITE -- needs to match site_full_name for the site
 
 #Make a one-cell NECN dataset for our test site
 # Using code from create_custom_test_cell.R
@@ -102,7 +124,7 @@ write_cell <- function(name){
 # Start here to tune
 
 #some parameters for the script
-setwd("./Models/landis_test/necn_1_cell/")
+setwd(test_wd)
 
 #what is the original scenario file name? (should be in the working directory)
 scenario <- readLines("Scenario1.txt")
@@ -115,7 +137,7 @@ raster_folder <- "rasters/"
 ext <- ".tif"
 
 new_folder <- TRUE
-new_folder_name <- "test_WI_baseflow_test/"
+new_folder_name <- "gaylord_baseflow_test/"
 if(!new_folder) new_folder_name <- ""
 
 #make the folders if we want to
@@ -170,7 +192,7 @@ SOM3N <- 0.5 * SOM3N
 write_cell(SOM3N)
 
 #Soil Drain
-soil_drain <- 0.05 #CHANGE THIS
+soil_drain <- .66 #CHANGE THIS
 write_cell(soil_drain)
 
 #Soil Depth
@@ -193,10 +215,10 @@ write_cell(clay)
 # #saxton
 # field_capacity <- brookscorey(qr = 0, f = 0.5094, hb = 38.448, lambda = 0.2948, h = 330)
 # #rawls 1985
-field_capacity <- brookscorey(qr = 0.0364, f = 0.5094, hb = 5.7084, lambda = 0.4753, h = 330)
+#field_capacity <- brookscorey(qr = 0.0482, f = 0.5094, hb = 4.5981, lambda = 0.4348, h = 330)
 # #williams 1992
 # field_capacity <- brookscorey(qr = 0, f = 0.5094, hb = 9.629, lambda = 0.2215, h = 330)
-# field_capacity <- max(uscrn_site$swc, na.rm = TRUE)
+field_capacity <- quantile(uscrn_site$swc, 0.99, na.rm = TRUE)
 write_cell(field_capacity)
 
 #permanent wilt point
@@ -207,24 +229,31 @@ write_cell(field_capacity)
 # 
 # wilt_point <- brookscorey(qr = 0.029, f = 0.5094, hb = 26.2769, lambda = .3755,h = 15000)
 # #rawls 1985
-wilt_point <- brookscorey(qr = 0.0364, f = 0.5094, hb = 5.7084, lambda = 0.4753, h = 15000)
+#wilt_point <- brookscorey(qr = 0.0482, f = 0.5094, hb = 4.5981, lambda = 0.4348, h = 15000)
 # #williams 1992
 # wilt_point <- brookscorey(qr = 0, f = 0.5094, hb = 9.629, lambda = 0.2215, h = 15000)
-# wilt_point <- min(uscrn_site$swc, na.rm = TRUE)
+wilt_point <- quantile(uscrn_site$swc, 0.01, na.rm = TRUE)
 write_cell(wilt_point)
 
 #baseflow
-baseflow <- 0  #CHANGE -- TUNING PARAMETER
+baseflow <- 0.35 #CHANGE -- TUNING PARAMETER
 write_cell(baseflow)
 
 # #stormflow
 # #CHANGE THIS
 # # See create_soil_and_hyrdo.R. This is based on soil texture, just input the parameters by hand
-c0 <- 0.13
-s0 <- 0.59
+# from the soil runoff table
+soil_runoff_table <- data.frame(
+  soil_type = c("Sand", "Loamy sand", "Sandy loam", "Loam", "Silt loam", "Silt", "Sandy clay loam", "Clay loam", "Silty clay loam", "Sandy clay", "Silty clay", "Clay"),
+  c0 = c(0.03, 0.07, 0.1, 0.13, 0.17, 0.20, 0.23, 0.27, 0.3, 0.33, 0.37, 0.4),
+  s0 = c(0.68, 0.65, 0.62, 0.59, 0.56, 0.53, 0.5, 0.47, 0.44, 0.41, 0.38, 0.35)
+)
+
+c0 <- 0.07
+s0 <- 0.65
 s <- 0 #slope steepness -- get from DEM or SSURGO
-# stormflow <- c0 + (1 - c0)*(s / (s + s0))
-stormflow <- 0
+stormflow <- c0 + (1 - c0)*(s / (s + s0))
+# stormflow <- 0
 write_cell(stormflow)
 
 # species biomass cohorts (initial communities)
@@ -297,10 +326,11 @@ write(initial_communities_pointer, file = paste0("./", new_folder_name, "initial
 clim_reform <- uscrn_monthly_clim %>%
   mutate(TIMESTEP = lubridate::ym(as.character(LST_YRMO)),
          zeros = 0) %>%
-  dplyr::filter(TIMESTEP > as.POSIXct("2010-12-31", format = "%Y-%m-%d")) %>% #CHANGE DATES to match soil water data
-  dplyr::filter(TIMESTEP < as.POSIXct("2022-01-01", format = "%Y-%m-%d")) %>%
+  dplyr::filter(TIMESTEP >= as.POSIXct("2008-01-01", format = "%Y-%m-%d")) %>% #CHANGE DATES to match soil water data
+  dplyr::filter(TIMESTEP <= as.POSIXct("2021-12-31", format = "%Y-%m-%d")) %>%
   mutate(TIMESTEP = paste0(as.character(TIMESTEP), "T00:00:00Z"))
 
+first_year <- 2008
 
 #names for LANDIS
 var_rows <- c("#ppt",
@@ -362,8 +392,8 @@ write(climate_generator, file = paste0("./", new_folder_name, climate_generator_
 #should species information be copied over?
 copy_species <- TRUE
 species_filename <- "species.txt"
-necn_species_filename <- "NECN_Spp_Table.csv"
-functional_filename <- "NECN_Functional_Table.csv"
+necn_species_filename <- "NECN_Spp_Table_inv.csv"
+functional_filename <- "NECN_Functional_Table_inv_moisture.csv"
 # species
 if(new_folder){
   spp <- readLines(species_filename)
@@ -392,31 +422,33 @@ setwd(new_folder_name)
 shell.exec("Scenario1.bat")
 
 
+Sys.sleep(30)
+
 ################################################################################
 ## Compare simulated to observed soil moisture
 setwd(orig_wd)
 
-sim_moisture <- read.csv(paste0("./Models/landis_test/necn_1_cell/", new_folder_name, "/NECN-succession-monthly-log.csv"))
-sim_moisture$Year <- sim_moisture$Time + 2010 #CHANGE TO MATCH INPUTS -- add one less than desired year
+sim_moisture <- read.csv(paste0("./Models/landis_test/necn_1_cell_test_mc/", new_folder_name, "/NECN-succession-monthly-log.csv"))
+sim_moisture$Year <- sim_moisture$Time + as.numeric(first_year) - 1 #CHANGE TO MATCH INPUTS -- add one less than desired year
 sim_moisture$Month <- ifelse(sim_moisture$Month < 10, paste0("0", sim_moisture$Month), sim_moisture$Month)
 sim_moisture$time <- lubridate::parse_date_time(as.character(paste0(sim_moisture$Year, sim_moisture$Month)), "ym")
 sim_moisture$vwc <- ifelse(sim_moisture$SoilWaterContent > 0, sim_moisture$SoilWaterContent/soil_depth, 0)
-sim_moisture$avail_wat_landis <- ifelse(sim_moisture$vwc > field_capacity, field_capacity, 
-                                 ifelse(sim_moisture$vwc < wilt_point, 0, 
-                                        sim_moisture$vwc - wilt_point))
+sim_moisture$avail_wat_landis <- ifelse(sim_moisture$vwc > field_capacity, field_capacity,
+                                        ifelse(sim_moisture$vwc < wilt_point, 0,
+                                               sim_moisture$vwc - wilt_point))
 
 mean(sim_moisture$vwc)
 
-uscrn_site <- uscrn_monthly_swc[uscrn_monthly_swc$WBAN_NO == sites[4], ]
-uscrn_site$avail_wat_uscrn <- ifelse(uscrn_site$swc > field_capacity, field_capacity, 
-                               ifelse(uscrn_site$swc < wilt_point, 0, 
-                                      uscrn_site$swc - wilt_point))
+uscrn_site$avail_wat_uscrn <- ifelse(uscrn_site$swc > field_capacity, field_capacity,
+                                    ifelse(uscrn_site$swc < wilt_point, 0,
+                                           uscrn_site$swc - wilt_point))
 
 mean(uscrn_site$swc, na.rm = TRUE)
 
-uscrn_site$time <- lubridate::parse_date_time(as.character(paste0(uscrn_site$year, uscrn_site$month)), "ym")
-
+uscrn_site$time <- as.POSIXct(as.Date(paste0(uscrn_site$year, "-", uscrn_site$month, "-01 UTC")))
 uscrn_site <- uscrn_site[uscrn_site$time %in% sim_moisture$time, ]
+sim_moisture <- sim_moisture %>%
+  filter(sim_moisture$time %in% uscrn_site$time)
 
 test <- left_join(uscrn_site, sim_moisture, by = c("time"))
 
@@ -438,33 +470,15 @@ test_annual <- test %>%
   group_by(Year) %>%
   summarise(mean_swc_uscrn = mean(swc, na.rm = TRUE),
             mean_swc_landis = mean(vwc, na.rm = TRUE))
-
 plot(test_annual$mean_swc_landis ~ test_annual$mean_swc_uscrn)
 abline(0,1)
 
-#-----------------------------------------------------------------------------
-# van Genuchten
+test_annual <- test %>%
+  group_by(Year) %>%
+  summarise(mean_swc_uscrn = mean(avail_wat_uscrn, na.rm = TRUE),
+            mean_swc_landis = mean(avail_wat_landis, na.rm = TRUE))
+plot(test_annual$mean_swc_landis ~ test_annual$mean_swc_uscrn)
+abline(0,1)
 
-peterson <- function(h, clay){
-  clay <- clay*100
-  if(h == 330){
-    theta <- 0.01 * (11.83 + 0.96 * clay - 0.008*(clay^2))
-  }
-  if(h == 15000){
-    theta <- 0.01 * (1.74 + 0.76 * clay - 0.005 * (clay^2))
-  }
-  
-  return(theta)
-}
-  
 
-#calculate field capacity and pwp for different models
-brookscorey <- function(qr, f, hb, lambda, h){
-  if(h <= hb){return(1)}else{
-    return((hb/h)^lambda)
-  }
-}
 
-vangenuchten <- function(qr, qs, a, n, m, h){
-  return(1/((1 + (a * h)^n)^m))
-}

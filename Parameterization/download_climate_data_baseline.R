@@ -1,5 +1,6 @@
 # download and process climate data
 # use geoknife, guide found here: https://cran.r-project.org/web/packages/geoknife/vignettes/geoknife.html
+# another good guide with thorough explanations is found here: https://owi.usgs.gov/R/training-curriculum/usgs-packages/geoknife-intro/index.html
 
 library("geoknife")
 library("sf")
@@ -7,7 +8,7 @@ library("sp")
 library("tidyverse")
 
 #shapefile for study area
-isro_boundary <- sf::st_read("./calibration_data/isle_royale_boundary_buffer/isle_royale_boundary_buffer.shp") %>%
+isro_boundary <- sf::st_read("./Parameterization/Parameterization data/isle_royale_boundary_buffer/isle_royale_boundary_buffer.shp") %>%
   sf::st_buffer(dist = 10000) %>% #the study area was too small to calculate variance! 
   # Try adding a buffer if you're getting NaN values for variance or st_dev
   sf::st_transform(crs = "+proj=longlat +datum=WGS84") #reproject to CRS that geoknife needs
@@ -24,9 +25,10 @@ webdatasets[grep("UofIMETDATA", webdatasets@group)]
 vars_url <- c("pr", "tmmx", "tmmn", "vs", "th")
 urls <- paste0("http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_met_", vars_url, "_1979_CurrentYear_CONUS.nc")
 
-fabric <- webdata(url = urls[1])
+fabric <- webdata(url = urls[1]) #choose one climate variable to start with
 
 query(fabric, 'variables')
+
 vars_long <- c("precipitation_amount", "daily_maximum_temperature", 
                "daily_minimum_temperature", "daily_mean_wind_speed", 
                "daily_mean_wind_direction")
@@ -43,7 +45,7 @@ summary_stats <- c("MEAN", "VARIANCE", "STD_DEV")
 # by the "knife" object:
 # wait = TRUE has R wait while job is processed
 # email =TRUE emails you when process is done. 
-knife <- webprocess(wait = TRUE, email = "sflake@email.com")
+knife <- webprocess(wait = FALSE, email = "sflake@email.com")
 query(knife, 'algorithms')
 
 # area grid statistics are the default, but we can change it if we  (we don't)

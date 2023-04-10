@@ -9,10 +9,12 @@ diverging_color_ramp <- function(ras){
 
 }
 
-soilc_init <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/NECN/SOMTC-20.img")
-
-soilc1 <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/NECN/SOMTC-80.img")
+soilc_init <- rast("./Models/landis_test/mc_test/NECN/SOMTC-5.img")
+plot(soilc_init)
+hist(values(soilc_init)[values(soilc_init) != 0])
+soilc1 <- rast("./Models/landis_test/mc_test/NECN/SOMTC-80.img")
 plot(soilc1)
+hist(values(soilc1)[values(soilc1) != 0])
 
 
 # soilcdiff <- soilc1 - soilc2
@@ -23,19 +25,59 @@ soilc_change <- soilc1 - soilc_init
 
 NAflag(soilc_change) <- 0
 
-plot(soilc_change)
+plot(soilc_change, col = diverging_color_ramp(soilc_change))
+plot(values(soilc_change)/values(soilc_init) ~ values(soilc_init))
 
-som1surf_init <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/NECN/SOMTC-20.img")
+#som1Csurf
+som1surf_init <- rast("./Models/landis_test/mc_test/NECN-Initial-Conditions/SOM1Nsurface-20.img")
+plot(som1surf_init)
+som1surf_80 <- rast("./Models/landis_test/mc_test/NECN-Initial-Conditions/SOM1Nsurface-80.img")
+plot(som1surf_80)
 
-soilc1 <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/NECN/SOMTC-80.img")
-plot(soilc1)
+soilc_change <- som1surf_80 - som1surf_init
+soilc_change <- soilc_change/60
 
+NAflag(soilc_change) <- 0
+plot(soilc_change, col = diverging_color_ramp(soilc_change))
+zoom(soilc_change)
+click(soilc_change)
 
-# soilcdiff <- soilc1 - soilc2
-# NAflag(soilcdiff) <- 0
-# plot(soilcdiff)
+##som1Csoil
+som1soil_init <- rast("./Models/landis_test/mc_test/NECN-Initial-Conditions/SOM1Csoil-20.img")
+plot(som1soil_init)
+som1soil_80 <- rast("./Models/landis_test/mc_test/NECN-Initial-Conditions/SOM1Csoil-80.img")
+plot(som1soil_80)
 
-soilc_change <- soilc1 - soilc_init
+soilc_change <- som1soil_80 - som1soil_init
+soilc_change <- soilc_change/60 #grams per meter squared per year
+
+NAflag(soilc_change) <- 0
+plot(soilc_change, col = diverging_color_ramp(soilc_change))
+zoom(soilc_change)
+click(soilc_change)
+
+#SOM2----------------------
+som2_init <- rast("./Models/landis_test/mc_test/NECN-Initial-Conditions/SOM2C-20.img")
+plot(som2_init)
+som2_80 <- rast("./Models/landis_test/mc_test/NECN-Initial-Conditions/SOM2C-80.img")
+plot(som2_80)
+
+soilc_change <- som2_80 - som2_init
+soilc_change <- soilc_change/60 #grams per meter squared per year
+
+NAflag(soilc_change) <- 0
+plot(soilc_change, col = diverging_color_ramp(soilc_change))
+zoom(soilc_change)
+click(soilc_change)
+
+#SOM3----------------------
+som3_init <- rast("./Models/landis_test/mc_test/NECN-Initial-Conditions/SOM3C-20.img")
+plot(som3_init)
+som3_80 <- rast("./Models/landis_test/mc_test/NECN-Initial-Conditions/SOM3C-80.img")
+plot(som3_80)
+
+soilc_change <- som1soil_80 - som1soil_init
+soilc_change <- soilc_change/80 #grams per meter squared per year
 
 NAflag(soilc_change) <- 0
 plot(soilc_change, col = diverging_color_ramp(soilc_change))
@@ -43,9 +85,11 @@ zoom(soilc_change)
 click(soilc_change)
 
 
+#-----------------------------------------------------
+
 ## biomass over time
 
-biomass_stack <- list.files("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/biomass",
+biomass_stack <- list.files("./Models/landis_test/mc_test/biomass",
                           full.names = TRUE) %>%
   `[`(grepl("TotalBiomass", .)) %>%
   rast()
@@ -53,22 +97,49 @@ biomass_stack <- list.files("./Models/landis_test/browse historical spinup - red
 plot(biomass_stack, range = c(0, 30000))
 
 
+## ANPP ------------------------------------------------------------------------
+
+anpp_5 <- rast("./Models/landis_test/mc_test/NECN/AG_NPP-5.img")
+plot(anpp_5)
+mean(values(anpp_5)[values(anpp_5) > 0])
+anpp_80 <- rast("./Models/landis_test/mc_test/NECN/AG_NPP-80.img")
+plot(anpp_80)
+mean(values(anpp_80)[values(anpp_80) > 0])
+
+anpp_change <- anpp_80 - anpp_5
+
+NAflag(anpp_change) <- 0
+
+plot(anpp_change, col = diverging_color_ramp(anpp_change))
+
+## NEE ------------------------------------------------------------------------
+
+nee_5 <- rast("./Models/landis_test/mc_test/NECN/ANEE-5.img") - 1000
+NAflag(nee_5) <- -1000
+plot(nee_5, col = diverging_color_ramp(nee_5))
+nee_80 <- rast("./Models/landis_test/mc_test/NECN/ANEE-80.img") - 1000
+NAflag(nee_80) <- -1000
+plot(nee_80, col = diverging_color_ramp(nee_80))
+
+nee_change <- nee_80 - nee_5
+
+NAflag(nee_change) <- 0
+
+plot(nee_change, col = diverging_color_ramp(nee_change))
+
+
 
 ##
 
-biomass_init <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/biomass/bio2-TotalBiomass-0.img")
+biomass_init <- rast("./Models/landis_test/mc_test/biomass/bio2-TotalBiomass-20.img")
 plot(biomass_init)
 hist(values(biomass_init)[values(biomass_init) > 0])
+mean(values(biomass_init)[values(biomass_init) > 0])
 
-biomass1 <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/biomass/bio2-TotalBiomass-80.img")
+biomass1 <- rast("./Models/landis_test/mc_test/biomass/bio2-TotalBiomass-80.img")
 plot(biomass1)
 hist(values(biomass1)[values(biomass1) > 0])
-
-
-
-# biomassdiff <- biomass1 - biomass2
-# NAflag(biomassdiff) <- 0
-# plot(biomassdiff)
+mean(values(biomass1)[values(biomass1) > 0])
 
 biomass_change <- biomass1 - biomass_init
 NAflag(biomass_change) <- 0
@@ -84,46 +155,41 @@ plot(values(biomass_change) ~ values(soilc_change))
 #there is a group of similar plots that lost a ton of biomass and gained a lot of soil C
 #Most sites that lost a lot of soil C had little change in biomass
 
-biomass_init <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/biomass/bio2-TotalBiomass-0.img")
-plot(biomass_init)
-hist(values(biomass_init)[values(biomass_init) > 0])
 
-biomass1 <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/biomass/bio2-TotalBiomass-80.img")
-plot(biomass1)
-hist(values(biomass1)[values(biomass1) > 0])
-biomass_change <- biomass1 - biomass_init
-NAflag(biomass_change) <- 0
-plot(biomass_change)
-
-comm_output_end <- read_csv("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/community-input-file-80.csv")
-comm_map_end <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/output-community-80.img")
-comm_output_begin<- read_csv("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/community-input-file-0.csv")
-comm_map_begin <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/output-community-0.img")
+#what sites had big changes in biomass? ----------------------------------------
+#using community input files
+comm_output_end <- read_csv("./Models/landis_test/mc_test/community-input-file-80.csv")
+comm_map_end <- rast("./Models/landis_test/mc_test/output-community-80.img")
+comm_output_begin<- read_csv("./Models/landis_test/mc_test/community-input-file-0.csv")
+comm_map_begin <- rast("./Models/landis_test/mc_test/output-community-0.img")
 comm_output_init <- read_csv("./Models/LANDIS inputs/NECN files/initial_communities_inv.csv")
 comm_map_init <- rast("./Models/LANDIS inputs/input rasters/initial_communities_inv.tif")
 
-sites_low_biomass <- values(comm_map_end)[which(values(biomass_change) < -25000)]
+sites_low_biomass <- values(comm_map_end)[which(values(biomass_change) < -20000)]
 comm_low_biomass <- comm_output_end[comm_output_end$MapCode %in% sites_low_biomass, ]
-sites_low_biomass_begin <- values(comm_map_begin)[which(values(biomass_change) < -25000)]
+sites_low_biomass_begin <- values(comm_map_begin)[which(values(biomass_change) < -20000)]
 comm_low_biomass_begin <- comm_output_begin[comm_output_begin$MapCode %in% sites_low_biomass_begin, ]
-sites_low_biomass_init <- values(comm_map_init)[which(values(biomass_change) < -25000)]
+sites_low_biomass_init <- values(comm_map_init)[which(values(biomass_change) < -20000)]
 comm_low_biomass_init <- comm_output_init[which(comm_output_init$MapCode %in% sites_low_biomass_init), ]
 
 sites_high_biomass <- values(comm_map_end)[which(values(biomass_change) > 10000)]
 comm_high_biomass <- comm_output_end[comm_output_end$MapCode %in% sites_high_biomass, ]
 
-comm_map_test <- comm_map_end
+#where are cells with big losses in biomass?
+comm_map_test <- comm_map_init
 values(comm_map_test) <- 0
 # values(comm_map_test)[values(comm_map) %in% comm_low_biomass$MapCode] <- 
 #   values(comm_map)[values(comm_map) %in% comm_low_biomass$MapCode]
-values(comm_map_test)[values(comm_map_end) %in% comm_high_biomass$MapCode] <- 
-  values(comm_map_end)[values(comm_map_end) %in% comm_high_biomass$MapCode]
+values(comm_map_test)[values(comm_map_end) %in% comm_low_biomass$MapCode] <- 
+  values(comm_map_init)[values(comm_map_end) %in% comm_low_biomass$MapCode]
 plot(comm_map_test)
 
 
+
+
 ### What sort of sites experienced greatest increases in biomass?
-comm_output_init <- read_csv("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/community-input-file-0.csv")
-comm_map_init <- rast("./Models/landis_test/browse historical spinup - reduce est - anpp066 - fix soil and mc/output-community-0.img")
+comm_output_init <- read_csv("./Models/landis_test/mc_test/community-input-file-0.csv")
+comm_map_init <- rast("./Models/landis_test/mc_test/output-community-0.img")
 
 sites_high_biomass_init <- values(comm_map_init)[which(values(biomass_change) > 10000)]
 comm_high_biomass_init <- comm_output_init[comm_output_init$MapCode %in% sites_high_biomass_init, ]
@@ -177,3 +243,36 @@ hist(values(sm_mean)[!is.na(values(eco))], xlim = c(0, 50), breaks = seq(0, 101,
 
 plot(values(soilc_change) ~ values(sm_mean))
 
+
+
+
+
+
+#------------------------------------------------------------------------------
+# Compare models --------------------------------------------------------------
+
+
+biomass_nobrowse <- rast("./Models/landis_test/browse historical spinup - nobrowse/biomass/bio2-TotalBiomass-80.img")
+plot(biomass_nobrowse)
+hist(values(biomass_nobrowse)[values(biomass_nobrowse) > 0])
+
+biomass_browse <- rast("./Models/landis_test/browse historical spinup - no alder/biomass/bio2-TotalBiomass-80.img")
+plot(biomass_browse)
+zoom(biomass_browse)
+hist(values(biomass_browse)[values(biomass_browse) > 0])
+
+
+
+diff <- biomass_nobrowse - biomass_browse
+plot(diff, col = diverging_color_ramp(diff))
+zoom(diff)
+
+plot(values(diff) ~ values(soil_drain))
+plot(values(diff) ~ values(sm_mean))
+
+summary(lm(values(diff) ~ values(soil_drain)))
+summary(lm(values(diff) ~ values(sm_mean)))
+#moose slow wetland encroachment, beacuse there is a lot of establishment in wet areas
+
+test <- rast("C:/Users/Sam/Documents/Research/Extension-Biomass-Browse/tests/small landscape test/NECN/-5.img")
+plot(test)
