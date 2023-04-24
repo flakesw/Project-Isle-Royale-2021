@@ -41,6 +41,5 @@ rsconnect/
 #output rasters
 */NECN/*
 *.gis
-*.img
 Parameterization/Parameterization data/
 Models/landis_test
