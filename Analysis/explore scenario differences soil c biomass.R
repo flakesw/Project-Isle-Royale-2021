@@ -9,10 +9,11 @@ diverging_color_ramp <- function(ras){
 
 }
 
-soilc_init <- rast("./Models/landis_test/mc_test/NECN/SOMTC-5.img")
+
+soilc_init <- rast("./Models/landis_test/mc_test - linear/NECN/SOMTC-20.img")
 plot(soilc_init)
 hist(values(soilc_init)[values(soilc_init) != 0])
-soilc1 <- rast("./Models/landis_test/mc_test/NECN/SOMTC-80.img")
+soilc1 <- rast("./Models/landis_test/mc_test - linear/NECN/SOMTC-80.img")
 plot(soilc1)
 hist(values(soilc1)[values(soilc1) != 0])
 
@@ -26,12 +27,91 @@ soilc_change <- soilc1 - soilc_init
 NAflag(soilc_change) <- 0
 
 plot(soilc_change, col = diverging_color_ramp(soilc_change))
+hist(values(soilc_change))
+clamped_ratio_change <- clamp(soilc_change/soilc_init, upper = 1)
+plot(clamp(soilc_change/soilc_init, upper = 1))
 plot(values(soilc_change)/values(soilc_init) ~ values(soilc_init))
+plot(values(soilc_change) ~ values(soilc_init))
+
+#exploring some explanatory variables-------------------------------------------
+soilm <- rast("./Models/landis_test/mc_test - linear/NECN/SoilWater-60.img")
+plot(soilm)
+
+soil_drain <- rast("./Models/LANDIS Inputs/input rasters/soil_drain.tif")
+plot(soil_drain)
+
+soil_sand <- rast("./Models/LANDIS Inputs/input rasters/sand.tif")
+plot(soil_sand)
+
+soil_depth <- rast("./Models/LANDIS Inputs/input rasters/soil_depth.tif")
+plot(soil_depth)
+
+wilt <- rast("./Models/LANDIS Inputs/input rasters/wilt_point.tif")
+fc <- rast("./Models/LANDIS Inputs/input rasters/field_capacity.tif") 
+
+stormflow <- rast("./Models/LANDIS Inputs/input rasters/stormflow.tif")
+baseflow <- rast("./Models/LANDIS Inputs/input rasters/baseflow.tif") 
+
+total_n <- rast("./Models/landis_test/mc_test - linear/NECN-Initial-Conditions/SOM1Nsoil-5.img")+
+  rast("./Models/landis_test/mc_test - linear/NECN-Initial-Conditions/SOM1Nsurface-5.img")+
+  rast("./Models/landis_test/mc_test - linear/NECN-Initial-Conditions/SOM2N-5.img")+
+  rast("./Models/landis_test/mc_test - linear/NECN-Initial-Conditions/SOM3N-5.img")
+
+
+biomass_init <- rast("./Models/landis_test/mc_test - linear/biomass/bio2-TotalBiomass-0.img")
+
+alder_biomass <- rast("./Models/landis_test/mc_test - linear/biomass/bio2-ALIN2-0.img")
+
+anerb <-  rast("./Models/landis_test/mc_test - linear/NECN/AnaerobicEffect-10.img")
+
+
+hist(values(soilc_init)[values(clamped_ratio_change) > 0.99])
+hist(values(soilc_init)[values(clamped_ratio_change) < 0.99])
+hist(values(biomass_init)[values(clamped_ratio_change) > 0.99])
+hist(values(biomass_init)[values(clamped_ratio_change) < 0.99])
+hist(values(soil_depth)[values(clamped_ratio_change) > 0.99])
+hist(values(soil_depth)[values(clamped_ratio_change) < 0.99])
+hist(values(soil_drain)[values(clamped_ratio_change) > 0.99])
+hist(values(soil_drain)[values(clamped_ratio_change) < 0.99])
+hist(values(soil_sand)[values(clamped_ratio_change) > 0.99])
+hist(values(soil_sand)[values(clamped_ratio_change) < 0.99])
+hist(values(wilt)[values(clamped_ratio_change) > 0.99])
+hist(values(wilt)[values(clamped_ratio_change) < 0.99])
+hist(values(fc)[values(clamped_ratio_change) > 0.99])
+hist(values(fc)[values(clamped_ratio_change) < 0.99])
+hist(values(stormflow)[values(clamped_ratio_change) > 0.99])
+hist(values(stormflow)[values(clamped_ratio_change) < 0.99])
+hist(values(baseflow)[values(clamped_ratio_change) > 0.99])
+hist(values(baseflow)[values(clamped_ratio_change) < 0.99])
+hist((values(soilc_init)/values(total_n))[values(clamped_ratio_change) > 0.99], xlim = c(0, 100))
+hist((values(soilc_init)/values(total_n))[values(clamped_ratio_change) < 0.99], xlim = c(0, 100))
+hist(values(alder_biomass)[values(clamped_ratio_change) > 0.99])
+hist(values(alder_biomass)[values(clamped_ratio_change) < 0.99])
+hist(values(anerb)[values(clamped_ratio_change) > 0.99])
+hist(values(anerb)[values(clamped_ratio_change) < 0.99])
+
+plot(values(biomass_init)[values(clamped_ratio_change) > 0.99] ~ values(soilc_change)[values(clamped_ratio_change) > 0.99])
+plot(values(soil_depth)[values(clamped_ratio_change) > 0.99] ~ values(soilc_change)[values(clamped_ratio_change) > 0.99])
+plot(values(soil_drain)[values(clamped_ratio_change) > 0.99] ~ values(soilc_change)[values(clamped_ratio_change) > 0.99])
+plot(values(soil_sand)[values(clamped_ratio_change) > 0.99] ~ values(soilc_change)[values(clamped_ratio_change) > 0.99])
+plot(values(wilt)[values(clamped_ratio_change) > 0.99] ~ values(soilc_change)[values(clamped_ratio_change) > 0.99])
+plot(values(fc)[values(clamped_ratio_change) > 0.99] ~ values(soilc_change)[values(clamped_ratio_change) > 0.99])
+plot(values(stormflow)[values(clamped_ratio_change) > 0.99] ~ values(soilc_change)[values(clamped_ratio_change) > 0.99])
+plot(values(baseflow)[values(clamped_ratio_change) > 0.99] ~ values(soilc_change)[values(clamped_ratio_change) > 0.99])
+plot(values(alder_biomass)[values(clamped_ratio_change) > 0.99] ~ values(soilc_change)[values(clamped_ratio_change) > 0.99])
+plot(values(anerb)[values(clamped_ratio_change) > 0.99] ~ values(soilc_change)[values(clamped_ratio_change) > 0.99])
+
+
+#there's some weird wetland-ish plots with 200cm soil, near-0% sand, 0 drain that have no soil C to start
+#there's a gradient that's affecting productivity (probably) for a given initial stand composition, which causes diagonal lines in the initial biomass ~ soilc_change plot
+#mostly (but not entirely) higher baseflow areas
+#more low and high C:N ratio sites than expected
+#very few have anaerobic effect
 
 #som1Csurf
-som1surf_init <- rast("./Models/landis_test/mc_test/NECN-Initial-Conditions/SOM1Nsurface-20.img")
+som1surf_init <- rast("./Models/landis_test/mc_test - linear/NECN-Initial-Conditions/SOM1Csurface-20.img")
 plot(som1surf_init)
-som1surf_80 <- rast("./Models/landis_test/mc_test/NECN-Initial-Conditions/SOM1Nsurface-80.img")
+som1surf_80 <- rast("./Models/landis_test/mc_test - linear/NECN-Initial-Conditions/SOM1Csurface-80.img")
 plot(som1surf_80)
 
 soilc_change <- som1surf_80 - som1surf_init
@@ -89,7 +169,7 @@ click(soilc_change)
 
 ## biomass over time
 
-biomass_stack <- list.files("./Models/landis_test/mc_test/biomass",
+biomass_stack <- list.files("./Models/Model templates/spinup model/biomass",
                           full.names = TRUE) %>%
   `[`(grepl("TotalBiomass", .)) %>%
   rast()
@@ -129,14 +209,18 @@ plot(nee_change, col = diverging_color_ramp(nee_change))
 
 
 
-##
+#---------------------------- wind
+wind <- rast("./Models/landis_test/mc_test - linear/wind/severity-30.img")
+plot(wind)
 
-biomass_init <- rast("./Models/landis_test/mc_test/biomass/bio2-TotalBiomass-20.img")
+## Change in biomass ----------------------
+
+biomass_init <- rast("./Models/Model templates/spinup model/biomass/bio2-TotalBiomass-0.img")
 plot(biomass_init)
 hist(values(biomass_init)[values(biomass_init) > 0])
 mean(values(biomass_init)[values(biomass_init) > 0])
 
-biomass1 <- rast("./Models/landis_test/mc_test/biomass/bio2-TotalBiomass-80.img")
+biomass1 <- rast("./Models/Model templates/spinup model/biomass/bio2-TotalBiomass-20.img")
 plot(biomass1)
 hist(values(biomass1)[values(biomass1) > 0])
 mean(values(biomass1)[values(biomass1) > 0])
@@ -144,11 +228,9 @@ mean(values(biomass1)[values(biomass1) > 0])
 biomass_change <- biomass1 - biomass_init
 NAflag(biomass_change) <- 0
 hist(values(biomass_change))
-plot(biomass_change)
+plot(biomass_change, col = diverging_color_ramp(biomass_change))
 zoom(biomass_change)
 click(biomass_change)
-plot(biomass_change, col = diverging_color_ramp(biomass_change))
-
 
 #compare biomass change and soil c change
 plot(values(biomass_change) ~ values(soilc_change))
@@ -158,19 +240,21 @@ plot(values(biomass_change) ~ values(soilc_change))
 
 #what sites had big changes in biomass? ----------------------------------------
 #using community input files
-comm_output_end <- read_csv("./Models/landis_test/mc_test/community-input-file-80.csv")
-comm_map_end <- rast("./Models/landis_test/mc_test/output-community-80.img")
-comm_output_begin<- read_csv("./Models/landis_test/mc_test/community-input-file-0.csv")
-comm_map_begin <- rast("./Models/landis_test/mc_test/output-community-0.img")
+comm_output_end <- read_csv("./Models/landis_test/mc_test - linear/community-input-file-80.csv")
+comm_map_end <- rast("./Models/landis_test/mc_test - linear/output-community-80.img")
+comm_output_begin<- read_csv("./Models/landis_test/mc_test - linear/community-input-file-0.csv")
+comm_map_begin <- rast("./Models/landis_test/mc_test - linear/output-community-0.img")
 comm_output_init <- read_csv("./Models/LANDIS inputs/NECN files/initial_communities_inv.csv")
 comm_map_init <- rast("./Models/LANDIS inputs/input rasters/initial_communities_inv.tif")
 
-sites_low_biomass <- values(comm_map_end)[which(values(biomass_change) < -20000)]
+sites_low_biomass <- values(comm_map_end)[which(values(biomass_change) < -10000)]
 comm_low_biomass <- comm_output_end[comm_output_end$MapCode %in% sites_low_biomass, ]
-sites_low_biomass_begin <- values(comm_map_begin)[which(values(biomass_change) < -20000)]
+sites_low_biomass_begin <- values(comm_map_begin)[which(values(biomass_change) < -10000)]
 comm_low_biomass_begin <- comm_output_begin[comm_output_begin$MapCode %in% sites_low_biomass_begin, ]
-sites_low_biomass_init <- values(comm_map_init)[which(values(biomass_change) < -20000)]
+sites_low_biomass_init <- values(comm_map_init)[which(values(biomass_change) < -10000)]
 comm_low_biomass_init <- comm_output_init[which(comm_output_init$MapCode %in% sites_low_biomass_init), ]
+table(sites_low_biomass_init)
+
 
 sites_high_biomass <- values(comm_map_end)[which(values(biomass_change) > 10000)]
 comm_high_biomass <- comm_output_end[comm_output_end$MapCode %in% sites_high_biomass, ]
@@ -186,6 +270,25 @@ plot(comm_map_test)
 
 
 
+#site to investigate
+sites <- which(values(clamped_ratio_change) >0.5)
+sites <- which(values(soilc_change) > 4000) 
+sites <- which(values(biomass_change) < -5000) 
+table(comm_map_init[sites])
+site <- sites[4]
+comm_map_init[site]
+sites[which(values(comm_map_init) == 100) & which(values(biomass_change) < -20000)]
+
+
+#single out one mapcode
+test <- biomass_change
+values(test) <- 0
+values(test)[values(comm_map_init) == 115] <- values(biomass_change)[values(comm_map_init) == 115]
+NAflag(test) <- 0
+plot(test)
+
+table(values(comm_map_init))
+which(values(comm_map_init) == 28 & values(soilc_change) > 6000)
 
 ### What sort of sites experienced greatest increases in biomass?
 comm_output_init <- read_csv("./Models/landis_test/mc_test/community-input-file-0.csv")

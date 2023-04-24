@@ -9,9 +9,14 @@ theme_set(theme_bw())
 
 #what folder do all the runs to be analyzed live in?
 # scenario_folder <- "E:/ISRO LANDIS/new runs"
-scenario_folder <- "./Models/Model templates"
-scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
-# `[`(grep("Scenario", .))
+# scenario_folder <- "./Models/Model templates"
+# scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
+# # `[`(grep("Scenario", .))
+
+scenario_folder <- "./Models/landis_test"
+scenarios <- list.dirs(scenario_folder, recursive = FALSE)
+scenarios <- scenarios[c(1, 4, 5, 6)]
+
 
 #some helper functions
 read_plus <- function(flnm) {
@@ -30,12 +35,19 @@ get_climate <- function(scenario){
     pluck(1, 1)
 }
 
-scenario_type <- data.frame(run_name = character(length(scenarios)), 
-                            browse = character(length(scenarios)),
-                            climate = character(length(scenarios))) %>%
+# scenario_type <- data.frame(run_name = character(length(scenarios)), 
+#                             browse = character(length(scenarios)),
+#                             climate = character(length(scenarios))) %>%
+#   mutate(run_name = unlist(map(strsplit(scenarios, split = "/"), pluck(4, 1)))) %>%
+#   mutate(browse = ifelse(grepl(pattern = "no browse", run_name), "No Browse", "Browse")) %>%
+#   mutate(climate = ifelse(grepl(pattern = "historical", run_name), "RCP8.5", "Present climate"))
+scenario_type <- scenario_type %>%
   mutate(run_name = unlist(map(strsplit(scenarios, split = "/"), pluck(4, 1)))) %>%
-  mutate(browse = ifelse(grepl(pattern = "no browse", run_name), "No Browse", "Browse")) %>%
-  mutate(climate = ifelse(grepl(pattern = "historical", run_name), "RCP8.5", "Present climate"))
+  # mutate(browse = ifelse(grepl(pattern = "no browse", run_name), "No Browse", "Browse")) %>%
+  mutate(browse = c("Browse",  "Browse", "No Browse", "No Browse")) %>%
+  # mutate(climate = ifelse(grepl(pattern = "historical", run_name), "Present Climate", "RCP8.5"))
+  mutate(climate = ifelse(grepl(pattern = "miroc", run_name), "RCP8.5", "Present Climate"))
+
 
 
 biomass_summaries <- paste0(scenarios, "/spp-biomass-log.csv")  %>%

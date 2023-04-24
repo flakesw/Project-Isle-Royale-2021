@@ -4,7 +4,7 @@ anerob_eff <- function(ratioPrecipPET, pet, drain){
   
   aneref1 <- 1.5
   aneref2 <- 3
-  aneref3 <- .3
+  aneref3 <- .008
   
   anerob <- 1
   
@@ -24,4 +24,13 @@ anerob_eff <- function(ratioPrecipPET, pet, drain){
   return(anerob)
 }
 
-anerob_eff(2, 10, 0)
+anerob_eff(3, 20, 0) #not sensitive to PET
+
+
+
+
+test <- rast("./Models/landis_test/mc_test - browse - linear - annual - subset/NECN/AnaerobicEffect-30.img")
+plot(test)
+hist(values(test))
+
+

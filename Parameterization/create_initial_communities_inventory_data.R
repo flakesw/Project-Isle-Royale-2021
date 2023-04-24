@@ -82,7 +82,7 @@ isro_bound <- sf::st_read("./Parameterization/Parameterization data/isle_royale_
 plot(isro_bound)
 plot(sf::st_geometry(inventory_shape), add = TRUE)
 
-mapview::mapview(inventory_shape, layer.name = "PI") + mapview::mapview(raster(comm_map_test))
+# mapview::mapview(inventory_shape, layer.name = "PI") + mapview::mapview(raster(comm_map_test))
 
 #-------------------------------------------------------------------------------
 # Import data from ISRO
@@ -166,7 +166,7 @@ isro_trees_diam <- isro_trees_diam[isro_trees_diam$Stratum %in% c("S1", "S2", "S
 
 #create an integer mapcode for each plot
 isro_plot$MapCode <- as.numeric(unlist(regmatches(isro_plot$`Plot Code`, gregexpr("[[:digit:]]+", isro_plot$`Plot Code`))))
-isro_plot <- isro_plot[!(isro_plot$MapCode %in% c("72", "113", "103", "151")), ] #remove these plots with unrealistically high biomass
+# isro_plot <- isro_plot[!(isro_plot$MapCode %in% c("72", "113", "103", "151")), ] #remove these plots with unrealistically high biomass
 
 inventory_shape$MapCode <- NA
 PI_ignore <- c("61", "63", "67", "67A", "98", "99") #these plots are water or shoreline 
@@ -236,16 +236,6 @@ terra::writeRaster(initial_communities_mapcode,
                    "./Models/LANDIS inputs/input rasters/initial_communities_inv.tif",
                    datatype = "INT4S",
                    overwrite = TRUE)
-
-#create ecoregions
-ecoregions <- terra::classify(initial_communities_mapcode, 
-                              matrix(c(0,0,0,1,99999,1), ncol = 3, byrow = TRUE)) #just two ecoregions, active and inactive
-ecoregions2 <- terra::classify(treemap_isro, 
-                               matrix(c(0,0,0,1,99999,1), ncol = 3, byrow = TRUE)) #just two ecoregions, active and inactive
-values(ecoregions)[values(ecoregions2) == 0 | is.na(values(ecoregions2))] <- 0 #mask out cells where we might not have soil data
-
-terra::writeRaster(ecoregions, "./Models/LANDIS inputs/input rasters/ecoregions_inv.tif", 
-                   datatype = "INT2S", overwrite = TRUE, NAflag = 0)
 
 
 #*******************************************************************************
@@ -734,6 +724,21 @@ isro_ic <- isro_trees_diam %>%
 table(values(initial_communities_mapcode)[values(initial_communities_mapcode) %in% isro_ic$MapCode])
 table(values(initial_communities_mapcode)[!(values(initial_communities_mapcode) %in% isro_ic$MapCode)])
 
+# isro_ic_backup <- isro_ic
+# isro_ic <- isro_ic_backup
+
+#fix a few sites with too much biomass due to large tree diameters
+isro_ic[isro_ic$MapCode == 100, "CohortBiomass"] <- round(isro_ic[isro_ic$MapCode == 100, "CohortBiomass"] * 8/30)
+isro_ic[isro_ic$MapCode == 72, "CohortBiomass"] <- round(isro_ic[isro_ic$MapCode == 72, "CohortBiomass"] * 16/40)
+isro_ic[isro_ic$MapCode == 113, "CohortBiomass"] <- round(isro_ic[isro_ic$MapCode == 113, "CohortBiomass"] * 12/30)
+isro_ic[isro_ic$MapCode == 103, "CohortBiomass"] <- round(isro_ic[isro_ic$MapCode == 103, "CohortBiomass"] * 12/30)
+isro_ic[isro_ic$MapCode == 151, "CohortBiomass"] <- round(isro_ic[isro_ic$MapCode == 151, "CohortBiomass"] * 12/30)
+isro_ic[isro_ic$MapCode == 151, "CohortBiomass"] <- round(isro_ic[isro_ic$MapCode == 151, "CohortBiomass"] * 12/30)
+isro_ic[isro_ic$MapCode == 28, "CohortBiomass"] <- round(isro_ic[isro_ic$MapCode == 28, "CohortBiomass"] * 14/30)
+
+
+isro_ic$CohortBiomass <- ifelse(isro_ic$CohortBiomass < 20, 20, isro_ic$CohortBiomass)
+
 write.csv(isro_ic, "./Models/LANDIS inputs/NECN files/initial_communities_inv.csv")
 
 
@@ -744,19 +749,36 @@ total_biomass_rast <- terra::subst(initial_communities_mapcode, from = total_bio
 plot(total_biomass_rast)
 
 #coarse debris is approximately 19% of live biomass, from a test run at ISRO
-cwd_rast <- total_biomass_rast * 0.19
+#SF 2023-4-13: actually let's try 0.023 of live biomass; 19% was too high and added too much C and N at the beginning
+cwd_rast <- total_biomass_rast * 0.023
 terra::writeRaster(cwd_rast, "./Models/LANDIS inputs/input rasters/dead_wood_inv.tif", 
                    datatype = "INT2S", overwrite = TRUE, NAflag = 0)
 
 # belowground dead biomass
 hist(fia_trees$DRYBIO_BG / fia_trees$DRYBIO_AG)
-mean(fia_trees$DRYBIO_BG / fia_trees$DRYBIO_AG)
+mean(fia_trees$DRYBIO_BG / fia_trees$DRYBIO_AG, na.rm = TRUE)
 
 #multiply aboveground biomass by 24% for belowground biomass, then by 30% for dead root biomass
 
 root_rast  <- total_biomass_rast * 0.24 * 0.30
 terra::writeRaster(root_rast, "./Models/LANDIS inputs/input rasters/dead_root_inv.tif", 
                    datatype = "INT2S", overwrite = TRUE, NAflag = 0)
+
+
+plot(CohortBiomass ~ CohortAge, data = isro_ic[isro_ic$SpeciesName == "POTR5", ])
+hist(as.numeric(isro_ic[isro_ic$SpeciesName == "POTR5",]$CohortAge))
+
+#create ecoregions--------------------------------------------------------------
+
+ecoregions <- terra::classify(initial_communities_mapcode, 
+                              matrix(c(0,0,0,1,99999,1), ncol = 3, byrow = TRUE)) #just two ecoregions, active and inactive
+ecoregions2 <- terra::classify(treemap_isro, 
+                               matrix(c(0,0,0,1,99999,1), ncol = 3, byrow = TRUE)) #just two ecoregions, active and inactive
+values(ecoregions)[values(ecoregions2) == 0 | is.na(values(ecoregions2))] <- 0 #mask out cells where we might not have soil data
+
+terra::writeRaster(ecoregions, "./Models/LANDIS inputs/input rasters/ecoregions_inv.tif", 
+                   datatype = "INT2S", overwrite = TRUE, NAflag = 0)
+
 
 #------------------------------------------------------------------------------
 #Compare to remotely sensed data

@@ -3,6 +3,8 @@
 library("tidyverse")
 library("minpack.lm")
 
+options(warn = -1) #suppress warnings when reading in files; there's a better way to do this I bet
+
 #edited csv
 sites_to_use <- read.csv("./Parameterization/Parameterization data/ameriflux data/ameriflux_gpp_swc_edit.csv") %>%
   filter(Use)
@@ -15,7 +17,7 @@ site_files <- paste0("./Parameterization/necn_parameterize/ameriflux_processed/"
 read_plus <- function(flnm) {
   print(flnm)
   
-  read_csv(flnm) %>%
+read_csv(flnm) %>%
     group_by(YEAR, DOY) %>%
     summarise(tairmax = max(Tair, na.rm = TRUE),
               tairmin = min(Tair, na.rm = TRUE),
@@ -37,7 +39,7 @@ ft
 #which of the sites should we use?
 #note: for facultative wet conifer, used data from wet and dry conifers
 #shrubs use data for aspen, northern hardwoods, mesic warm conifers, temperate hardwoods, dry/cold pines
-i <- which(sites_to_use$Functional.group %in% ft[c(1,3,4,5,7)])
+i <- which(sites_to_use$Functional.group %in% ft[c(7)])
 # i <- c(1, 18, 19, 20, 23)
 base_daily <- site_files[i]  %>%
   purrr::map_df(~read_plus(.))
@@ -79,10 +81,10 @@ plot(tsoil, Observed_Relative_production, col="blue", type="p",
 # moisture_4<- 15 #smaller numbers -- broader curve
 
 #starting coefficients
-moisture_1<- 26 #soilwater with maximum gpp
-moisture_2<- 42 #maximum or minimum soilwater with any GPP -- changes steepness of decline in gpp
-moisture_3<- 1.8 #higher values -- sharper dip down towards zero
-moisture_4<- 2.6 #smaller numbers -- broader curve
+moisture_1<- 24 #soilwater with maximum gpp
+moisture_2<- 36 #maximum or minimum soilwater with any GPP -- changes steepness of decline in gpp
+moisture_3<- 0.58 #higher values -- sharper dip down towards zero
+moisture_4<- 3 #smaller numbers -- broader curve
 
 
 #TSWC goes from 0 to 1

@@ -15,7 +15,7 @@ project_to_template <- function(input_raster, template){
 
 template <- rast("./Models/LANDIS inputs/input rasters/ecoregions.tif")
 
-browse <- rast("./Models/landis_test/mc_test - browse/browse/SiteForage_40.gis")
+browse <- rast("./Models/landis_test/mc_test - browse/browse/SiteForage_20.gis")
 plot(browse)
 crs(browse) <- ""
 hist(values(browse)[values(browse) > 0])
@@ -43,7 +43,7 @@ sum <- hodgson %>%
   summarise(browse = sum(m, na.rm = TRUE))
 sum
 
-browse_landis <- read.csv("./Models/landis_test/mc_test - browse - linear - annual - subset/browse-summary-log.csv") %>%
+browse_landis <- read.csv("./Models/Model templates/spinup model/browse-summary-log.csv") %>%
   mutate(Location = "Landis",
          browse = MeanForage)
 browse_landis$Year = browse_landis$Time + 1998
@@ -60,7 +60,7 @@ shapes <- sf::st_read("./Parameterization/Parameterization data/browse/loc_shape
 shapes$id <- c("Moskey Basin", "Lane Cove")
 # plot(shapes)
 
-forage_list <- paste0("./Models/landis_test/mc_test - browse - linear - annual/browse/SiteForage_",
+forage_list <- paste0("./Models/Model templates/spinup model/browse/SiteForage_",
                       seq(1,20), #seq(1, 9), 
                       ".gis")
 forage <- rast(forage_list)
@@ -101,7 +101,7 @@ means2
 
 
 ##compare species percent of diet
-spp_log <- read.csv("./Models/landis_test/mc_test - browse - linear - annual - subset/browse-event-species-log.csv")
+spp_log <- read.csv("./Models/landis_test/mc_test - browse - linear/browse-event-species-log.csv")
 spp_log_avg <- spp_log %>%
   mutate(SpeciesName = gsub(" ", "", .$SpeciesName)) %>%
   filter(Time < 40) %>%
@@ -267,7 +267,7 @@ ggplot(regen_browse, aes(x = Time, y = NumCohortsSeed)) +
 
 
 #species biomass over time
-biomass <- read.csv("C:/Users/Sam/Documents/Research/Isle Royale/Models/landis_test/mc_test - linear/spp-biomass-log.csv")
+biomass <- read.csv("C:/Users/Sam/Documents/Research/Isle Royale/Models/landis_test/mc_test - browse - linear/spp-biomass-log.csv")
 
 ggplot(biomass, aes(x = Time, y = AboveGroundBiomass_POTR5)) +
   geom_point() + 

@@ -2,9 +2,9 @@
 library("terra")
 library("tidyverse")
 
-comm_map <- rast("./Models/landis_test/mc_test - linear/output-community-0.img")
-comm_output_end <- read_csv("./Models/landis_test/mc_test - linear/community-input-file-80.csv")
-comm_output_begin<- read_csv("./Models/landis_test/mc_test - linear/community-input-file-0.csv")
+comm_map <- rast("./Models/Model templates/spinup model/output-community-0.img")
+comm_output_end <- read_csv("./Models/Model templates/spinup model/community-input-file-20.csv")
+comm_output_begin<- read_csv("./Models/Model templates/spinup model/community-input-file-0.csv")
 
 comm_nest_begin <- comm_output_begin %>%
   nest(comm = c(SpeciesName, CohortAge, CohortBiomass))
@@ -17,15 +17,17 @@ spp_list <- unique(comm_output_begin$SpeciesName)
 
 mean_ages_begin <- comm_output_begin %>%
   group_by(MapCode, SpeciesName) %>%
-  summarise(mean_age = weighted.mean(CohortAge, CohortBiomass)) %>%
+  summarise(mean_age = weighted.mean(CohortAge, CohortBiomass),
+            SaplingBiomass = sum(CohortBiomass[CohortAge <= 10])) %>%
   ungroup() %>%
-  complete(MapCode, SpeciesName, fill = list(mean_age = 0))
+  complete(MapCode, SpeciesName, fill = list(mean_age = 0, SaplingBiomass = 0))
 
 mean_ages_end <- comm_output_end %>%
   group_by(MapCode, SpeciesName) %>%
-  summarise(mean_age = weighted.mean(CohortAge, CohortBiomass))%>%
+  summarise(mean_age = weighted.mean(CohortAge, CohortBiomass),
+            SaplingBiomass = sum(CohortBiomass[CohortAge <= 10])) %>%
   ungroup() %>%
-  complete(MapCode, SpeciesName, fill = list(mean_age = 0))
+  complete(MapCode, SpeciesName, fill = list(mean_age = 0, SaplingBiomass = 0))
 
 
 mean_ages_combined <- left_join(mean_ages_begin, mean_ages_end, by = c("MapCode", "SpeciesName"))
@@ -33,6 +35,7 @@ mean_ages_combined
 
 mean_ages_combined$diff <- mean_ages_combined$mean_age.y - mean_ages_combined$mean_age.x
 
+#this is so slow; there must be a better way to do this
 age_change_map <- comm_map
 age_change_map <- terra::classify(age_change_map, 
                                   rcl = mean_ages_combined[mean_ages_combined$SpeciesName == "ABBA", 
@@ -43,6 +46,23 @@ hist(values(age_change_map_browse - age_change_map)[values(age_change_map_browse
 mean(values(age_change_map_browse - age_change_map)[values(age_change_map_browse - age_change_map) != 0])
 
 
+juv_biomass_map_begin <- comm_map
+juv_biomass_map_begin <- terra::classify(juv_biomass_map_begin, 
+                                   rcl = mean_ages_combined[mean_ages_combined$SpeciesName == "POTR5", 
+                                                            c("MapCode", "SaplingBiomass.x")])
+plot(juv_biomass_map_begin)
+
+juv_biomass_map_end <- comm_map
+juv_biomass_map_end <- terra::classify(juv_biomass_map_end, 
+                                         rcl = mean_ages_combined[mean_ages_combined$SpeciesName == "POTR5", 
+                                                                  c("MapCode", "SaplingBiomass.y")])
+plot(juv_biomass_map_end)
+juv_diff <- juv_biomass_map_end - juv_biomass_map_begin
+NAflag(juv_diff) <- 0
+plot(juv_diff, col = diverging_color_ramp(juv_diff))
+mean(values(juv_diff), na.rm = TRUE)
+
+#TODO redo by tracking cohorts
 
 backup <- age_change_map
 # age_change_map_browse <- age_change_map
@@ -56,11 +76,25 @@ backup <- age_change_map
 # age distribution
 
 plot(density(mean_ages_combined[mean_ages_combined$SpeciesName == "ABBA" & mean_ages_combined$mean_age.x != 0, ]$mean_age.x))
-plot(density(mean_ages_combined[mean_ages_combined$SpeciesName == "ABBA" & mean_ages_combined$mean_age.y != 0, ]$mean_age.y))
+lines(density(mean_ages_combined[mean_ages_combined$SpeciesName == "ABBA" & mean_ages_combined$mean_age.y != 0, ]$mean_age.y))
+
+
+cc_nobrowse <- read_csv("./Models/landis_test/mc_test - linear/community-input-file-80.csv") %>%
+  filter(SpeciesName == "ABBA")
+cc_browse <- read_csv("./Models/landis_test/mc_test - linear/community-input-file-80.csv") %>%
+  filter(SpeciesName == "ABBA")
+
 
 #---regen log
-regen <- read_csv("./Models/landis_test/mc_test/NECN-reproduction-log.csv")
-abba <- filter(regen, SpeciesName == "BEPA")
+regen <- read_csv("./Models/landis_test/mc_test - browse - linear/NECN-reproduction-log.csv")
+abba <- filter(regen, SpeciesName == "ABBA")
+regen <- read_csv("./Models/landis_test/mc_test - browse - linear - miroc/NECN-reproduction-log.csv")
+abba2 <- filter(regen, SpeciesName == "ABBA") %>%
+  filter(Time %in% abba$Time)
+
+plot(abba$NumCohortsSeed ~ abba$Time)
+plot(abba2$NumCohortsSeed ~ abba2$Time)
+
 
 
 #---fia data

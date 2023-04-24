@@ -29,15 +29,17 @@ ft
 #which of the sites should we use?
 #note: for facultative wet conifer, used data from wet and dry conifers
 #shrubs use data for aspen, northern hardwoods, mesic warm conifers, temperate hardwoods, dry/cold pines
-i <- which(sites_to_use$Functional.group %in% ft[c(4)])
+i <- which(sites_to_use$Functional.group %in% ft[c(1)])
 # i <- c(1, 18, 19, 20, 23)
 nee_monthly <- site_files[i]  %>%
   purrr::map_df(~read_plus(.))
 
 boxplot(nee_monthly$NEE_g ~ nee_monthly$MONTH)
 
-necn_monthly <- read.csv("C:/Users/Sam/Documents/Research/Isle Royale/Models/landis_test/mc_test/NECN-succession-monthly-log.csv") %>%
+necn_monthly <- read.csv("C:/Users/Sam/Documents/Research/Isle Royale/Models/landis_test/mc_test - one_cell/NECN-succession-monthly-log.csv") %>%
   group_by(Month) %>%
   summarise(NEE = mean(avgNEE))
 lines(necn_monthly$NEE ~ necn_monthly$Month)
 
+necn_monthly <- read.csv("C:/Users/Sam/Documents/Research/Isle Royale/Models/landis_test/mc_test - one_cell/NECN-succession-monthly-log.csv")
+boxplot(necn_monthly$avgNEE ~ necn_monthly$Month)

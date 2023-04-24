@@ -132,7 +132,7 @@ get_stormflow <- function(soil_type, slope_deg){
 #-------------------------------------------------------------------------------
 
 #this is the grid we'll match everything to in the end
-template_raster <- terra::rast("./Models/LANDIS inputs/input rasters/initial_communities.tif")
+template_raster <- terra::rast("./Models/LANDIS inputs/input rasters/initial_communities_inv.tif")
 crs(template_raster) #check that we're in NAD 83 Zone 17N
 
 # to extract this data, we need to import the mapunit polygon (or raster),
@@ -315,7 +315,7 @@ library("terra")
 
 grass_program_path <- "C:/Program Files/GRASS GIS 7.8"
 
-mask <- terra::rast("C:/Users/Sam/Documents/Research/Isle Royale/Models/LANDIS inputs/input rasters/initial_communities.tif")
+mask <- terra::rast("C:/Users/Sam/Documents/Research/Isle Royale/Models/LANDIS inputs/input rasters/initial_communities_inv.tif")
 
 rname <- 'C:/Users/Sam/Documents/Research/Isle Royale/Parameterization/Parameterization data/dem/dem_ir_60m.tif'
 r <- terra::rast(rname)
@@ -452,154 +452,6 @@ hist(stormflow_rast)
 #at the moment, none of this fancy stuff works. Instead, I'm just using 
 # a relationship using C:N ratios in each horizon, from Melissa Lucash
 
-# for N, we will use nitrogen data and carbon data from soilgrids.org to get the C:N ratio
-# and translate our soil C data from SSURGO to soil N
-# these need to be changed to g m-2
-
-# these use a weird projection, Homolosine, EPSG:7030
-
-#units are in dg/kg or cg/kg -- that is, they are concentrations, not per m2
-
-c_rasts <- c("c0-5.tif", "c5-15.tif", "c15-30.tif", "c30-60.tif", "c60-100.tif", "c100-200.tif") %>%
-  paste0("./Parameterization/Parameterization data/soilgrids/", .) #carbon in dg/kg 
-n_rasts <- c("n0-5.tif", "n5-15.tif", "n15-30.tif", "n30-60.tif", "n60-100.tif", "n100-200.tif") %>%
-  paste0("./Parameterization/Parameterization data/soilgrids/", .) #nitrogen in cg/kg
-bulk_dens_rasts <- c("bd0-5.tif", "bd5-15.tif", "bd15-30.tif", "bd30-60.tif", "bd60-100.tif", "bd100-200.tif") %>%
-  paste0("./Parameterization/Parameterization data/soilgrids/", .) #bulk density in cg/cm3
-
-#TODO refactor with tidyverse
-c_stack <- raster::stack(c_rasts) / 10 /1000 #convert from dg C per kg soil to g N per g soil
-c_rast <- sum(c_stack) #total carbon
-
-n_stack <- raster::stack(n_rasts) / 100 / 1000 #convert from cg N per kg soil to g N per g soil
-n_rast <- sum(n_stack) #total nitrogen
-
-bd_stack <- raster::stack(bulk_dens_rasts) /100 # convert cg/cm3 to g/cm3
-bd_rast <- mean(bd_stack) #average bulk density
-
-#convert from per mass to per volume basis
-c_bd_stack <- c_stack * bd_stack
-n_bd_stack <- n_stack * bd_stack
-
-# because we have calculated C and N bulk densities (i.e. per cm3), we need
-# to translate to density (per cm2) by multiplying by soil depth (in cm).
-
-# To know how many layers we want for each variable, 
-# we need to rasterize the soil depth polygons we created before
-# template_raster <- raster::raster("./Models/LANDIS inputs/input rasters/initial_communities.tif")
-# NAvalue(template_raster) <- 0
-# crs(template_raster) #check that we're in NAD 83 Zone 17N
-# mapunits2 <- sf::st_transform(mapunits_data, "EPSG:26917") #reproject to NAD83 Zone 17N, same as the initial communities
-# soilDepth <- fasterize::fasterize(mapunits2, template_raster, field = "soilDepth", fun="max")
-# soilDepth <- raster::mask(soilDepth, template_raster) #remove the water/nonforested cells
-# 
-# plot(soilDepth)
-# rm(mapunits2)
-
-# coarsen and reproject to match soilgrids data
-# soilDepth_coarse  <- raster::projectRaster(soilDepth, c_stack, method = "ngb")
-
-#set mapunits to match the soil rasters
-mapunits <- sf::st_transform(mapunits, crs(c_stack)) 
-
-c_extract <- raster::extract(c_bd_stack, mapunits, fun = mean, weights = TRUE)
-n_extract <- raster::extract(n_bd_stack, mapunits, fun = mean, weights = TRUE)
-
-# We have multiple depths for each variable, but many are deeper than soil depths
-# From SSURGO. Maybe representing bedrock? In any case, they aren't likely to be
-# relevant to our model. 
-n_layers <- as.numeric(cut(mapunits_data$soilDepth, breaks = c(0, 15, 30, 60, 100, 200)))
-weights <- c(15, 15, 30, 40, 50) #weight each layer by its depth. Reduce last layer weight to 50 for 150 cm depth
-
-mapunits$c_total <- NA
-mapunits$n_total <- NA
-mapunits$cn_ratio <- NA
-
-for(i in 1:nrow(mapunits)){
-  #for each mapunit, take the weighted mean of the layers that are relevant. Weight by depth of each layer
-  mapunits$c_total[i] <- weighted.mean(c_extract[i, n_layers[i]], weights = weights[1:nlayers[i]]) %>%
-    `*`(mapunits_data$soilDepth[i]) %>% #multiple by depth to convert cm3 to cm2
-    `*`(10000) #convert from cm2 to m2
-  mapunits$n_total[i] <- weighted.mean(n_extract[i, n_layers[i]], weights = weights[1:nlayers[i]]) %>%
-    `*`(mapunits_data$soilDepth[i]) %>% #multiple by depth to convert cm3 to cm2
-    `*`(10000) #convert from cm2 to m2
-}
-
-mapunits$cn_ratio <- mapunits$c_total/mapunits$n_total
-
-#get average values for the mapunits, from soilgrids data:
-mapunit_n <- mapunits[,"n_total"] %>%
-  sf::st_set_geometry(NULL) %>%
-  stats::aggregate(by = list(mapunits$MUKEY), FUN = function(x){mean(x, na.rm = TRUE)}) %>%
-  dplyr::rename("MUKEY" = "Group.1")
-mapunit_c <- mapunits[,"c_total"] %>%
-  sf::st_set_geometry(NULL) %>%
-  stats::aggregate(by = list(mapunits$MUKEY), FUN = function(x){mean(x, na.rm = TRUE)}) %>%
-  dplyr::rename("MUKEY" = "Group.1")
-mapunit_cn <- mapunits[,"cn_ratio"] %>%
-  sf::st_set_geometry(NULL) %>%
-  stats::aggregate(by = list(mapunits$MUKEY), FUN = function(x){mean(x, na.rm = TRUE)}) %>%
-  dplyr::rename("MUKEY" = "Group.1")
-
-
-#compare soil C from SSURGO vs from soilgrids
-#soilgrids
-ggplot() + 
-  geom_sf(mapping = aes(colour = c_total, fill = c_total), data = mapunits)
-#ssurgo
-ggplot() + 
-  geom_sf(mapping = aes(colour = soc0_999, fill = soc0_999), data = mapunits_data)
-ggplot() + 
-  geom_sf(mapping = aes(colour = soc0_150, fill = soc0_150), data = mapunits_data)
-ggplot() + 
-  geom_sf(mapping = aes(colour = soilDrain, fill = soilDrain), data = mapunits_data)
-
-#compare soilgrids and ssurgo
-#from soilgrids; looks pretty reasonable:
-hist(mapunits$cn_ratio)
-
-#calculate cn from ssurgo
-mapunits$cn_ratio_ssurgo <- mapunits_data$soc0_150 / mapunits$n_total
-hist(mapunits$cn_ratio_ssurgo) #some crazy high values here -- what's with the soc0_999 value?
-
-#wetlands have crazy high CN ratios; more than plausible
-mapunits$cn_ratio_ssurgo[mapunits$cn_ratio_ssurgo > 60] <- 60
-# some ratios are way too low; set to a more reasonable number. See Ross et al. 2010
-mapunits$cn_ratio_ssurgo[mapunits$cn_ratio_ssurgo < 8] <- 8
-
-
-
-# Fill in NA values
-
-# #for NA values of cn_ratio_ssurgo, add the average of the other mapunits with the same MUKEY
-mapunits[is.na(mapunits$cn_ratio_ssurgo), "cn_ratio_ssurgo"] <- 
-  mapunit_cn[match(mapunits$MUKEY, mapunit_cn$MUKEY), "cn_ratio"] %>%
-  subset(is.na(mapunits$cn_ratio_ssurgo))
-
-
-# for some other NAs, the whole mapunit is NA -- for these, average the values for the neighboring
-# polygons and set the cn equal to that
-neighbors <- spdep::poly2nb(mapunits) #get neighbors for each mapunit
-neighbor_list <- neighbors
-neighbor_cn <- NA
-for(i in 1:nrow(mapunits)){
-  #average the neighbors' CN for each shape
-  neighbor_cn[i] <- mean(mapunits$cn_ratio_ssurgo[neighbor_list[[i]]], na.rm = TRUE)
-}
-
-#assign values from neighbors
-mapunits$cn_ratio_ssurgo <- ifelse(is.na(mapunits$cn_ratio_ssurgo), neighbor_n, mapunits$cn_ratio_ssurgo)
-
-#for the remaining 4 polygons, just assign them a 10 I guess?
-mapunits[is.na(mapunits$cn_ratio_ssurgo), "cn_ratio_ssurgo"] <- 10
-mapunits[mapunits$cn_ratio_ssurgo == 0, "cn_ratio_ssurgo"] <- 10
-
-
-# re-calculate n from SSURGO soil carbon and soilgrids N
-mapunits$n_adjusted <- mapunits_data$soc0_150 / mapunits$cn_ratio_ssurgo
-plot(mapunits$n_adjusted ~ mapunits$n_total)
-
-mapunits[is.na(mapunits$n_adjusted), ]
 
 
 #-------------------------------------------------------------------------------
@@ -619,30 +471,23 @@ mapunits[is.na(mapunits$n_adjusted), ]
 # instead, let's divvy up N using the same proportions, but using soil N from soilgrids
 
 # From a previous model run on this landscape, N was a somewhat lower proportion on average
-# than those numbers above
-#mapunits_data$SOM1surfN <- mapunits_data$SOM1surfC * 0.015
-#mapunits_data$SOM1soilN <- mapunits_data$SOM1soilC * 0.099
-#mapunits_data$SOM2N <- mapunits_data$SOM2C * 0.052
-#mapunits_data$SOM3N <- mapunits_data$SOM3C * 0.073
+# than those numbers above:
+mapunits_data$SOM1surfN <- mapunits_data$SOM1surfC * 0.015 * 0.75
+mapunits_data$SOM1soilN <- mapunits_data$SOM1soilC * 0.099 * 0.75
+mapunits_data$SOM2N <- mapunits_data$SOM2C * 0.052 * 0.75
+mapunits_data$SOM3N <- mapunits_data$SOM3C * 0.073 * 0.75
 
-# So we need to divide each layer by 0.07054 to retrieve the original amount of N per site
-
-
-# So, N totals should be apportioned as so:
-# SOM1surfN = total N * (0.015 * 0.01)
-# SOM1soilN= total N * (0.099 * 0.02)
-# SOM2N= total N * (0.052 * 0.59)
-# SOM3N= total N * (0.073 * 0.38)
-
-# total = total N * 0.06055
-
+#We can also use a regression from Ross et al. 2011 for surface C:N
+# mapunits_data$SOM1surfN <- mapunits_data$SOM1surfC * 0.03 + 6.9
+# mapunits_data$SOM1surfN <- ifelse(mapunits_data$SOM1surfC/mapunits_data$SOM1surfN < 10, 
+#                                   mapunits_data$SOM1surfC * (1/10),
+#                                   mapunits_data$SOM1surfN)
+# mapunits_data$SOM1soilN <- mapunits_data$SOM1soilC * 0.03 + 6.9
+# mapunits_data$SOM1soilN <- ifelse(mapunits_data$SOM1soilC/mapunits_data$SOM1soilN < 10, 
+#                                   mapunits_data$SOM1soilC * (1/10),
+#                                   mapunits_data$SOM1soilN)
 #------------------
-# Using N directly from soilgrids, then distributing N between layers
 
-mapunits_data$SOM1surfN <- mapunits$n_adjusted * (0.015 * 0.01) / 0.06055
-mapunits_data$SOM1soilN <- mapunits$n_adjusted * (0.099 * 0.02)/ 0.06055
-mapunits_data$SOM2N <- mapunits$n_adjusted * (0.052 * 0.59)/ 0.06055
-mapunits_data$SOM3N <- mapunits$n_adjusted * (0.073 * 0.38)/ 0.06055
 
 
 mapunits_data <- sf::st_transform(mapunits_data, "EPSG:26917") #reproject to NAD83 Zone 17N
@@ -668,7 +513,7 @@ mapunits_data[mapunits_data$soilDrain < 0.1 & mapunits_data$wfifteenbar_r < 0.05
 # the ability to average mapunit values within a cell (i.e. just one mapunit ID per cell). But we have small cells
 # so it shouldn't be much of a problem.
 
-template_raster <- terra::rast("./Models/LANDIS inputs/input rasters/initial_communities.tif")
+template_raster <- terra::rast("./Models/LANDIS inputs/input rasters/initial_communities_inv.tif")
 crs(template_raster) #check that we're in NAD 83 Zone 17N
 
 #TODO make into a loop to extract everything, since it all comes from the same dataframe
@@ -755,3 +600,169 @@ terra::NAflag(SOM3N) <- 0
 values(SOM3N) <- ifelse(values(SOM3N) >= 1000, 999, values(SOM3N)) #TODO fix this
 terra::writeRaster(SOM3N, "./Models/LANDIS inputs/input rasters/SOM3N.tif", datatype = "FLT4S", NAflag = 0, overwrite = TRUE)
 
+
+
+#-------------------------------------------------------------------------------
+# Another attempt at getting the N layers:
+
+# # for N, we will use nitrogen data and carbon data from soilgrids.org to get the C:N ratio
+# # and translate our soil C data from SSURGO to soil N
+# # these need to be changed to g m-2
+# 
+# # these use a weird projection, Homolosine, EPSG:7030
+# 
+# #units are in dg/kg or cg/kg -- that is, they are concentrations, not per m2
+# 
+# c_rasts <- c("c0-5.tif", "c5-15.tif", "c15-30.tif", "c30-60.tif", "c60-100.tif", "c100-200.tif") %>%
+#   paste0("./Parameterization/Parameterization data/soilgrids/", .) #carbon in dg/kg 
+# n_rasts <- c("n0-5.tif", "n5-15.tif", "n15-30.tif", "n30-60.tif", "n60-100.tif", "n100-200.tif") %>%
+#   paste0("./Parameterization/Parameterization data/soilgrids/", .) #nitrogen in cg/kg
+# bulk_dens_rasts <- c("bd0-5.tif", "bd5-15.tif", "bd15-30.tif", "bd30-60.tif", "bd60-100.tif", "bd100-200.tif") %>%
+#   paste0("./Parameterization/Parameterization data/soilgrids/", .) #bulk density in cg/cm3
+# 
+# #TODO refactor with tidyverse
+# c_stack <- raster::stack(c_rasts) / 10 /1000 #convert from dg C per kg soil to g N per g soil
+# c_rast <- sum(c_stack) #total carbon
+# 
+# n_stack <- raster::stack(n_rasts) / 100 / 1000 #convert from cg N per kg soil to g N per g soil
+# n_rast <- sum(n_stack) #total nitrogen
+# 
+# bd_stack <- raster::stack(bulk_dens_rasts) /100 # convert cg/cm3 to g/cm3
+# bd_rast <- mean(bd_stack) #average bulk density
+# 
+# #convert from per mass to per volume basis
+# c_bd_stack <- c_stack * bd_stack
+# n_bd_stack <- n_stack * bd_stack
+# 
+# # because we have calculated C and N bulk densities (i.e. per cm3), we need
+# # to translate to density (per cm2) by multiplying by soil depth (in cm).
+# 
+# # To know how many layers we want for each variable, 
+# # we need to rasterize the soil depth polygons we created before
+# # template_raster <- raster::raster("./Models/LANDIS inputs/input rasters/initial_communities.tif")
+# # NAvalue(template_raster) <- 0
+# # crs(template_raster) #check that we're in NAD 83 Zone 17N
+# # mapunits2 <- sf::st_transform(mapunits_data, "EPSG:26917") #reproject to NAD83 Zone 17N, same as the initial communities
+# # soilDepth <- fasterize::fasterize(mapunits2, template_raster, field = "soilDepth", fun="max")
+# # soilDepth <- raster::mask(soilDepth, template_raster) #remove the water/nonforested cells
+# # 
+# # plot(soilDepth)
+# # rm(mapunits2)
+# 
+# # coarsen and reproject to match soilgrids data
+# # soilDepth_coarse  <- raster::projectRaster(soilDepth, c_stack, method = "ngb")
+# 
+# #set mapunits to match the soil rasters
+# mapunits <- sf::st_transform(mapunits, crs(c_stack)) 
+# 
+# c_extract <- raster::extract(c_bd_stack, mapunits, fun = mean, weights = TRUE)
+# n_extract <- raster::extract(n_bd_stack, mapunits, fun = mean, weights = TRUE)
+# 
+# # We have multiple depths for each variable, but many are deeper than soil depths
+# # From SSURGO. Maybe representing bedrock? In any case, they aren't likely to be
+# # relevant to our model. 
+# n_layers <- as.numeric(cut(mapunits_data$soilDepth, breaks = c(0, 15, 30, 60, 100, 200)))
+# weights <- c(15, 15, 30, 40, 50) #weight each layer by its depth. Reduce last layer weight to 50 for 150 cm depth
+# 
+# mapunits$c_total <- NA
+# mapunits$n_total <- NA
+# mapunits$cn_ratio <- NA
+# 
+# for(i in 1:nrow(mapunits)){
+#   #for each mapunit, take the weighted mean of the layers that are relevant. Weight by depth of each layer
+#   mapunits$c_total[i] <- weighted.mean(c_extract[i, n_layers[i]], weights = weights[1:nlayers[i]]) %>%
+#     `*`(mapunits_data$soilDepth[i]) %>% #multiple by depth to convert cm3 to cm2
+#     `*`(10000) #convert from cm2 to m2
+#   mapunits$n_total[i] <- weighted.mean(n_extract[i, n_layers[i]], weights = weights[1:nlayers[i]]) %>%
+#     `*`(mapunits_data$soilDepth[i]) %>% #multiple by depth to convert cm3 to cm2
+#     `*`(10000) #convert from cm2 to m2
+# }
+# 
+# mapunits$cn_ratio <- mapunits$c_total/mapunits$n_total
+# 
+# #get average values for the mapunits, from soilgrids data:
+# mapunit_n <- mapunits[,"n_total"] %>%
+#   sf::st_set_geometry(NULL) %>%
+#   stats::aggregate(by = list(mapunits$MUKEY), FUN = function(x){mean(x, na.rm = TRUE)}) %>%
+#   dplyr::rename("MUKEY" = "Group.1")
+# mapunit_c <- mapunits[,"c_total"] %>%
+#   sf::st_set_geometry(NULL) %>%
+#   stats::aggregate(by = list(mapunits$MUKEY), FUN = function(x){mean(x, na.rm = TRUE)}) %>%
+#   dplyr::rename("MUKEY" = "Group.1")
+# mapunit_cn <- mapunits[,"cn_ratio"] %>%
+#   sf::st_set_geometry(NULL) %>%
+#   stats::aggregate(by = list(mapunits$MUKEY), FUN = function(x){mean(x, na.rm = TRUE)}) %>%
+#   dplyr::rename("MUKEY" = "Group.1")
+# 
+# 
+# #compare soil C from SSURGO vs from soilgrids
+# #soilgrids
+# ggplot() + 
+#   geom_sf(mapping = aes(colour = c_total, fill = c_total), data = mapunits)
+# #ssurgo
+# ggplot() + 
+#   geom_sf(mapping = aes(colour = soc0_999, fill = soc0_999), data = mapunits_data)
+# ggplot() + 
+#   geom_sf(mapping = aes(colour = soc0_150, fill = soc0_150), data = mapunits_data)
+# ggplot() + 
+#   geom_sf(mapping = aes(colour = soilDrain, fill = soilDrain), data = mapunits_data)
+# 
+# 
+# #compare soilgrids and ssurgo
+# #from soilgrids; looks pretty reasonable:
+# hist(mapunits$cn_ratio)
+# 
+# #calculate cn from ssurgo
+# mapunits$cn_ratio_ssurgo <- mapunits_data$soc0_150 / mapunits$n_total
+# hist(mapunits$cn_ratio_ssurgo) #some crazy high values here -- what's with the soc0_999 value?
+# 
+# #wetlands have crazy high CN ratios; more than plausible
+# mapunits$cn_ratio_ssurgo[mapunits$cn_ratio_ssurgo > 60] <- 60
+# # some ratios are way too low; set to a more reasonable number. See Ross et al. 2010
+# mapunits$cn_ratio_ssurgo[mapunits$cn_ratio_ssurgo < 11.6] <- 11.6
+# 
+# # Fill in NA values
+# 
+# # #for NA values of cn_ratio_ssurgo, add the average of the other mapunits with the same MUKEY
+# mapunits[is.na(mapunits$cn_ratio_ssurgo), "cn_ratio_ssurgo"] <- 
+#   mapunit_cn[match(mapunits$MUKEY, mapunit_cn$MUKEY), "cn_ratio"] %>%
+#   subset(is.na(mapunits$cn_ratio_ssurgo))
+# 
+# 
+# # for some other NAs, the whole mapunit is NA -- for these, average the values for the neighboring
+# # polygons and set the cn equal to that
+# neighbors <- spdep::poly2nb(mapunits) #get neighbors for each mapunit
+# neighbor_list <- neighbors
+# neighbor_cn <- NA
+# for(i in 1:nrow(mapunits)){
+#   #average the neighbors' CN for each shape
+#   neighbor_cn[i] <- mean(mapunits$cn_ratio_ssurgo[neighbor_list[[i]]], na.rm = TRUE)
+# }
+# 
+# #assign values from neighbors
+# mapunits$cn_ratio_ssurgo <- ifelse(is.na(mapunits$cn_ratio_ssurgo), neighbor_n, mapunits$cn_ratio_ssurgo)
+# 
+# #for the remaining 4 polygons, assign a reasonable value from Ross et al. 2011
+# mapunits[is.na(mapunits$cn_ratio_ssurgo), "cn_ratio_ssurgo"] <- 18
+# mapunits[mapunits$cn_ratio_ssurgo == 0, "cn_ratio_ssurgo"] <- 18
+# 
+# 
+# # re-calculate n from SSURGO soil carbon and soilgrids N
+# mapunits$n_adjusted <- mapunits_data$soc0_150 / mapunits$cn_ratio_ssurgo
+# plot(mapunits$n_adjusted ~ mapunits$n_total)
+# 
+# mapunits[is.na(mapunits$n_adjusted), ]
+# 
+# ggplot() + 
+#   geom_sf(mapping = aes(colour = n_adjusted, fill = n_adjusted), data = mapunits)
+# ggplot() + 
+#   geom_sf(mapping = aes(colour = cn_ratio_ssurgo, fill = cn_ratio_ssurgo), data = mapunits)
+# 
+# hist(mapunits$cn_ratio_ssurgo)
+
+# # Using N directly from soilgrids, then distributing N between layers
+# 
+# mapunits_data$SOM1surfN <- mapunits$n_adjusted * (0.015 * 0.01) / 0.06055
+# mapunits_data$SOM1soilN <- mapunits$n_adjusted * (0.099 * 0.02)/ 0.06055
+# mapunits_data$SOM2N <- mapunits$n_adjusted * (0.052 * 0.59)/ 0.06055
+# mapunits_data$SOM3N <- mapunits$n_adjusted * (0.073 * 0.38)/ 0.06055

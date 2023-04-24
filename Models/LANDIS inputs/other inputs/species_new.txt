@@ -3,7 +3,7 @@ LandisData  Species
 >>                      Sexual    Shade  Fire  Seed Disperal Dist  Vegetative   Sprout Age  Post-Fire										
 >> Name      Longevity  Maturity  Tol.   Tol.  Effective  Maximum  Reprod Prob  Min   Max   Regen										
 >> ----      ---------  --------  -----  ----  ---------  -------  -----------  ----------  --------										
-ABBA		200	25	   3	  1	60	     160	0	0	0	none
+ABBA		200	25	   4	  1	60	     160	0	0	0	none
 ACRU		150	10	   3	  1     30           250	0.4	1	100	resprout		
 ACSA3		400	22	   5	  1	10	     100	0.3	0	100	none
 ACSP2		50	5	   4	  1     30	     250        0.5     1       50      resprout
