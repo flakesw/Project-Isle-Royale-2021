@@ -1,0 +1,6 @@
+name: unknown
+datum: nad83
+ellps: grs80
+proj: utm
+zone: 16
+no_defs: defined

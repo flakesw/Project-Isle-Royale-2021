@@ -81,11 +81,10 @@ plot(tsoil, Observed_Relative_production, col="blue", type="p",
 # moisture_4<- 15 #smaller numbers -- broader curve
 
 #starting coefficients
-moisture_1<- 24 #soilwater with maximum gpp
-moisture_2<- 36 #maximum or minimum soilwater with any GPP -- changes steepness of decline in gpp
-moisture_3<- 0.58 #higher values -- sharper dip down towards zero
-moisture_4<- 3 #smaller numbers -- broader curve
-
+moisture_1<- 22 #temp with maximum gpp
+moisture_2<- 36 #maximum or minimum tempwith any GPP -- changes steepness of decline in gpp
+moisture_3<- 0.5823 #higher values -- sharper dip down towards zero
+moisture_4<- 7.734 #smaller numbers -- broader curve
 
 #TSWC goes from 0 to 1
 tsoil_val<-sort(runif(1000, -40, 40))
@@ -99,12 +98,12 @@ lines(tsoil_val, Landis_Relative_production, type="l", lwd=3)
 
 
 #------- Fit curve
-# Algorithm for calculating fitted relative production based on swc and the 4 coefficients.
+# Algorithm for calculating fitted relative production based on soil temp and the 4 coefficients.
 
-calculate_fitted_RP <- function(tsoil, coef_3, coef_4)
+calculate_fitted_RP <- function(tsoil, coef_1, coef_2, coef_3, coef_4)
 {
-  coef_1 <- moisture_1
-  coef_2 <- moisture_2
+  # coef_1 <- moisture_1
+  # coef_2 <- moisture_2
   fraction<-(coef_2 - tsoil)/(coef_2- coef_1)
 
   pred <- ifelse(fraction>0, (exp(coef_3/coef_4*(1-fraction^coef_4))*(fraction^coef_3)), 0)
@@ -117,18 +116,18 @@ names(tsoil_dataframe) <- c("tsoil", "maxrelGPP")
 
 
 #first use nlsLM to get good parameter starting points
-curve.nlslrc = nlsLM(maxrelGPP ~ calculate_fitted_RP(tsoil, coef_3, coef_4), data = tsoil_dataframe,
-                     start = list( coef_3= moisture_3, coef_4= moisture_4),
+curve.nlslrc = nlsLM(maxrelGPP ~ calculate_fitted_RP(tsoil, coef_1, coef_2, coef_3, coef_4), data = tsoil_dataframe,
+                     start = list(coef_1 = moisture_1, coef_2 = moisture_2, coef_3= moisture_3, coef_4= moisture_4),
                      control = list(maxiter = 1024))
 
 coef(curve.nlslrc)  #gives good starting coefs
 
 
 #reset parameters here: 
-# moisture_1<-coef(curve.nlslrc)[1]
-# moisture_2<-coef(curve.nlslrc)[2]
-moisture_3<-coef(curve.nlslrc)[1]
-moisture_4<-coef(curve.nlslrc)[2]
+moisture_1<-coef(curve.nlslrc)[1]
+moisture_2<-coef(curve.nlslrc)[2]
+moisture_3<-coef(curve.nlslrc)[3]
+moisture_4<-coef(curve.nlslrc)[4]
 
 print(c(moisture_1, moisture_2, moisture_3, moisture_4))
 

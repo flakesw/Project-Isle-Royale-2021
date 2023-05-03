@@ -35,11 +35,15 @@ vignettes/*.pdf
 # Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
 rsconnect/
 
-#big files live here
-/calibration_data/
-
 #output rasters
 */NECN/*
 *.gis
-Parameterization/Parameterization data/
 Models/landis_test
+
+#big files live here
+Parameterization/Parameterization data/fia
+Parameterization/Parameterization data/treemap
+Parameterization/Parameterization data/ssurgo
+Parameterization/Parameterization data/us_streams
+Parameterization/Parameterization data/west_c_n
+Parameterization/Parameterization data/ameriflux data

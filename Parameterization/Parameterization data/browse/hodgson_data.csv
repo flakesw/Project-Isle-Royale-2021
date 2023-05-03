@@ -1,0 +1,103 @@
+Year ,Location,Type,m ,s2/m ,k ,I m
+1988,Lane Cove,Aspen,2.88,5.06,0.48,2.4
+1989,Lane Cove,Aspen,1.29,2.53,* ,2.19
+1990,Lane Cove,Aspen,1.49,2.68,0.588,2.13
+1994,Lane Cove,Aspen,0.54,1.69,0.573,2.3
+1995,Lane Cove,Aspen,1.12,2.09,* ,1.98
+1996,Lane Cove,Aspen,1.5,2.89,0.543,2.25
+1997,Lane Cove,Aspen,3.26,3.68,* ,1.82
+1998,Lane Cove,Aspen,4.69,6.64,* ,1.82
+1999,Lane Cove,Aspen,3.64,5.65,0.747,1.98
+2000,Lane Cove,Aspen,3.02,6.67,0.402,2.54
+2001,Lane Cove,Aspen,2.79,3.41,* ,1.79
+2002,Lane Cove,Aspen,2.54,4.8,0.494,2.36
+2003,Lane Cove,Aspen,2.93,4.34,0.453,2.31
+2004,Lane Cove,Aspen,3.96,6.16,* ,2.75
+2005,Lane Cove,Aspen,4.63,9.41,0.263,3.01
+2006,Lane Cove,Aspen,3.99,10.75,* ,3.09
+2007,Lane Cove,Aspen,2.88,10.13,0.256,3.27
+1988,Lane Cove,Other Deciduous,3.91,8.05,0.41,2.79
+1989,Lane Cove,Other Deciduous,2.41,6.84,0.327,3.41
+1990,Lane Cove,Other Deciduous,2.98,6.75,0.455,2.92
+1994,Lane Cove,Other Deciduous,1,2.29,* ,2.29
+1995,Lane Cove,Other Deciduous,1.72,3.68,* ,2.55
+1996,Lane Cove,Other Deciduous,2.76,5.78,0.463,2.72
+1997,Lane Cove,Other Deciduous,4.47,7.4,0.438,2.42
+1998,Lane Cove,Other Deciduous,3.93,7.55,0.664,2.11
+1999,Lane Cove,Other Deciduous,3.11,8.4,0.349,2.87
+2000,Lane Cove,Other Deciduous,2.68,6.75,0.376,2.84
+2001,Lane Cove,Other Deciduous,2.84,4.56,* ,2.32
+2002,Lane Cove,Other Deciduous,1.95,4.4,* ,2.19
+2003,Lane Cove,Other Deciduous,2.79,5.16,0.405,3.12
+2004,Lane Cove,Other Deciduous,2.62,7.4,0.335,3.28
+2005,Lane Cove,Other Deciduous,3.53,7.66,0.287,3.53
+2006,Lane Cove,Other Deciduous,2.74,8.23,0.351,3.03
+2007,Lane Cove,Other Deciduous,3.91,6.84,* ,3.12
+1988,Lane Cove,Balsam Fir,1.61,10.85,* ,7.1
+1989,Lane Cove,Balsam Fir,1.03,10.01,* ,9.76
+1990,Lane Cove,Balsam Fir,1.38,12.6,* ,9.41
+1994,Lane Cove,Balsam Fir,-- ,-- ,-- ,--
+1995,Lane Cove,Balsam Fir,-- ,-- ,-- ,--
+1996,Lane Cove,Balsam Fir,1.52,11.73,0.082,7.78
+1997,Lane Cove,Balsam Fir,2.26,13.58,0.076,6.54
+1998,Lane Cove,Balsam Fir,1.51,9.39,0.182,9.15
+1999,Lane Cove,Balsam Fir,2.07,14.72,0.064,6.99
+2000,Lane Cove,Balsam Fir,1.48,15.39,* ,7.98
+2001,Lane Cove,Balsam Fir,0.96,12.74,* ,11.84
+2002,Lane Cove,Balsam Fir,-- ,-- ,-- ,--
+2003,Lane Cove,Balsam Fir,0.64,11.93,* ,10.3
+2004,Lane Cove,Balsam Fir,1.12,6.96,0.067,7.44
+2005,Lane Cove,Balsam Fir,1.92,8.19,* ,6.16
+2006,Lane Cove,Balsam Fir,1.77,10.96,* ,7.38
+2007,Lane Cove,Balsam Fir,1.61,12.34,* ,8.29
+1988,Moskey Basin,Aspen,1.06,4.94,0.183,4.71
+1989,Moskey Basin,Aspen,0.71,2.77,0.28,3.5
+1990,Moskey Basin,Aspen,0.74,3.84,0.215,4.85
+1994,Moskey Basin,Aspen,0.44,3.46,0.178,6.66
+1995,Moskey Basin,Aspen,1.21,4.68,* ,4.04
+1996,Moskey Basin,Aspen,1.16,5.2,0.172,4.62
+1997,Moskey Basin,Aspen,1.91,8.21,0.231,4.76
+1998,Moskey Basin,Aspen,2.65,11.54,0.272,3.73
+1999,Moskey Basin,Aspen,2.17,12.1,0.137,4.84
+2000,Moskey Basin,Aspen,1.68,9.63,* ,4.95
+2001,Moskey Basin,Aspen,2.07,7.03,* ,4.58
+2002,Moskey Basin,Aspen,1.83,6.65,* ,3.71
+2003,Moskey Basin,Aspen,2.25,9.77,0.115,5.77
+2004,Moskey Basin,Aspen,2.83,12.16,0.118,5.93
+2005,Moskey Basin,Aspen,2.99,13.51,0.12,5.39
+2006,Moskey Basin,Aspen,2.28,14.15,0.137,5.37
+2007,Moskey Basin,Aspen,1.06,14.35,* ,6.82
+1988,Moskey Basin,Other Deciduous,2.48,7.53,0.252,3.62
+1989,Moskey Basin,Other Deciduous,1.35,5.71,0.277,4.48
+1990,Moskey Basin,Other Deciduous,1.3,5.87,0.265,4.73
+1994,Moskey Basin,Other Deciduous,1.4,4.4,0.352,3.42
+1995,Moskey Basin,Other Deciduous,1.96,6.24,0.285,3.66
+1996,Moskey Basin,Other Deciduous,2.46,7.39,0.306,3.58
+1997,Moskey Basin,Other Deciduous,3.16,7.39,0.315,3.01
+1998,Moskey Basin,Other Deciduous,2.66,8.08,0.516,2.52
+1999,Moskey Basin,Other Deciduous,2.75,8.55,0.274,3.82
+2000,Moskey Basin,Other Deciduous,4.05,8.1,* ,3.56
+2001,Moskey Basin,Other Deciduous,3.26,7.14,* ,2.5
+2002,Moskey Basin,Other Deciduous,2.04,7.97,0.319,3.12
+2003,Moskey Basin,Other Deciduous,2.79,4.64,* ,2.78
+2004,Moskey Basin,Other Deciduous,3.86,6.67,0.385,3.02
+2005,Moskey Basin,Other Deciduous,4.35,8.66,0.307,2.97
+2006,Moskey Basin,Other Deciduous,3.94,9.73,0.286,2.99
+2007,Moskey Basin,Other Deciduous,2.48,9.48,* ,3.14
+1988,Moskey Basin,Balsam Fir,5.54,13.96,0.15,3.32
+1989,Moskey Basin,Balsam Fir,4.63,13.88,* ,3.76
+1990,Moskey Basin,Balsam Fir,4.43,13.3,0.176,3.76
+1994,Moskey Basin,Balsam Fir,-- ,-- ,-- ,--
+1995,Moskey Basin,Balsam Fir,-- ,-- ,-- ,--
+1996,Moskey Basin,Balsam Fir,5.98,14.34,0.382,3.21
+1997,Moskey Basin,Balsam Fir,5.64,13.71,* ,3.24
+1998,Moskey Basin,Balsam Fir,5.42,10.74,* ,2.27
+1999,Moskey Basin,Balsam Fir,7.02,13.92,* ,3.36
+2000,Moskey Basin,Balsam Fir,5.69,14.62,* ,2.92
+2001,Moskey Basin,Balsam Fir,3.86,13.61,* ,3.2
+2002,Moskey Basin,Balsam Fir,-- ,-- ,-- ,--
+2003,Moskey Basin,Balsam Fir,3.3,10.77,* ,3.51
+2004,Moskey Basin,Balsam Fir,4.15,8.62,* ,3.29
+2005,Moskey Basin,Balsam Fir,4.81,9,* ,2.91
+2006,Moskey Basin,Balsam Fir,5.57,9.89,* ,2.83
+2007,Moskey Basin,Balsam Fir,5.54,11.18,* ,2.81

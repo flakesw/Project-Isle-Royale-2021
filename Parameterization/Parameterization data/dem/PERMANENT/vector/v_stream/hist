@@ -1,0 +1,3 @@
+COMMAND: RTOVEC~1 --overwrite input="r_strm_thin" output="v_stream" type="line" column="value"
+GISDBASE: C:/Users/Sam/Documents/Research/Isle Royale/Parameterization/Parameterization data/
+LOCATION: dem MAPSET: PERMANENT USER: Sam DATE: Wed Nov 09 16:06:49 2022
