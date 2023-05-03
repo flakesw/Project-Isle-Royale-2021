@@ -15,7 +15,7 @@ project_to_template <- function(input_raster, template){
 
 template <- rast("./Models/LANDIS inputs/input rasters/ecoregions.tif")
 
-browse <- rast("./Models/landis_test/mc_test - browse/browse/SiteForage_20.gis")
+browse <- rast("./Models/Model runs//browse/SiteForage_20.gis")
 plot(browse)
 crs(browse) <- ""
 hist(values(browse)[values(browse) > 0])

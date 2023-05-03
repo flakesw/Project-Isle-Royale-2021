@@ -10,10 +10,10 @@ diverging_color_ramp <- function(ras){
 }
 
 
-soilc_init <- rast("./Models/landis_test/mc_test - linear/NECN/SOMTC-20.img")
+soilc_init <- rast("./Models/Model runs/miroc - pred3/NECN/SOMTC-1.img")
 plot(soilc_init)
 hist(values(soilc_init)[values(soilc_init) != 0])
-soilc1 <- rast("./Models/landis_test/mc_test - linear/NECN/SOMTC-80.img")
+soilc1 <- rast("./Models/Model runs/miroc - pred3/NECN/SOMTC-80.img")
 plot(soilc1)
 hist(values(soilc1)[values(soilc1) != 0])
 
@@ -28,6 +28,7 @@ NAflag(soilc_change) <- 0
 
 plot(soilc_change, col = diverging_color_ramp(soilc_change))
 hist(values(soilc_change))
+median(values(soilc_change), na.rm = TRUE)
 clamped_ratio_change <- clamp(soilc_change/soilc_init, upper = 1)
 plot(clamp(soilc_change/soilc_init, upper = 1))
 plot(values(soilc_change)/values(soilc_init) ~ values(soilc_init))

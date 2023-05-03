@@ -39,6 +39,7 @@ rsconnect/
 */NECN/*
 *.gis
 Models/landis_test
+<<<<<<< Updated upstream
 
 #big files live here
 Parameterization/Parameterization data/fia
@@ -48,4 +49,6 @@ Parameterization/Parameterization data/us_streams
 Parameterization/Parameterization data/west_c_n
 Parameterization/Parameterization data/ameriflux data
 
+=======
+>>>>>>> Stashed changes
 Models/Model runs

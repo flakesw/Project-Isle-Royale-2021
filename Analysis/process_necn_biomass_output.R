@@ -11,10 +11,10 @@ library(tidyverse)
 # scenario_folder <- "E:/ISRO LANDIS/new runs"
 # scenario_folder <- "C:/Users/swflake/Documents/LANDIS inputs/"
 # scenario_folder <- "./Models/Model templates"
-scenario_folder <- "./Models/landis_test"
+scenario_folder <- "./Models/Model runs"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
   # `[`(grep("Scenario", .))
-scenarios <- scenarios[c(1, 4, 5, 6)]
+# scenarios <- scenarios[c(1, 4, 5, 6)]
 
 #some helper functions
 read_plus <- function(flnm) {
@@ -47,7 +47,7 @@ scenario_type <- data.frame(run_name = character(length(scenarios)),
 scenario_type <- scenario_type %>%
   mutate(run_name = unlist(map(strsplit(scenarios, split = "/"), pluck(4, 1)))) %>%
   # mutate(browse = ifelse(grepl(pattern = "no browse", run_name), "No Browse", "Browse")) %>%
-  mutate(browse = c("Browse",  "Browse", "No Browse", "No Browse")) %>%
+  mutate(browse = c("Low pred", "Hi pred", "Low pred", "Hi pred")) %>%
   # mutate(climate = ifelse(grepl(pattern = "historical", run_name), "Present Climate", "RCP8.5"))
   mutate(climate = ifelse(grepl(pattern = "miroc", run_name), "RCP8.5", "Present Climate"))
 
@@ -62,14 +62,7 @@ necn_summaries <- paste0(scenarios, "/NECN-succession-log.csv")  %>%
 
 necn_summaries2 <- necn_summaries %>%
   group_by(run_name, SimulationYear) %>%
-  summarise(TotalAGB = weighted.mean(AGB, NumSites)/100,
-            TotalSOMTC =  weighted.mean(SOMTC, NumSites)/100,
-            TotalSoilN = weighted.mean(MineralN, NumSites),
-            TotalAG_NPP = weighted.mean(AG_NPPC, NumSites)/100,
-            TotalBG_NPP = weighted.mean(BG_NPPC, NumSites)/100,
-            TotalCSurf = weighted.mean(C_SOM1surf, NumSites)/100, 
-            TotalNEE = weighted.mean(NEEC, NumSites)/100,
-            TotalC = weighted.mean(TotalC, NumSites)/100,
+  summarise(across(where(is.numeric), ~weighted.mean(.x, NumSites)),
             browse = browse[1],
             climate = climate[1])
 
@@ -83,7 +76,7 @@ necn_summaries2 <- necn_summaries %>%
 theme_set(theme_bw())
 
 agb_over_time <- ggplot(data = necn_summaries2,
-                        mapping = aes(x = SimulationYear, y = TotalAGB, colour = browse, shape = climate, linetype = climate)) + 
+                        mapping = aes(x = SimulationYear, y = AGB, colour = browse, shape = climate, linetype = climate)) + 
   geom_point() + 
   labs(title = "Average aboveground biomass",
        subtitle = "by browse and climate",
@@ -96,7 +89,7 @@ ggsave(file="./docs/images/agb_nobrowse.svg", plot=agb_over_time, width=5, heigh
 
 
 #TOtal C
-totalc_over_time <- ggplot(data = necn_summaries2, mapping = aes(x = SimulationYear, y = TotalC, colour = browse, shape = climate, linetype = climate)) + 
+totalc_over_time <- ggplot(data = necn_summaries2, mapping = aes(x = SimulationYear, y = TotalC/1000, colour = browse, shape = climate, linetype = climate)) + 
   geom_point() + 
   labs(title = "Average ecosystem carbon density",
        subtitle = "Present climate vs RCP8.5 scenario",
@@ -131,11 +124,11 @@ plot(n_over_time)
 
 #AG NPP over time
 npp_over_time <- ggplot(data = necn_summaries2, 
-                        mapping = aes(x = SimulationYear, y = TotalAG_NPP, colour = browse, shape = climate, linetype = climate)) + 
+                        mapping = aes(x = SimulationYear, y = AG_NPPC + BG_NPPC, colour = browse, shape = climate, linetype = climate)) + 
   geom_point() + 
   labs(title = "Average aboveground net primary productivity",
        subtitle = "by browse and climate scenario",
-       y = "Average NPP (Mg/ha/yr)", x = "Simulation Year") + 
+       y = "Average NPP (g/m2/yr)", x = "Simulation Year") + 
   geom_smooth() + 
   theme(panel.grid.minor = element_blank())
 plot(npp_over_time)
@@ -163,6 +156,31 @@ nee_over_time <- ggplot(data = necn_summaries2,
        subtitle = "by browse and climate scenario",
        y = "Average net ecosystem exchange (Mg/ha/yr)", x = "Simulation Year") + 
   geom_smooth() + 
-  theme(panel.grid.minor = element_blank())
+  theme(panel.grid.minor = element_blank()) + 
+  geom_hline(yintercept = 0)
 plot(nee_over_time)
 ggsave(file="nee.svg", plot=nee_over_time, width=5, height=4)
+
+
+
+
+c_inputs_over_time <- ggplot(data = necn_summaries2, 
+                        mapping = aes(x = SimulationYear, y = Litterfall + AgeMortality, colour = browse, shape = climate, linetype = climate)) + 
+  geom_point() + 
+  labs(title = "Detrital inputs",
+       subtitle = "by browse and climate scenario",
+       y = "Detrital inputs (g m-2 yr-1)", x = "Simulation Year") + 
+  geom_smooth() + 
+  theme(panel.grid.minor = element_blank()) + 
+  geom_hline(yintercept = 0)
+plot(c_inputs_over_time)
+
+c_inputs_over_time <- ggplot(data = necn_summaries2, 
+                             mapping = aes(x = SimulationYear, y = , colour = browse, shape = climate, linetype = climate)) + 
+  geom_point() + 
+  labs(title = "Detrital inputs",
+       subtitle = "by browse and climate scenario",
+       y = "Detrital inputs (g m-2 yr-1)", x = "Simulation Year") + 
+  geom_smooth() + 
+  theme(panel.grid.minor = element_blank()) + 
+  geom_hline(yintercept = 0)

@@ -13,9 +13,9 @@ theme_set(theme_bw())
 # scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
 # # `[`(grep("Scenario", .))
 
-scenario_folder <- "./Models/landis_test"
+scenario_folder <- "./Models/Model runs"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE)
-scenarios <- scenarios[c(1, 4, 5, 6)]
+# scenarios <- scenarios[c(1, 4, 5, 6)]
 
 
 #some helper functions
@@ -44,7 +44,7 @@ get_climate <- function(scenario){
 scenario_type <- scenario_type %>%
   mutate(run_name = unlist(map(strsplit(scenarios, split = "/"), pluck(4, 1)))) %>%
   # mutate(browse = ifelse(grepl(pattern = "no browse", run_name), "No Browse", "Browse")) %>%
-  mutate(browse = c("Browse",  "Browse", "No Browse", "No Browse")) %>%
+  mutate(browse = c("Low pred", "Hi pred", "Low pred", "Hi pred")) %>%
   # mutate(climate = ifelse(grepl(pattern = "historical", run_name), "Present Climate", "RCP8.5"))
   mutate(climate = ifelse(grepl(pattern = "miroc", run_name), "RCP8.5", "Present Climate"))
 
@@ -63,13 +63,14 @@ biomass_summaries <- paste0(scenarios, "/spp-biomass-log.csv")  %>%
 spp <- unique(biomass_summaries$Species)
 for(sp in spp){
   
-  print(ggplot(data = filter(biomass_summaries, Species == sp), mapping = aes(x = Time, y = Biomass)) + 
-    geom_point(color="steelblue") + 
-    labs(title = paste("Aboveground biomass", sp),
+p <- ggplot(data = filter(biomass_summaries, Species == sp), 
+         mapping = aes(x = Time, y = Biomass/100, colour = browse)) + 
+    geom_point(aes(shape = climate)) + 
+    labs(title = paste(paste0(sp, " aboveground biomass")),
          subtitle = "by browse scenario and climate scenario",
-         y = "Average AGB (g m-2)", x = "Timestep") + 
-    geom_smooth( color = "black") + 
-    facet_wrap(~ browse + climate, nrow = 3, ncol = 2) )
+         y = "Average AGB (Mg/ha)", x = "Timestep") + 
+    geom_smooth(aes(linetype = climate))
+plot(p)
   
 }
 
@@ -82,7 +83,17 @@ abba_biomass <- ggplot(data = filter(biomass_summaries, Species == "ABBA"),
              y = "Average AGB (Mg/ha)", x = "Timestep") + 
         geom_smooth(aes(linetype = climate))
 plot(abba_biomass)
-ggsave(file="abba.svg", plot=abba_biomass, width=5, height=4)
+# ggsave(file="abba.svg", plot=abba_biomass, width=5, height=4)
+
+pigl_biomass <- ggplot(data = filter(biomass_summaries, Species == "PIGL"), 
+                       mapping = aes(x = Time, y = Biomass/100, colour = browse)) + 
+  geom_point(aes(shape = climate)) + 
+  labs(title = paste("Balsam fir aboveground biomass"),
+       subtitle = "by browse scenario and climate scenario",
+       y = "Average AGB (Mg/ha)", x = "Timestep") + 
+  geom_smooth(aes(linetype = climate))
+plot(abba_biomass)
+# ggsave(file="abba.svg", plot=abba_biomass, width=5, height=4)
 
 beal_biomass <- ggplot(data = filter(biomass_summaries, Species == "BEAL2"), 
                        mapping = aes(x = Time, y = Biomass/100, colour = browse)) + 
@@ -113,6 +124,8 @@ potr_biomass <- ggplot(data = filter(biomass_summaries, Species == "POTR5"),
   geom_smooth(aes(linetype = climate))
 plot(potr_biomass)
 ggsave(file="potr.svg", plot=potr_biomass, width=8, height=4)
+
+
 
 
 ## process rasters
