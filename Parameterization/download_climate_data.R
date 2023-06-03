@@ -12,7 +12,8 @@ isro_boundary <- sf::st_read("./Parameterization/Parameterization data/isle_roya
   # Try adding a buffer if you're getting NaN values for variance or st_dev
   sf::st_transform(crs = "+proj=longlat +datum=WGS84") #reproject to CRS that geoknife needs
 
-study_area <- basemaps::draw_ext()
+# study_area <- basemaps::draw_ext()
+study_area <- isro_boundary
 
 
 #"stencil" is what geoknife uses for the extent of the data
