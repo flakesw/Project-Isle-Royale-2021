@@ -10,10 +10,10 @@ diverging_color_ramp <- function(ras){
 }
 
 
-soilc_init <- rast("./Models/Model runs/miroc - pred3/NECN/SOMTC-1.img")
+soilc_init <- rast("./Models/Model templates/spinup model - calibrate soilc - Copy (2)/NECN/SOMTC-1.img")
 plot(soilc_init)
 hist(values(soilc_init)[values(soilc_init) != 0])
-soilc1 <- rast("./Models/Model runs/miroc - pred3/NECN/SOMTC-80.img")
+soilc1 <- rast("./Models/Model templates/spinup model - calibrate soilc - Copy (2)/NECN/SOMTC-20.img")
 plot(soilc1)
 hist(values(soilc1)[values(soilc1) != 0])
 

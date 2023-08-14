@@ -41,5 +41,42 @@ necn_monthly <- read.csv("C:/Users/Sam/Documents/Research/Isle Royale/Models/lan
   summarise(NEE = mean(avgNEE))
 lines(necn_monthly$NEE ~ necn_monthly$Month)
 
-necn_monthly <- read.csv("C:/Users/Sam/Documents/Research/Isle Royale/Models/landis_test/mc_test - one_cell/NECN-succession-monthly-log.csv")
+necn_monthly <- read.csv("./Models/Model templates/spinup model - final - Copy (2)/NECN-succession-monthly-log.csv")
+# necn_monthly <- read.csv("E:/ISRO LANDIS/Model runs/current - pred1/NECN-succession-monthly-log.csv")
 boxplot(necn_monthly$avgNEE ~ necn_monthly$Month)
+boxplot(necn_monthly$AvgTotalNPP_C ~ necn_monthly$Month)
+
+test <- necn_monthly %>%
+  group_by(Month) %>%
+  summarise(mean_NEE = mean(avgNEE),
+            mean_NPP = mean(AvgTotalNPP_C))
+boxplot(test$mean_NPP)
+test <- necn_monthly %>%
+  filter(Time>10) %>%
+  group_by(Time) %>%
+  summarise(total_NEE = sum(avgNEE),
+            total_NPP = sum(AvgTotalNPP_C))
+mean(test$total_NPP)
+mean(test$total_NEE)
+
+#v5 -- mean npp 439; slight biomass and soil C gain
+  #normal NPP and maxbio
+#v5 - copy -- mean npp 508; gain 1000 soil c and 1800 biomass
+  #slightly higher npp, normal maxbio
+#v5 - copy2 -- mean npp 738; gain 1900 soil C and 3000 biomass
+ #double NPP, normal maxbio
+#v5 copy 3 -- mean npp 713; gain 2400 soil c and 50 biomass
+  #double npp, half maxbio
+#v5 copy 4 -- mean npp 726; gain 2000 soil c and 1800 biomass
+  #double npp, lower maxbio
+#v5 copy 5 -- mean npp 755; gain 1700 soil c and 2200 biomass
+  #double npp, higher maxbio
+#v5 copy 6 -- mean npp 517; gain gain 200 soil c and 3200 biomass
+  #higher npp, double maxbio
+
+#test7 -- adjust up NPP, no change to maxbio
+#test8 -- adjust up maxbio, no change to npp
+#test9 -- adjust up NPP, adjust down maxbio
+#test10 -- start from test3, reduce npp; reduce npp again
+
+

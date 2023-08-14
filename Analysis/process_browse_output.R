@@ -3,12 +3,12 @@
 library(tidyverse)
 
 #what folder do all the runs to be analyzed live in?
-# scenario_folder <- "E:/ISRO LANDIS/new runs"
+scenario_folder <- "E:/ISRO LANDIS/Model runs"
 # scenario_folder <- "C:/Users/swflake/Documents/LANDIS inputs/"
 # scenario_folder <- "./Models/Model templates"
-scenario_folder <- "./Models/Model runs"
+# scenario_folder <- "./Models/Model runs"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
-# `[`(grep("Scenario", .))
+ # `[`(!(grepl("canesm", .)))
 # scenarios <- scenarios[c(1, 4, 5, 6)]
 
 #some helper functions
@@ -39,12 +39,23 @@ scenario_type <- data.frame(run_name = character(length(scenarios)),
                             browse = character(length(scenarios)),
                             climate = character(length(scenarios)))
 
+# scenario_type <- scenario_type %>%
+  # mutate(run_name = unlist(map(strsplit(scenarios, split = "/"), pluck(4, 1)))) %>%
+  # mutate(browse = ifelse(grepl(pattern = "no browse", run_name), "No Browse", "Browse")) %>%
+  # mutate(browse = c("Low pred", "Hi pred", "Low pred", "Hi pred")) %>%
+  # mutate(climate = ifelse(grepl(pattern = "historical", run_name), "Present Climate", "RCP8.5"))
+  # mutate(climate = ifelse(grepl(pattern = "miroc", run_name), "RCP8.5", "Present Climate"))
+
 scenario_type <- scenario_type %>%
   mutate(run_name = unlist(map(strsplit(scenarios, split = "/"), pluck(4, 1)))) %>%
-  # mutate(browse = ifelse(grepl(pattern = "no browse", run_name), "No Browse", "Browse")) %>%
-  mutate(browse = c("Low pred", "Hi pred", "Low pred", "Hi pred")) %>%
-  # mutate(climate = ifelse(grepl(pattern = "historical", run_name), "Present Climate", "RCP8.5"))
-  mutate(climate = ifelse(grepl(pattern = "miroc", run_name), "RCP8.5", "Present Climate"))
+  mutate(browse = ifelse(grepl(pattern = "pred1", run_name), "Low pred", 
+                         ifelse(grepl(pattern = "pred2", run_name), "Medium pred",
+                                "High pred"))) %>%
+  # mutate(browse = c("Low pred", "Hi pred", "Low pred", "Hi pred")) %>%
+  mutate(climate = ifelse(grepl(pattern = "miroc", run_name), "MIROC5", 
+                          ifelse(grepl(pattern = "canesm", run_name), "CANESM",
+                                 ifelse(grepl(pattern = "ccsm", run_name), "CCSM", 
+                                        ifelse(grepl(pattern = "mri_cgm", run_name), "MRI", "Present Climate")))))
 
 browse_summaries <- scenario_type %>%
   # filter(scenario_type$browse == "Browse") %>%
@@ -96,7 +107,7 @@ plot(moosepop)
 
 
 mooseK <- ggplot(data = browse_summaries_melt[browse_summaries_melt$Variable %in% c("Pop_density","K_density"),], 
-                 mapping = aes(x = Time+1998, y = value)) + 
+                 mapping = aes(x = Time+2019, y = value)) + 
   geom_point(aes(colour = browse, shape = Variable)) + 
   labs(title = "Moose Population density and Carrying Capacity density",
        subtitle = "by browse scenario and climate scenario",
@@ -111,10 +122,11 @@ ggplot(data = browse_summaries2, mapping = aes(x = Time, y = AverageForage)) +
   labs(title = "Average forage density (g m-2)",
        subtitle = "by browse scenario and climate scenario",
        y = "Average Forage (g m-2)", x = "Timestep") + 
-  geom_smooth(aes(linetype = climate, colour = browse))
+  geom_smooth(aes(linetype = climate, colour = browse)) + 
+  facet_wrap(facets = ~climate)
 
 browse_kill <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2020, y = AverageBiomassKilled)) + 
-  geom_point(aes(colour = browse)) + 
+  geom_point(aes(colour = browse, shape = climate)) + 
   labs(title = "Average biomass killed by moose",
        subtitle = "by climate scenario",
        y = expression(paste("Biomass killed (g ", m^{-2}, yr^{-1}, ")")), x = "Simulation Year") +
@@ -122,6 +134,17 @@ browse_kill <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2020, y
   scale_color_manual(values=c("#56B4E9", "#E69F00"))
 plot(browse_kill)
 ggsave(file = "browsekill.svg", plot = browse_kill, width = 5, height = 4)
+
+prop_forage_eaten <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2020, y = AverageBiomassRemoved/AverageForage)) + 
+  geom_point(aes(colour = browse, shape = climate)) + 
+  labs(title = "Average biomass killed by moose",
+       subtitle = "by climate scenario",
+       y = expression(paste("Proportion of forage eaten (Browse Density Index)")), x = "Simulation Year") +
+  geom_smooth(aes(linetype = climate, color = browse))  +
+  facet_wrap(facets = ~climate) +
+  ylim(c(0,1))
+  # scale_color_manual(values=c("#56B4E9", "#E69F00"))
+plot(prop_forage_eaten)
 
 #-------------------------------------------------------------------------------
 #Forage maps

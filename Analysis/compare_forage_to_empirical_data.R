@@ -15,13 +15,13 @@ project_to_template <- function(input_raster, template){
 
 template <- rast("./Models/LANDIS inputs/input rasters/ecoregions.tif")
 
-browse <- rast("./Models/Model runs//browse/SiteForage_20.gis")
+browse <- rast("./Models/Model templates/spinup model - testnpp10 - Copy/browse/SiteForage_20.gis")
 plot(browse)
 crs(browse) <- ""
 hist(values(browse)[values(browse) > 0])
 mean(values(browse)[values(browse) > 0])
 
-biomass <- rast("./Models/landis_test/mc_test - browse/biomass/bio2-TotalBiomass-40.img")
+biomass <- rast("./Models/Model templates/spinup model - testnpp10 - Copy/biomass/bio2-TotalBiomass-20.img")
 plot(biomass)
 
 test <- browse/biomass
@@ -43,7 +43,7 @@ sum <- hodgson %>%
   summarise(browse = sum(m, na.rm = TRUE))
 sum
 
-browse_landis <- read.csv("./Models/Model templates/spinup model/browse-summary-log.csv") %>%
+browse_landis <- read.csv("./Models/Model templates/spinup model - final - Copy/browse-summary-log.csv") %>%
   mutate(Location = "Landis",
          browse = MeanForage)
 browse_landis$Year = browse_landis$Time + 1998
@@ -60,7 +60,7 @@ shapes <- sf::st_read("./Parameterization/Parameterization data/browse/loc_shape
 shapes$id <- c("Moskey Basin", "Lane Cove")
 # plot(shapes)
 
-forage_list <- paste0("./Models/Model templates/spinup model/browse/SiteForage_",
+forage_list <- paste0("./Models/Model templates/spinup model - final - Copy/browse/SiteForage_",
                       seq(1,20), #seq(1, 9), 
                       ".gis")
 forage <- rast(forage_list)
@@ -94,14 +94,14 @@ ggplot(all_browse[all_browse$Location != "Landis", ], mapping = aes(x = Year, y 
   ylab(label = expression(paste("Available forage (g ", m^{-2}, ")")))
 
 means2 <- all_browse %>%
-  filter(Source == "Observed" | Year > 2005) %>%
+  filter(Year > 1999) %>%
   group_by(Location2, Source) %>%
   summarise(mean_forage = mean(browse))
 means2
 
 
 ##compare species percent of diet
-spp_log <- read.csv("./Models/landis_test/mc_test - browse - linear/browse-event-species-log.csv")
+spp_log <- read.csv("./Models/Model runs/current - pred1 - Run1/browse-event-species-log.csv")
 spp_log_avg <- spp_log %>%
   mutate(SpeciesName = gsub(" ", "", .$SpeciesName)) %>%
   filter(Time < 40) %>%
@@ -111,7 +111,8 @@ spp_log_avg
 
 spp_log_avg$Type <- ifelse(spp_log_avg$SpeciesName == "ABBA", "Balsam Fir",
                            ifelse(spp_log_avg$SpeciesName %in% c("POTR5", "POBA2", "POGR4"), "Aspen",
-                           "Other Deciduous"))
+                                  ifelse(spp_log_avg$SpeciesName == "THOC2", "Cedar",
+                           "Other Deciduous")))
 spp_log_avg_type <- spp_log_avg %>%
   group_by(Time, Type) %>%
   summarise(ProportionTotalBrowse = sum(ProportionTotalBrowse, na.rm = TRUE))

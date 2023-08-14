@@ -43,10 +43,10 @@ AtmosphericNSlope		-0.000109 <<updated for ISRO 2021-12-20
 AtmosphericNIntercept		0.0589 <<updated for ISRO 2021-12-20
 Latitude			48
 DenitrificationRate		0.0610 <<from Zachary's Southern Apps project
-DecayRateSurf			1.0
-DecayRateSOM1			3.2
-DecayRateSOM2			0.007
-DecayRateSOM3			0.00008
+DecayRateSurf			1.65
+DecayRateSOM1			3.45
+DecayRateSOM2			0.012
+DecayRateSOM3			0.00011
 
 MaximumLAI
 

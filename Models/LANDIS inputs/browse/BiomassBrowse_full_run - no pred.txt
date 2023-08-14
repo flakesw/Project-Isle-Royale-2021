@@ -22,9 +22,9 @@ PIMA		0			0		1		0.8		0.1   	0
 PIBA2		0			0		1		0.8		0.1  		0
 PIRE		0			0		1		0.8		0.1  		0
 PIST		0.05       		0.2		0.6		0.8		0.1   	8000
-POBA2		0.30			0.5		0.4		0.9		0.1   	8000
-POGR4		0.30			0.5		0.4		0.9		0.1   	8000
-POTR5		0.35			0.5		0.4		0.9		0.1   	8000
+POBA2		0.30			0.5		0.4		0.9		0.1   	12000
+POGR4		0.30			0.5		0.4		0.9		0.1   	12000
+POTR5		0.35			0.5		0.4		0.9		0.1   	12000
 PRVI		0.20			0.4		0.3		0.9		0.1   	8000
 QURU		0.05			0.3		0.4		0.8		0.1   	8000
 SODE3		0.30			0.3		0.6		0.9		0.1		8000
@@ -47,13 +47,14 @@ HarvestMax 0.0
 
 
 
+
 << Forage Inputs >>
 ConsumptionRate  2327 << kg/yr/individual
-ANPPForageProp		0.75	<<Prop of ANPP that counts as forage
+ANPPForageProp		0.66	<<Prop of ANPP that counts as forage
 MinBrowsePropinReach	0.3	<<Min prop of browse within reach for a cohort to be browsed. Prevents larger cohorts from being browsed
 BrowseBiomassThresholdMin	0.03	<<Proportion of ecoregion max biomass when cohort begins to escape browse; cohorts smaller than this threshold are completely reachable as forage
 BrowseBiomassThresholdMax	0.08	<<Proportion of ecoregion max biomass above which cohorts completely escape browse; also controls maximum forage possible per cell
-EscapeBrowsePropLong	0.4	<<Prop of longevity when browse is escaped
+EscapeBrowsePropLong	0.3	<<Prop of longevity when browse is escaped
 
 << Options >>
 CalibrateMode OFF << Default is OFF
