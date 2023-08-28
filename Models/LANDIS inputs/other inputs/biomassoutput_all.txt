@@ -7,7 +7,7 @@ MakeTable yes
 Species all
 
 
-MapNames biomass/bio2-{species}-{timestep}.img
+MapNames biomass/{species}-{timestep}.img
 
 DeadPools both
 

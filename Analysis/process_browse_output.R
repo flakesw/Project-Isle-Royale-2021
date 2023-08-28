@@ -48,14 +48,16 @@ scenario_type <- data.frame(run_name = character(length(scenarios)),
 
 scenario_type <- scenario_type %>%
   mutate(run_name = unlist(map(strsplit(scenarios, split = "/"), pluck(4, 1)))) %>%
-  mutate(browse = ifelse(grepl(pattern = "pred1", run_name), "Low pred", 
-                         ifelse(grepl(pattern = "pred2", run_name), "Medium pred",
-                                "High pred"))) %>%
+  mutate(browse = ifelse(grepl(pattern = "pred1", run_name), "Low", 
+                         ifelse(grepl(pattern = "pred2", run_name), "Medium",
+                                "High"))) %>%
   # mutate(browse = c("Low pred", "Hi pred", "Low pred", "Hi pred")) %>%
-  mutate(climate = ifelse(grepl(pattern = "miroc", run_name), "MIROC5", 
-                          ifelse(grepl(pattern = "canesm", run_name), "CANESM",
-                                 ifelse(grepl(pattern = "ccsm", run_name), "CCSM", 
-                                        ifelse(grepl(pattern = "mri_cgm", run_name), "MRI", "Present Climate")))))
+  mutate(climate = ifelse(grepl(pattern = "miroc", run_name), "Very Hot (MIROC-ESM-CHEM 8.5)", 
+                          ifelse(grepl(pattern = "canesm", run_name), "Hot/Dry (CanESM2 8.5)",
+                                 ifelse(grepl(pattern = "ccsm", run_name), "Warm (CCSM4 4.5)", 
+                                        ifelse(grepl(pattern = "mri_cgm", run_name), "Hot/Wet (MRI-CGCM3 8.5)", "Present Climate"))))) %>%
+  mutate(browse = factor(browse, levels = c("Low", "Medium", "High")),
+         climate = factor(climate, levels = unique(climate)[c(3,2,1,4,5)]))
 
 browse_summaries <- scenario_type %>%
   # filter(scenario_type$browse == "Browse") %>%
@@ -95,13 +97,14 @@ browse_summaries_melt
 #AGB over time
 
 moosepop <- ggplot(data = browse_summaries2, mapping = aes(x = Time+2019, y = TotalPopulation)) + 
-  geom_point(aes(colour = browse, shape = climate)) + 
-  labs(title = "Total Moose Population",
-       subtitle = "by browse scenario and climate scenario",
-       y = "Total Moose Population", x = "Simulation Year") +
-  geom_smooth(aes(linetype = climate, colour = browse)) + 
+  geom_point(aes(colour = browse), alpha = 0.2) + 
+  labs(y = "Total Moose Population", x = "Simulation Year", fill = "Predation") +
+  geom_smooth(aes(colour = browse)) + 
   geom_point(data = historical_moose, mapping = aes(x = Year, y = Moose_pop)) + 
-  geom_line(data = historical_moose, mapping = aes(x = Year, y = Moose_pop))
+  geom_line(data = historical_moose, mapping = aes(x = Year, y = Moose_pop)) +
+  facet_wrap(facets = "climate") 
+moosepop <- tag_facet(moosepop)
+shift_legend2(moosepop)
 plot(moosepop)
 # ggsave(file="moosepop.svg", plot=moosepop, width=5, height=4)
 
@@ -117,13 +120,14 @@ mooseK <- ggplot(data = browse_summaries_melt[browse_summaries_melt$Variable %in
 plot(mooseK)
 ggsave(file="mooseK.svg", plot=mooseK, width=5, height=4)
 
-ggplot(data = browse_summaries2, mapping = aes(x = Time, y = AverageForage)) + 
-  geom_point(aes(colour = browse, shape = climate)) + 
-  labs(title = "Average forage density (g m-2)",
-       subtitle = "by browse scenario and climate scenario",
-       y = "Average Forage (g m-2)", x = "Timestep") + 
-  geom_smooth(aes(linetype = climate, colour = browse)) + 
+forage <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2019, y = AverageForage)) + 
+  geom_point(aes(colour = browse)) + 
+  labs(y = "Average available forage (g m-2)", x = "Simulation year") + 
+  guides(colour=guide_legend(title="Predation")) +
+  geom_smooth(aes(colour = browse)) + 
   facet_wrap(facets = ~climate)
+forage <- tag_facet(forage)
+shift_legend2(forage)
 
 browse_kill <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2020, y = AverageBiomassKilled)) + 
   geom_point(aes(colour = browse, shape = climate)) + 

@@ -9,13 +9,12 @@ theme_set(theme_bw())
 
 #what folder do all the runs to be analyzed live in?
 scenario_folder <- "E:/ISRO LANDIS/Model runs"
+# scenario_folder <- "C:/Users/swflake/Documents/LANDIS inputs/"
 # scenario_folder <- "./Models/Model templates"
-# scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
-# # `[`(grep("Scenario", .))
 # scenario_folder <- "./Models/Model runs"
-scenarios <- list.dirs(scenario_folder, recursive = FALSE)
+scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
+# `[`(!(grepl("canesm", .)))
 # scenarios <- scenarios[c(1, 4, 5, 6)]
-
 
 #some helper functions
 read_plus <- function(flnm) {
@@ -25,6 +24,13 @@ read_plus <- function(flnm) {
   
 }
 
+get_browse <- function(scenario){
+  list.files(scenario, pattern = "Scenario") %>%
+    pluck(1) %>%
+    as.character() %>%
+    strsplit(x = ., split = "[.]") %>%
+    pluck(1, 1)
+}
 
 get_climate <- function(scenario){
   list.files(scenario, pattern = "NECN_Succession") %>%
@@ -34,20 +40,23 @@ get_climate <- function(scenario){
     pluck(1, 1)
 }
 
-# scenario_type <- data.frame(run_name = character(length(scenarios)), 
-#                             browse = character(length(scenarios)),
-#                             climate = character(length(scenarios))) %>%
-#   mutate(run_name = unlist(map(strsplit(scenarios, split = "/"), pluck(4, 1)))) %>%
-#   mutate(browse = ifelse(grepl(pattern = "no browse", run_name), "No Browse", "Browse")) %>%
-#   mutate(climate = ifelse(grepl(pattern = "historical", run_name), "RCP8.5", "Present climate"))
+scenario_type <- data.frame(run_name = character(length(scenarios)), 
+                            browse = character(length(scenarios)),
+                            climate = character(length(scenarios)))
+
+
 scenario_type <- scenario_type %>%
   mutate(run_name = unlist(map(strsplit(scenarios, split = "/"), pluck(4, 1)))) %>%
-  # mutate(browse = ifelse(grepl(pattern = "no browse", run_name), "No Browse", "Browse")) %>%
-  mutate(browse = c("Low pred", "Hi pred", "Low pred", "Hi pred")) %>%
-  # mutate(climate = ifelse(grepl(pattern = "historical", run_name), "Present Climate", "RCP8.5"))
-  mutate(climate = ifelse(grepl(pattern = "miroc", run_name), "RCP8.5", "Present Climate"))
-
-
+  mutate(browse = ifelse(grepl(pattern = "pred1", run_name), "Low", 
+                         ifelse(grepl(pattern = "pred2", run_name), "Medium",
+                                "High"))) %>%
+  # mutate(browse = c("Low pred", "Hi pred", "Low pred", "Hi pred")) %>%
+  mutate(climate = ifelse(grepl(pattern = "miroc", run_name), "Very Hot (MIROC-ESM-CHEM 8.5)", 
+                          ifelse(grepl(pattern = "canesm", run_name), "Hot/Dry (CanESM2 8.5)",
+                                 ifelse(grepl(pattern = "ccsm", run_name), "Warm (CCSM4 4.5)", 
+                                        ifelse(grepl(pattern = "mri_cgm", run_name), "Hot/Wet (MRI-CGCM3 8.5)", "Present Climate"))))) %>%
+  mutate(browse = factor(browse, levels = c("Low", "Medium", "High")),
+         climate = factor(climate, levels = unique(climate)[c(3,2,1,4,5)]))
 
 biomass_summaries <- paste0(scenarios, "/spp-biomass-log.csv")  %>%
   purrr::map_df(~read_plus(.)) %>%
@@ -64,11 +73,12 @@ for(sp in spp){
   
 p <- ggplot(data = filter(biomass_summaries, Species == sp), 
          mapping = aes(x = Time, y = Biomass/100, colour = browse)) + 
-    geom_point(aes(shape = climate)) + 
+    geom_point() + 
     labs(title = paste(paste0(sp, " aboveground biomass")),
          subtitle = "by browse scenario and climate scenario",
          y = "Average AGB (Mg/ha)", x = "Timestep") + 
-    geom_smooth(aes(linetype = climate))
+    geom_smooth() +
+  facet_wrap(facets = "climate")
   # geom_smooth(aes(linetype = run_name))
 plot(p)
   
@@ -145,8 +155,8 @@ biomass_df <- data.frame(biomass_layers = biomass_layers,
 
 species_list <- unique(biomass_df$species)
 year_list <- unique(biomass_df$years)
-sp <- species_list[8]
+sp <- species_list[1]
 for(sp in species_list){
   test <- rast(biomass_df[biomass_df$species == sp, "biomass_layers"])
 }
-plot(test)
+plot(test[[1:9]])

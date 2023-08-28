@@ -1,5 +1,7 @@
 library(terra)
 library(tidyverse)
+library(tidyterra)
+library("colorspace")
 
 diverging_color_ramp <- function(ras){
   the_palette_fc <- leaflet::colorNumeric(palette = "RdBu", 
@@ -10,58 +12,129 @@ diverging_color_ramp <- function(ras){
 }
 
 
-soilc_init <- rast("./Models/Model templates/spinup model - calibrate soilc - Copy (2)/NECN/SOMTC-1.img")
-plot(soilc_init)
-hist(values(soilc_init)[values(soilc_init) != 0])
-soilc1 <- rast("./Models/Model templates/spinup model - calibrate soilc - Copy (2)/NECN/SOMTC-20.img")
-plot(soilc1)
-hist(values(soilc1)[values(soilc1) != 0])
+scenario_folder <- "E:/ISRO LANDIS/Model runs"
+scenarios <- list.dirs(scenario_folder, recursive = FALSE) 
+
+scenario_types <- c("current","ccsm","canesm","miroc","mri_cgm")
 
 
-# soilcdiff <- soilc1 - soilc2
-# NAflag(soilcdiff) <- 0
-# plot(soilcdiff)
+#moose effect on C
+for(i in 1:length(scenario_types)){
+  high_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred3"), scenarios)], "/NECN/TotalC-80.img")))
+  # plot(high_pred)
+  low_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred1"), scenarios)], "/NECN/TotalC-80.img")))
+  # plot(low_pred)
+  
+  pred_diff <- high_pred - low_pred
+  NAflag(pred_diff) <- 0
+  plot(pred_diff, col = diverging_color_ramp(pred_diff))
+  
+  if(i == 1) diff_stack <- pred_diff
+  if(i > 1) diff_stack <- c(diff_stack, pred_diff)
+  names(diff_stack[[i]]) <- scenario_types[i]
+}
 
-soilc_change <- soilc1 - soilc_init
+names(diff_stack)
 
-NAflag(soilc_change) <- 0
-
-plot(soilc_change, col = diverging_color_ramp(soilc_change))
-hist(values(soilc_change))
-median(values(soilc_change), na.rm = TRUE)
-clamped_ratio_change <- clamp(soilc_change/soilc_init, upper = 1)
-plot(clamp(soilc_change/soilc_init, upper = 1))
-plot(values(soilc_change)/values(soilc_init) ~ values(soilc_init))
-plot(values(soilc_change) ~ values(soilc_init))
-
-
-
-
-
-
-
-
-
-
+ggplot() +
+  geom_spatraster(data = diff_stack) +
+  facet_wrap(~lyr)+
+  scale_fill_continuous_divergingx(palette = 'RdBu', mid = 0) +
+  theme_minimal()
 
 
+##
+
+#change in C over model runs
+for(i in 1:length(scenario_types)){
+  high_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred3"), scenarios)], "/biomass/TotalBiomass-80.img")))
+  # plot(high_pred)
+  low_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred3"), scenarios)], "/biomass/TotalBiomass-0.img")))
+  # plot(low_pred)
+  
+  pred_diff <- high_pred - low_pred
+  NAflag(pred_diff) <- 0
+  plot(pred_diff, col = diverging_color_ramp(pred_diff))
+  
+  if(i == 1) diff_stack <- pred_diff
+  if(i > 1) diff_stack <- c(diff_stack, pred_diff)
+  names(diff_stack[[i]]) <- scenario_types[i]
+}
+
+names(diff_stack)
+
+ggplot() +
+  geom_spatraster(data = diff_stack) +
+  facet_wrap(~lyr)+
+  scale_fill_continuous_divergingx(palette = 'RdBu', mid = 0) +
+  theme_minimal()
 
 
 
+##
+
+#compare cc scenarios to current climate
+for(i in 1:length(scenario_types)){
+  high_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred3"), scenarios)], "/biomass/TotalBiomass-80.img")))
+  # plot(high_pred)
+  low_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[1]," - pred3"), scenarios)], "/biomass/TotalBiomass-80.img")))
+  # plot(low_pred)
+  
+  pred_diff <- high_pred - low_pred
+  if(i == 1)  pred_diff <- high_pred
+  NAflag(pred_diff) <- 0
+  plot(pred_diff, col = diverging_color_ramp(pred_diff))
+  
+  if(i == 1) diff_stack <- pred_diff
+  if(i > 1) diff_stack <- c(diff_stack, pred_diff)
+  names(diff_stack[[i]]) <- scenario_types[i]
+}
+
+names(diff_stack)
+
+ggplot() +
+  geom_spatraster(data = diff_stack) +
+  facet_wrap(~lyr)+
+  scale_fill_continuous_divergingx(palette = 'RdBu', mid = 0) +
+  theme_minimal()
 
 
 
+## anaerobic effect maps
 
 
 
+for(i in 1:length(scenario_types)){
+  
+  high_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred1"), scenarios)], "/NECN/AnaerobicEffect-80.img")))
+  # plot(high_pred)
+  low_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred1"), scenarios)], "/NECN/AnaerobicEffect-10.img")))
+  # plot(low_pred)
+  
+  pred_diff <- high_pred - low_pred
+  NAflag(pred_diff) <- 0
+  plot(pred_diff, col = diverging_color_ramp(pred_diff))
+  
+  if(i == 1) diff_stack <- pred_diff
+  if(i > 1) diff_stack <- c(diff_stack, pred_diff)
+  names(diff_stack[[i]]) <- scenario_types[i]
+}
 
+names(diff_stack)
 
+ggplot() +
+  geom_spatraster(data = diff_stack) +
+  facet_wrap(~lyr)+
+  scale_fill_whitebox_c(
+    palette = "bl_yl_rd", direction = -1,
+    n.breaks = 5) +
+  theme_minimal()
 
 
 
 
 #exploring some explanatory variables-------------------------------------------
-soilm <- rast("./Models/landis_test/mc_test - linear/NECN/SoilWater-60.img")
+soilm <- rast("./Models/landis_test/mc_test - linear/NECN/SoilWater-5.img")
 plot(soilm)
 
 soil_drain <- rast("./Models/LANDIS Inputs/input rasters/soil_drain.tif")
