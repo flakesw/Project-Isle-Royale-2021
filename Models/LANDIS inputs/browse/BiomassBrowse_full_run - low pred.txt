@@ -52,8 +52,8 @@ HarvestMax 0.0
 ConsumptionRate  2327 << kg/yr/individual
 ANPPForageProp		0.66	<<Prop of ANPP that counts as forage
 MinBrowsePropinReach	0.3	<<Min prop of browse within reach for a cohort to be browsed. Prevents larger cohorts from being browsed
-BrowseBiomassThresholdMin	0.03	<<Proportion of ecoregion max biomass when cohort begins to escape browse; cohorts smaller than this threshold are completely reachable as forage
-BrowseBiomassThresholdMax	0.1	<<Proportion of ecoregion max biomass above which cohorts completely escape browse; also controls maximum forage possible per cell
+BrowseBiomassThresholdMin	0.06	<<Proportion of ecoregion max biomass when cohort begins to escape browse; cohorts smaller than this threshold are completely reachable as forage
+BrowseBiomassThresholdMax	0.12	<<Proportion of ecoregion max biomass above which cohorts completely escape browse; also controls maximum forage possible per cell
 EscapeBrowsePropLong	0.3	<<Prop of longevity when browse is escaped
 
 << Options >>

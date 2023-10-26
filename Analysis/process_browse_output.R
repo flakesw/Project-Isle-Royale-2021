@@ -1,6 +1,8 @@
 #process browse
 
 library(tidyverse)
+library(lemon)
+library(cowplot)
 
 #what folder do all the runs to be analyzed live in?
 scenario_folder <- "E:/ISRO LANDIS/Model runs"
@@ -73,6 +75,7 @@ browse_summaries2 <- browse_summaries %>%
             AverageForage =  weighted.mean(MeanForage, TotalSites),
             AverageBiomassKilled = weighted.mean(AverageBiomassKilled, TotalSites),
             AverageBiomassRemoved = weighted.mean(AverageBiomassRemoved, TotalSites),
+            BDI = weighted.mean(BDI, TotalSites),
             TotalK = TotalK,
             browse = browse[1],
             climate = climate[1])
@@ -97,26 +100,32 @@ browse_summaries_melt
 #AGB over time
 
 moosepop <- ggplot(data = browse_summaries2, mapping = aes(x = Time+2019, y = TotalPopulation)) + 
-  geom_point(aes(colour = browse), alpha = 0.2) + 
+  geom_point(aes(colour = browse), alpha = 0.1) + 
   labs(y = "Total Moose Population", x = "Simulation Year", fill = "Predation") +
   geom_smooth(aes(colour = browse)) + 
   geom_point(data = historical_moose, mapping = aes(x = Year, y = Moose_pop)) + 
   geom_line(data = historical_moose, mapping = aes(x = Year, y = Moose_pop)) +
-  facet_wrap(facets = "climate") 
+  facet_wrap(facets = "climate") + 
+  guides(colour=guide_legend(title="Predation"))
 moosepop <- tag_facet(moosepop)
-shift_legend2(moosepop)
+moosepop <- shift_legend2(moosepop)
 plot(moosepop)
 # ggsave(file="moosepop.svg", plot=moosepop, width=5, height=4)
 
 
 mooseK <- ggplot(data = browse_summaries_melt[browse_summaries_melt$Variable %in% c("Pop_density","K_density"),], 
                  mapping = aes(x = Time+2019, y = value)) + 
-  geom_point(aes(colour = browse, shape = Variable)) + 
+  geom_point(aes(colour = browse, shape = Variable), alpha = 0.1) + 
   labs(title = "Moose Population density and Carrying Capacity density",
        subtitle = "by browse scenario and climate scenario",
        y = "Number of moose per km2", x = "Simulation Year") + 
   geom_smooth(aes(colour = browse, linetype = Variable)) + 
-  facet_wrap(facets = ~climate)
+  facet_wrap(facets = ~climate) + 
+  guides(colour=guide_legend(title="Predation"),
+         linetype = guide_legend(title="")) + 
+  scale_fill_discrete(labels = c(""))
+mooseK <- tag_facet(mooseK)
+mooseK <- shift_legend2(mooseK)
 plot(mooseK)
 ggsave(file="mooseK.svg", plot=mooseK, width=5, height=4)
 
@@ -128,26 +137,29 @@ forage <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2019, y = Av
   facet_wrap(facets = ~climate)
 forage <- tag_facet(forage)
 shift_legend2(forage)
+plot(forage)
 
 browse_kill <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2020, y = AverageBiomassKilled)) + 
-  geom_point(aes(colour = browse, shape = climate)) + 
+  geom_point(aes(colour = browse, shape = climate), alpha = 0.2) + 
   labs(title = "Average biomass killed by moose",
        subtitle = "by climate scenario",
        y = expression(paste("Biomass killed (g ", m^{-2}, yr^{-1}, ")")), x = "Simulation Year") +
-  geom_smooth(aes(linetype = climate, color = browse)) + 
-  scale_color_manual(values=c("#56B4E9", "#E69F00"))
+  geom_smooth(aes(linetype = climate, color = browse)) 
 plot(browse_kill)
 ggsave(file = "browsekill.svg", plot = browse_kill, width = 5, height = 4)
 
-prop_forage_eaten <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2020, y = AverageBiomassRemoved/AverageForage)) + 
-  geom_point(aes(colour = browse, shape = climate)) + 
-  labs(title = "Average biomass killed by moose",
-       subtitle = "by climate scenario",
-       y = expression(paste("Proportion of forage eaten (Browse Density Index)")), x = "Simulation Year") +
-  geom_smooth(aes(linetype = climate, color = browse))  +
-  facet_wrap(facets = ~climate) +
+prop_forage_eaten <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2020, y = BDI)) + 
+  geom_point(aes(colour = browse), alpha = 0.2) + 
+  labs(y = expression(paste("Proportion of forage eaten (Browse Density Index)")), x = "Simulation Year") +
+  geom_smooth(aes( color = browse))  + 
+  facet_wrap(facets = ~climate) + 
+  guides(colour=guide_legend(title="Predation"),
+         linetype = guide_legend(title="")) + 
+  scale_fill_discrete(labels = c("")) + 
   ylim(c(0,1))
-  # scale_color_manual(values=c("#56B4E9", "#E69F00"))
+
+prop_forage_eaten <- tag_facet(prop_forage_eaten)
+prop_forage_eaten <- shift_legend2(prop_forage_eaten)
 plot(prop_forage_eaten)
 
 #-------------------------------------------------------------------------------

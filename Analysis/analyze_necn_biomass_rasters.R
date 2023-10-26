@@ -57,7 +57,7 @@ for(i in 1:length(scenario_types)){
   plot(pred_diff, col = diverging_color_ramp(pred_diff))
   
   if(i == 1) diff_stack <- pred_diff
-  if(i > 1) diff_stack <- c(diff_stack, pred_diff)
+  if(i > 1)   diff_stack <- c(diff_stack, pred_diff)
   names(diff_stack[[i]]) <- scenario_types[i]
 }
 
@@ -100,15 +100,12 @@ ggplot() +
 
 
 
-## anaerobic effect maps
-
-
-
+## Total SOM maps
 for(i in 1:length(scenario_types)){
   
-  high_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred1"), scenarios)], "/NECN/AnaerobicEffect-80.img")))
+  high_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred1"), scenarios)], "/NECN/SOMTC-80.img")))
   # plot(high_pred)
-  low_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred1"), scenarios)], "/NECN/AnaerobicEffect-10.img")))
+  low_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred1"), scenarios)], "/NECN/SOMTC-10.img")))
   # plot(low_pred)
   
   pred_diff <- high_pred - low_pred
@@ -129,8 +126,6 @@ ggplot() +
     palette = "bl_yl_rd", direction = -1,
     n.breaks = 5) +
   theme_minimal()
-
-
 
 
 #exploring some explanatory variables-------------------------------------------

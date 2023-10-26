@@ -8,10 +8,10 @@ library("terra")
 theme_set(theme_bw())
 
 #what folder do all the runs to be analyzed live in?
-scenario_folder <- "E:/ISRO LANDIS/Model runs"
+# scenario_folder <- "E:/ISRO LANDIS/Model runs"
 # scenario_folder <- "C:/Users/swflake/Documents/LANDIS inputs/"
 # scenario_folder <- "./Models/Model templates"
-# scenario_folder <- "./Models/Model runs"
+scenario_folder <- "./Models/Model runs"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
 # `[`(!(grepl("canesm", .)))
 # scenarios <- scenarios[c(1, 4, 5, 6)]

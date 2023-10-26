@@ -1,0 +1,2 @@
+Experiment with higher intrinsic growth rates to get spikier population growth
+Calibrate regeneration with new version of NECN v7
