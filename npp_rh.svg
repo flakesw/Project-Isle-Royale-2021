@@ -273,7 +273,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMzkuMDN8MTQwLjU0fDEzMy4zNHwxNTEuMTE=)'>
-<rect x='39.03' y='133.34' width='101.51' height='17.77' style='stroke-width: 1.07; stroke: #333333; fill: #D9D9D9;' />
+<rect x='39.03' y='133.34' width='101.51' height='17.77' style='stroke-width: 1.07; stroke: #333333; fill: #FFFFFF;' />
 <text x='89.78' y='145.37' text-anchor='middle' style='font-size: 8.80px;fill: #1A1A1A; font-family: "Arial";' textLength='136.90px' lengthAdjust='spacingAndGlyphs'>Very Hot (MIROC-ESM-CHEM 8.5)</text>
 </g>
 <g clip-path='url(#cpMC4wMHwzNjAuMDB8MC4wMHwyODguMDA=)'>
@@ -284,7 +284,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMTQ2LjAyfDI0Ny41M3wxMzMuMzR8MTUxLjEx)'>
-<rect x='146.02' y='133.34' width='101.51' height='17.77' style='stroke-width: 1.07; stroke: #333333; fill: #D9D9D9;' />
+<rect x='146.02' y='133.34' width='101.51' height='17.77' style='stroke-width: 1.07; stroke: #333333; fill: #FFFFFF;' />
 <text x='196.77' y='145.37' text-anchor='middle' style='font-size: 8.80px;fill: #1A1A1A; font-family: "Arial";' textLength='105.46px' lengthAdjust='spacingAndGlyphs'>Hot/Wet (MRI-CGCM3 8.5)</text>
 </g>
 <g clip-path='url(#cpMC4wMHwzNjAuMDB8MC4wMHwyODguMDA=)'>
@@ -304,7 +304,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMzkuMDN8MTQwLjU0fDUuNDh8MjMuMjU=)'>
-<rect x='39.03' y='5.48' width='101.51' height='17.77' style='stroke-width: 1.07; stroke: #333333; fill: #D9D9D9;' />
+<rect x='39.03' y='5.48' width='101.51' height='17.77' style='stroke-width: 1.07; stroke: #333333; fill: #FFFFFF;' />
 <text x='89.78' y='17.51' text-anchor='middle' style='font-size: 8.80px;fill: #1A1A1A; font-family: "Arial";' textLength='62.60px' lengthAdjust='spacingAndGlyphs'>Present Climate</text>
 </g>
 <g clip-path='url(#cpMC4wMHwzNjAuMDB8MC4wMHwyODguMDA=)'>
@@ -315,7 +315,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMTQ2LjAyfDI0Ny41M3w1LjQ4fDIzLjI1)'>
-<rect x='146.02' y='5.48' width='101.51' height='17.77' style='stroke-width: 1.07; stroke: #333333; fill: #D9D9D9;' />
+<rect x='146.02' y='5.48' width='101.51' height='17.77' style='stroke-width: 1.07; stroke: #333333; fill: #FFFFFF;' />
 <text x='196.77' y='17.51' text-anchor='middle' style='font-size: 8.80px;fill: #1A1A1A; font-family: "Arial";' textLength='76.92px' lengthAdjust='spacingAndGlyphs'>Warm (CCSM4 4.5)</text>
 </g>
 <g clip-path='url(#cpMC4wMHwzNjAuMDB8MC4wMHwyODguMDA=)'>
@@ -326,7 +326,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMjUzLjAxfDM1NC41Mnw1LjQ4fDIzLjI1)'>
-<rect x='253.01' y='5.48' width='101.51' height='17.77' style='stroke-width: 1.07; stroke: #333333; fill: #D9D9D9;' />
+<rect x='253.01' y='5.48' width='101.51' height='17.77' style='stroke-width: 1.07; stroke: #333333; fill: #FFFFFF;' />
 <text x='303.76' y='17.51' text-anchor='middle' style='font-size: 8.80px;fill: #1A1A1A; font-family: "Arial";' textLength='92.92px' lengthAdjust='spacingAndGlyphs'>Hot/Dry (CanESM2 8.5)</text>
 </g>
 <g clip-path='url(#cpMC4wMHwzNjAuMDB8MC4wMHwyODguMDA=)'>

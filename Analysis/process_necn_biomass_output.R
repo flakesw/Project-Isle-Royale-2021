@@ -142,7 +142,7 @@ anova(mod)
 summary(mod)
 boxplot(TotalC ~ browse*climate, data = test)
 
-mod2 <- lm(AGB ~ climate*browse, data = test)
+mod2 <- lm(I(AGB*0.47) ~ climate*browse, data = test)
 anova(mod2)
 summary(mod2)
 boxplot(AGB ~ browse*climate, data = test)
@@ -153,7 +153,7 @@ summary(mod3)
 boxplot(SOMTC ~ browse*climate, data = test)
 
 p1 <- ggplot(test, aes(x = climate, y = TotalC/100))+
-  geom_boxplot(aes(fill = browse)) + 
+  geom_boxplot(aes(fill = browse), linewidth = 0.25, outlier.size = 1) + 
   scale_x_discrete(labels = c("Present Climate", "Warm \n(CCSM4 4.5)",
                               "Hot/Dry \n(CanESM2 8.5)", "Very Hot \n(MIROC-ESM-CHEM 8.5)",
                               "Hot/Wet \n(MRI-CGM3 8.5)")) +
@@ -164,7 +164,7 @@ p1 <- ggplot(test, aes(x = climate, y = TotalC/100))+
         axis.text.x=element_blank(),
         legend.position="none") 
 p2 <- ggplot(test, aes(x = climate, y = AGB/100*0.47))+
-  geom_boxplot(aes(fill = browse))+ 
+  geom_boxplot(aes(fill = browse), linewidth = 0.25, outlier.size = 1)+ 
   scale_x_discrete(labels = c("Present Climate", "Warm \n(CCSM4 4.5)",
                               "Hot/Dry \n(CanESM2 8.5)", "Very Hot \n(MIROC-ESM-CHEM 8.5)",
                               "Hot/Wet \n(MRI-CGM3 8.5)")) +
@@ -175,7 +175,7 @@ p2 <- ggplot(test, aes(x = climate, y = AGB/100*0.47))+
         axis.text.x=element_blank(),
         legend.position="none") 
 p3 <- ggplot(test, aes(x = climate, y = SOMTC/100)) +
-  geom_boxplot(aes(fill = browse))+ 
+  geom_boxplot(aes(fill = browse), linewidth = 0.25, outlier.size = 1)+ 
   scale_x_discrete(labels = c("Present Climate", "Warm \n(CCSM4 4.5)",
                               "Hot/Dry \n(CanESM2 8.5)", "Very Hot \n(MIROC-ESM-CHEM 8.5)",
                               "Hot/Wet \n(MRI-CGM3 8.5)")) +
@@ -198,7 +198,9 @@ legend <- cowplot::get_legend(
     labs(fill = "Predation")
 )
 
-cowplot::plot_grid(c_grid, legend, ncol = 2, rel_widths = c(3, 0.4))
+boxplots_combined <- cowplot::plot_grid(c_grid, legend, ncol = 2, rel_widths = c(3, 0.6))
+plot(boxplots_combined)
+ggsave(file="./Analysis/plots/boxplots_c_density.svg", plot=boxplots_combined, width=7, height=5)
 
 
 #-------------------------------------------------------------------------------
@@ -225,7 +227,7 @@ agb_over_time <- tag_facet(agb_over_time)
 agb_over_time <- shift_legend2(agb_over_time)
 plot(agb_over_time)
 #This actually save the plot in a image
-ggsave(file="./docs/images/agb_over_time.svg", plot=agb_over_time, width=5, height=4)
+ggsave(file="./Analysis/plots/agb_over_time.svg", plot=agb_over_time, width=5, height=4)
 
 
 #TOtal C
@@ -236,12 +238,12 @@ totalc_over_time <- ggplot(data = necn_summaries2, mapping = aes(x = SimulationY
        x = "Simulation Year") + 
   geom_smooth() + 
   theme(panel.grid.minor = element_blank()) + 
-  # facet_wrap(facets = "climate") + 
+  facet_wrap(facets = "climate") +
   guides(colour=guide_legend(title="Predation"))
 totalc_over_time <- tag_facet(totalc_over_time)
 totalc_over_time <- shift_legend2(totalc_over_time)
 plot(totalc_over_time)
-ggsave(file="totalc.svg", plot=totalc_over_time, width=5, height=4)
+ggsave(file="./Analysis/plots/totalc_over_time.svg", plot=totalc_over_time, width=5, height=4)
 
 #SOM over time
 
@@ -255,9 +257,9 @@ somtc_over_time <- ggplot(data = necn_summaries2, mapping = aes(x = SimulationYe
   facet_wrap(facets = "climate") + 
   guides(colour=guide_legend(title="Predation"))
 somtc_over_time <- tag_facet(somtc_over_time)
-shift_legend2(somtc_over_time)
+somtc_over_time <- shift_legend2(somtc_over_time)
 plot(somtc_over_time)
-ggsave(file="somtc.svg", plot=somtc_over_time, width=5, height=4)
+ggsave(file="./Analysis/somtc_over_time.svg", plot=somtc_over_time, width=5, height=4)
 
 #SoilN over time
 n_over_time <- ggplot(data = necn_summaries2, mapping = aes(x = SimulationYear, y = MineralN, 
@@ -270,6 +272,7 @@ n_over_time <- ggplot(data = necn_summaries2, mapping = aes(x = SimulationYear, 
 n_over_time <- tag_facet(n_over_time)
 n_over_time <- shift_legend2(n_over_time)
 plot(n_over_time)
+ggsave(file="./Analysis/plots/mineral_n_over_time.svg", plot=mineral_n_over_time, width=5, height=4)
 
 #NPP over time
 npp_over_time <- ggplot(data = necn_summaries2, mapping = aes(x = SimulationYear, y = AG_NPPC + BG_NPPC, 
