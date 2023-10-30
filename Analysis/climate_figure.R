@@ -164,6 +164,9 @@ legend <- cowplot::get_legend(
 
 c_grid_with_legend <- cowplot::plot_grid(c_grid, legend, ncol = 2, rel_widths = c(3, 1))
 
-ggdraw(add_sub(c_grid_with_legend, "Simulation year", 
+climate_figure <- ggdraw(add_sub(c_grid_with_legend, "Simulation year", 
                vpadding=grid::unit(0.7,"lines"),
                y=0.2, x=0.4, vjust=0, size = 12))
+
+
+ggsave(file="./Analysis/plots/.svg", plot=surface_c_over_time, width=7, height=5)

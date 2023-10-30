@@ -320,11 +320,11 @@ som1soil_c_over_time <- ggplot(data = necn_summaries2,
 som1soil_c_over_time <- tag_facet(som1soil_c_over_time)
 shift_legend2(som1soil_c_over_time)
 plot(som1soil_c_over_time)
-ggsave(file="./Analysis/plots/surfc.svg", plot=surface_c_over_time, width=7, height=5)
+ggsave(file="./Analysis/plots/som1soilc.svg", plot=som1soil_c_over_time, width=7, height=5)
 
 #C SOM2 over time
 som2_c_over_time <- ggplot(data = necn_summaries2, 
-                              mapping = aes(x = SimulationYear, y = C_SOM2, colour = browse, shape = climate, linetype = climate)) + 
+                              mapping = aes(x = SimulationYear, y = C_SOM2, colour = browse)) + 
   geom_point(alpha = 0.2, stroke = NA) + 
   labs(title = "Soil surface C",
        subtitle = "by browse and climate scenario",
@@ -336,11 +336,11 @@ som2_c_over_time <- ggplot(data = necn_summaries2,
 som2_c_over_time <- tag_facet(som2_c_over_time)
 shift_legend2(som2_c_over_time)
 plot(som2_c_over_time)
-ggsave(file="surfc.svg", plot=surface_c_over_time, width=5, height=4)
+ggsave(file="./Analysis/plots/som2c.svg", plot=som2_c_over_time, width=7, height=5)
 
 #C SOM3 over time
 som3_c_over_time <- ggplot(data = necn_summaries2, 
-                           mapping = aes(x = SimulationYear, y = C_SOM3, colour = browse, shape = climate, linetype = climate)) + 
+                           mapping = aes(x = SimulationYear, y = C_SOM3, colour = browse)) + 
   geom_point(alpha = 0.2, stroke = NA) + 
   labs(title = "Soil surface C",
        subtitle = "by browse and climate scenario",
@@ -352,7 +352,7 @@ som3_c_over_time <- ggplot(data = necn_summaries2,
 som3_c_over_time <- tag_facet(som3_c_over_time)
 shift_legend2(som3_c_over_time)
 plot(som3_c_over_time)
-ggsave(file="surfc.svg", plot=surface_c_over_time, width=5, height=4)
+ggsave(file="./Analysis/plots/som3c.svg", plot=som3_c_over_time, width=7, height=5)
 
 
 n_loss_over_time <- ggplot(data = necn_summaries2, 
@@ -381,14 +381,14 @@ nee_over_time<- ggplot(data = necn_summaries2, mapping = aes(x = SimulationYear,
 nee_over_time <- tag_facet(nee_over_time)
 nee_over_time <-shift_legend2(nee_over_time)
 plot(nee_over_time)
-ggsave(file="nee.svg", plot=npp_over_time, width=5, height=4)
+ggsave(file="./Analysis/plots/nee.svg", plot=npp_over_time, width=7, height=5)
 
 
 #how does browsing affect NEE?
 mean(necn_summaries2[necn_summaries2$climate == "Present Climate" & 
-                       necn_summaries2$browse == "High" & necn_summaries2$SimulationYear <2040, ]$NEEC)
+                       necn_summaries2$browse == "High" & necn_summaries2$SimulationYear <2100, ]$NEEC)
 mean(necn_summaries2[necn_summaries2$climate == "Present Climate" & 
-                       necn_summaries2$browse == "Low"& necn_summaries2$SimulationYear <2040, ]$NEEC)
+                       necn_summaries2$browse == "Low"& necn_summaries2$SimulationYear <2100, ]$NEEC)
 #approximately 40 g m-2 yr difference, at the beginning; then they get closer later on
 
 
@@ -426,7 +426,7 @@ npp_rh_over_time <- ggplot(data = necn_monthly2 %>% filter(name %in% c("NPP", "R
 npp_rh_over_time <- tag_facet(npp_rh_over_time)
 npp_rh_over_time <- shift_legend2(npp_rh_over_time)
 plot(npp_rh_over_time)
-ggsave(file="npp_rh.svg", plot=npp_rh_over_time, width=7, height=5)
+ggsave(file="./Analysis/plots/npp_rh.svg", plot=npp_rh_over_time, width=7, height=5)
 
 npp_over_time <- ggplot(data = necn_monthly,
        mapping = aes(x = SimulationYear, y = NPP, color = browse)) + 
@@ -442,6 +442,6 @@ npp_over_time <- shift_legend2(npp_over_time)
 plot(npp_over_time)
 
 ggplot(data = necn_monthly,
-       mapping = aes(x = MAT, y = Rh, color = browse)) +
+       mapping = aes(x = MAT, y = NPP, color = browse)) +
   geom_point() +
   geom_smooth()
