@@ -8,49 +8,8 @@
 library(tidyverse)
 library(lemon)
 library("cowplot")
-
-shift_legend2 <- function(p) {
-  # check if p is a valid object
-  if(!(inherits(p, "gtable"))){
-    if(inherits(p, "ggplot")){
-      gp <- ggplotGrob(p) # convert to grob
-    } else {
-      message("This is neither a ggplot object nor a grob generated from ggplotGrob. Returning original plot.")
-      return(p)
-    }
-  } else {
-    gp <- p
-  }
-  
-  # check for unfilled facet panels
-  facet.panels <- grep("^panel", gp[["layout"]][["name"]])
-  empty.facet.panels <- sapply(facet.panels, function(i) "zeroGrob" %in% class(gp[["grobs"]][[i]]), 
-                               USE.NAMES = F)
-  empty.facet.panels <- facet.panels[empty.facet.panels]
-  
-  if(length(empty.facet.panels) == 0){
-    message("There are no unfilled facet panels to shift legend into. Returning original plot.")
-    return(p)
-  }
-  
-  # establish name of empty panels
-  empty.facet.panels <- gp[["layout"]][empty.facet.panels, ]
-  names <- empty.facet.panels$name
-  
-  # return repositioned legend
-  reposition_legend(p, 'center', panel=names, plot = FALSE)
-}
-
-tag_facet <- function(p, open = "(", close = ")", tag_pool = letters, x = -Inf, y = Inf, 
-                      hjust = -0.5, vjust = 1.5, fontface = 2, family = "", ...) {
-  #from package egg
-  gb <- ggplot_build(p)
-  lay <- gb$layout$layout
-  tags <- cbind(lay, label = paste0(open, tag_pool[lay$PANEL], close), x = x, y = y)
-  p + geom_text(data = tags, aes_string(x = "x", y = "y", label = "label"), ..., hjust = hjust, 
-                vjust = vjust, fontface = fontface, family = family, inherit.aes = FALSE) 
-}
-
+library("multcompView")
+source("./Analysis/r_functions.R")
 
 #what folder do all the runs to be analyzed live in?
 scenario_folder <- "E:/ISRO LANDIS/Model runs"
@@ -136,24 +95,72 @@ test <- necn_summaries2 %>%
   filter(SimulationYear == 2095) 
 test$browse <- factor(test$browse, levels = c("Low", "Medium", "High"))
 test$climate <- factor(test$climate, levels = unique(test$climate)[c(3,2,1,4,5)])
+levels(test$climate)[c(4, 5)] <- c("Very Hot (MIROC_ESM_Chem 8.5)", "Hot/Wet (MRI_CGM3 8.5)")
+test$combined <- paste0(test$browse, ":", test$climate)
 
-mod <- lm(TotalC ~ climate*browse, data = test)
-anova(mod)
-summary(mod)
+mod1 <- lm(TotalC ~ browse*climate, data = test)
 boxplot(TotalC ~ browse*climate, data = test)
+anova(mod1)
+summary(mod1)
+anova1 <- aov(mod1)
+tukey1 <- TukeyHSD(anova1)
+cld <- multcompLetters4(anova1, tukey1, reverse = TRUE)%>%
+  `$`(`browse:climate`)%>%
+  as.data.frame.list()%>%
+  tibble::rownames_to_column()
+totalc_summary <- test %>%
+  left_join(., dplyr::select(cld, c("rowname", "Letters")), by = c("combined" = "rowname")) %>%
+  group_by(combined) %>%
+  mutate(TotalC = TotalC/100) %>%
+  summarise(mean = mean(TotalC),
+            se = sd(TotalC)/sqrt(5),
+            browse = browse[1],
+            climate = climate[1],
+            cld = Letters[1])
 
-mod2 <- lm(I(AGB*0.47) ~ climate*browse, data = test)
+mod2 <- lm(I(AGB*0.47) ~ browse*climate, data = test)
+boxplot(AGB ~ browse*climate, data = test)
 anova(mod2)
 summary(mod2)
-boxplot(AGB ~ browse*climate, data = test)
+anova2 <- aov(mod2)
+tukey2 <- TukeyHSD(anova2)
+cld <- multcompLetters4(anova2, tukey2, reverse = TRUE)%>%
+  `$`(`browse:climate`)%>%
+  as.data.frame.list()%>%
+  tibble::rownames_to_column()
+agb_summary <- test %>%
+  left_join(., dplyr::select(cld, c("rowname", "Letters")), by = c("combined" = "rowname")) %>%
+  group_by(combined) %>%
+  mutate(AGB = AGB/100*0.47) %>%
+  summarise(mean = mean(AGB),
+            se = sd(AGB)/sqrt(5),
+            browse = browse[1],
+            climate = climate[1],
+            cld = Letters[1])
 
 mod3 <- lm(SOMTC ~ browse*climate, data = test)
+boxplot(SOMTC ~ browse*climate, data = test)
 anova(mod3)
 summary(mod3)
-boxplot(SOMTC ~ browse*climate, data = test)
+anova3 <- aov(mod3)
+tukey3 <- TukeyHSD(anova3)
+cld <- multcompLetters4(anova3, tukey3, reverse = TRUE)
+cld <- as.data.frame.list(cld$`browse:climate`) %>%
+  tibble::rownames_to_column()
+somtc_summary <- test %>%
+  left_join(., dplyr::select(cld, c("rowname", "Letters")), by = c("combined" = "rowname")) %>%
+  group_by(combined) %>%
+  mutate(SOMTC = SOMTC/100) %>%
+  summarise(mean = mean(SOMTC),
+            se = sd(SOMTC)/sqrt(5),
+            browse = browse[1],
+            climate = climate[1],
+            cld = Letters[1])
 
-p1 <- ggplot(test, aes(x = climate, y = TotalC/100))+
-  geom_boxplot(aes(fill = browse), linewidth = 0.25, outlier.size = 1) + 
+p1 <-ggplot(totalc_summary, aes(x = climate, y = mean, group = browse)) +
+  geom_point(aes(col = browse), position=position_dodge(width=0.5)) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.2, position=position_dodge(width=0.5)) +
+  geom_text(aes(label = cld, y = mean + se), vjust = -0.5, position=position_dodge(width=0.5)) + 
   scale_x_discrete(labels = c("Present Climate", "Warm \n(CCSM4 4.5)",
                               "Hot/Dry \n(CanESM2 8.5)", "Very Hot \n(MIROC-ESM-CHEM 8.5)",
                               "Hot/Wet \n(MRI-CGM3 8.5)")) +
@@ -162,9 +169,13 @@ p1 <- ggplot(test, aes(x = climate, y = TotalC/100))+
   theme(plot.margin = margin(6, 0, 6, 0),
         axis.title.x=element_blank(),
         axis.text.x=element_blank(),
-        legend.position="none") 
-p2 <- ggplot(test, aes(x = climate, y = AGB/100*0.47))+
-  geom_boxplot(aes(fill = browse), linewidth = 0.25, outlier.size = 1)+ 
+        legend.position="none") +
+  ylim(y = c(320, 370))
+p2 <- ggplot(agb_summary, aes(x = climate, y = mean, group = browse)) +
+  # geom_boxplot(aes(fill = browse), linewidth = 0.25, outlier.size = 1)+
+  geom_point(aes(col = browse), position=position_dodge(width=0.5)) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.2, position=position_dodge(width=0.5)) +
+  geom_text(aes(label = cld, y = mean + se), vjust = -0.5, position=position_dodge(width=0.5))+
   scale_x_discrete(labels = c("Present Climate", "Warm \n(CCSM4 4.5)",
                               "Hot/Dry \n(CanESM2 8.5)", "Very Hot \n(MIROC-ESM-CHEM 8.5)",
                               "Hot/Wet \n(MRI-CGM3 8.5)")) +
@@ -173,16 +184,21 @@ p2 <- ggplot(test, aes(x = climate, y = AGB/100*0.47))+
   theme(plot.margin = margin(6, 0, 6, 0),
         axis.title.x=element_blank(),
         axis.text.x=element_blank(),
-        legend.position="none") 
-p3 <- ggplot(test, aes(x = climate, y = SOMTC/100)) +
-  geom_boxplot(aes(fill = browse), linewidth = 0.25, outlier.size = 1)+ 
+        legend.position="none") +
+  ylim(y = c(55, 73))
+p3 <- ggplot(somtc_summary, aes(x = climate, y = mean, group = browse)) +
+  # geom_boxplot(aes(fill = browse), linewidth = 0.25, outlier.size = 1)+
+  geom_point(aes(col = browse), position=position_dodge(width=0.5)) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.2, position=position_dodge(width=0.5)) +
+  geom_text(aes(label = cld, y = mean + se), vjust = -0.5, position=position_dodge(width=0.5))+
   scale_x_discrete(labels = c("Present Climate", "Warm \n(CCSM4 4.5)",
                               "Hot/Dry \n(CanESM2 8.5)", "Very Hot \n(MIROC-ESM-CHEM 8.5)",
                               "Hot/Wet \n(MRI-CGM3 8.5)")) +
   xlab("")+
   ylab(expression(atop("Soil organic C", paste("(Mg ha"^{-1}, ")")))) +
   theme(plot.margin = margin(6, 0, 6, 0)) +
-  theme(legend.position="none")
+  theme(legend.position="none") +
+  ylim(y = c(245, 268))
 
 
 c_grid <- cowplot::plot_grid(p1, p2, p3, 
@@ -195,7 +211,7 @@ legend <- cowplot::get_legend(
   # create some space to the left of the legend
   p1 + 
     theme(legend.position = "right") + 
-    labs(fill = "Predation")
+    labs(col = "Predation")
 )
 
 boxplots_combined <- cowplot::plot_grid(c_grid, legend, ncol = 2, rel_widths = c(3, 0.6))
@@ -246,7 +262,6 @@ plot(totalc_over_time)
 ggsave(file="./Analysis/plots/totalc_over_time.svg", plot=totalc_over_time, width=7, height=5)
 
 #SOM over time
-
 somtc_over_time <- ggplot(data = necn_summaries2, mapping = aes(x = SimulationYear, y = SOMTC/100, 
                                                                 colour = browse)) + 
   geom_point(alpha = 0.2, stroke = NA) + 
@@ -422,7 +437,8 @@ npp_rh_over_time <- ggplot(data = necn_monthly2 %>% filter(name %in% c("NPP", "R
   theme(panel.grid.minor = element_blank()) + 
   facet_wrap(facets = "climate") + 
   guides(colour=guide_legend(title="Predation"),  
-         linetype=guide_legend(title=""))
+         linetype=guide_legend(title=""))+
+  scale_linetype_manual(labels = c("NPP", expression(R[H])), values=c("solid", "dotted"))
 npp_rh_over_time <- tag_facet(npp_rh_over_time)
 npp_rh_over_time <- shift_legend2(npp_rh_over_time)
 plot(npp_rh_over_time)

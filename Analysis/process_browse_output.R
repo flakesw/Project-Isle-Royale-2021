@@ -3,6 +3,7 @@
 library(tidyverse)
 library(lemon)
 library(cowplot)
+source("./Analysis/r_functions.R")
 
 #what folder do all the runs to be analyzed live in?
 scenario_folder <- "E:/ISRO LANDIS/Model runs"
@@ -90,13 +91,18 @@ browse_summaries2$Pop_density <- browse_summaries2$TotalPopulation/area
 historical_moose <- readxl::read_excel("./Models/LANDIS inputs/browse/moose_population_record_isro.xlsx",
                                        col_names = c("Year", "Wolf_pop", "Moose_pop"))
 
+browse_summaries_melt <- pivot_longer(browse_summaries2, cols = c(TotalPopulation:TotalK, K_density, Pop_density),
+                                      names_to = "Variable")
+browse_summaries_melt
+
+
 #-------------------------------------------------------------------------------
 # Figures
 #-------------------------------------------------------------------------------
 
-browse_summaries_melt <- pivot_longer(browse_summaries2, cols = c(TotalPopulation:TotalK, K_density, Pop_density),
-                                      names_to = "Variable")
-browse_summaries_melt
+theme_set(theme_bw())
+theme_update(panel.grid.minor = element_blank(),
+             strip.background = element_rect(fill = "white"))
 #AGB over time
 
 moosepop <- ggplot(data = browse_summaries2, mapping = aes(x = Time+2019, y = TotalPopulation)) + 
@@ -110,7 +116,7 @@ moosepop <- ggplot(data = browse_summaries2, mapping = aes(x = Time+2019, y = To
 moosepop <- tag_facet(moosepop)
 moosepop <- shift_legend2(moosepop)
 plot(moosepop)
-# ggsave(file="moosepop.svg", plot=moosepop, width=5, height=4)
+ggsave(file="./Analysis/plots/moosepop.svg", plot=moosepop, width=7, height=5)
 
 
 mooseK <- ggplot(data = browse_summaries_melt[browse_summaries_melt$Variable %in% c("Pop_density","K_density"),], 
@@ -130,14 +136,15 @@ plot(mooseK)
 ggsave(file="mooseK.svg", plot=mooseK, width=5, height=4)
 
 forage <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2019, y = AverageForage)) + 
-  geom_point(aes(colour = browse)) + 
+  geom_point(aes(colour = browse), alpha = 0.1) + 
   labs(y = "Average available forage (g m-2)", x = "Simulation year") + 
   guides(colour=guide_legend(title="Predation")) +
   geom_smooth(aes(colour = browse)) + 
   facet_wrap(facets = ~climate)
 forage <- tag_facet(forage)
-shift_legend2(forage)
+forage <- shift_legend2(forage)
 plot(forage)
+ggsave(file="./Analysis/plots/forage_avail.svg", plot=forage, width=7, height=5)
 
 browse_kill <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2020, y = AverageBiomassKilled)) + 
   geom_point(aes(colour = browse, shape = climate), alpha = 0.2) + 
@@ -157,10 +164,10 @@ prop_forage_eaten <- ggplot(data = browse_summaries2, mapping = aes(x = Time + 2
          linetype = guide_legend(title="")) + 
   scale_fill_discrete(labels = c("")) + 
   ylim(c(0,1))
-
 prop_forage_eaten <- tag_facet(prop_forage_eaten)
 prop_forage_eaten <- shift_legend2(prop_forage_eaten)
 plot(prop_forage_eaten)
+ggsave(file="./Analysis/plots/prop_forage_eaten.svg", plot=prop_forage_eaten, width=7, height=5)
 
 #-------------------------------------------------------------------------------
 #Forage maps

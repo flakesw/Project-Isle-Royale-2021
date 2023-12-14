@@ -91,27 +91,48 @@ func_types <- data.frame(FunctionalGroupIndex = seq(1, 10),
                                   "Temperate hardwood",
                                   "Boreal hardwood",
                                   "Temperate hardwood",
-                                  "Wetland",
+                                  "Boreal hardwood",
                                   "Temperate hardwood"))
 spp_table <- read.csv("./Models/LANDIS inputs/NECN files/NECN_Spp_Table_inv.csv") %>%
   left_join(func_types)
 spp_table[spp_table$SpeciesCode == "BEPA", "Type"] <- "Boreal hardwood"
+spp_table[spp_table$SpeciesCode == "ABBA", "Type"] <- "Balsam fir"
 
-biomass_summaries2 <- biomass_summaries %>%
+biomass_summaries_means <- biomass_summaries %>%
   left_join(spp_table %>% select(SpeciesCode, Type), by = c("Species" = "SpeciesCode")) %>%
-  filter(browse == "Low") %>%
+  # filter(browse == "High") %>%
   group_by(climate, Time, Species) %>%
   summarise(Biomass = mean(Biomass), #average over runs
             Type = Type[1]) %>%
   group_by(climate, Time, Type) %>%
   summarise(Biomass = sum(Biomass)) #sum within functional type
-#---------------------------------
+
+biomass_summaries_points <- biomass_summaries %>%
+  left_join(spp_table %>% select(SpeciesCode, Type), by = c("Species" = "SpeciesCode")) %>%
+  # filter(browse == "High") %>%
+  group_by(run_name, climate, Time, Species) %>%
+  summarise(Biomass = mean(Biomass), #average over runs
+            Type = Type[1]) %>%
+  group_by(run_name, climate, Time, Type) %>%
+  summarise(Biomass = sum(Biomass)) #sum within functional type
+
+biomass_summaries_pred <- biomass_summaries %>%
+  left_join(spp_table %>% select(SpeciesCode, Type), by = c("Species" = "SpeciesCode")) %>%
+  filter(climate != "Present Climate") %>%
+  group_by(browse, Time, Species) %>%
+  summarise(Biomass = mean(Biomass), #average over runs
+            Type = Type[1]) %>%
+  group_by(browse, Time, Type) %>%
+  summarise(Biomass = sum(Biomass)) #sum within functional type
+
+#----------------------------------
 # Make figures of tabular data
 #----------------------------------
 
-sp_comp <- ggplot(data = biomass_summaries2, 
+sp_comp <- ggplot(data = biomass_summaries_means, 
                    mapping = aes(x = Time+2019, y = Biomass, fill = Type, color = Type)) + 
   # geom_area(position = "stack") +
+  geom_point() +
   geom_line() +
   labs(y = "Aboveground biomass (g m-2)", x = "Simulation Year") +
   facet_wrap(facets = "climate") + 
@@ -120,3 +141,20 @@ sp_comp <- ggplot(data = biomass_summaries2,
 sp_comp <- tag_facet(sp_comp)
 sp_comp <- shift_legend2(sp_comp)
 plot(sp_comp)
+
+
+
+sp_comp <- ggplot(data = biomass_summaries_pred, 
+                  mapping = aes(x = Time+2019, y = Biomass, fill = Type, color = Type)) + 
+  # geom_area(position = "stack") +
+  geom_line() +
+  labs(y = "Aboveground biomass (g m-2)", x = "Simulation Year") +
+  facet_wrap(facets = "browse") + 
+  guides(colour=guide_legend(title="Functional Group"))
+
+sp_comp <- tag_facet(sp_comp)
+sp_comp <- shift_legend2(sp_comp)
+plot(sp_comp)
+
+
+

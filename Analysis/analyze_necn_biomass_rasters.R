@@ -17,7 +17,10 @@ scenarios <- list.dirs(scenario_folder, recursive = FALSE)
 
 scenario_types <- c("current","ccsm","canesm","miroc","mri_cgm")
 
+template <- raster("./Models/LANDIS inputs/input rasters/ecoregions.tif")
 
+
+#------------------------------------------------
 #moose effect on C
 for(i in 1:length(scenario_types)){
   high_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred3"), scenarios)], "/NECN/TotalC-80.img")))
@@ -35,13 +38,21 @@ for(i in 1:length(scenario_types)){
 }
 
 names(diff_stack)
+plot(diff_stack, col = diverging_color_ramp(diff_stack))
 
 ggplot() +
   geom_spatraster(data = diff_stack) +
   facet_wrap(~lyr)+
   scale_fill_continuous_divergingx(palette = 'RdBu', mid = 0) +
   theme_minimal()
+# ggsave()
 
+predation_effect_all <- ggplot() +
+  geom_spatraster(data = mean(diff_stack[[-1]])) +
+  scale_fill_continuous_divergingx(palette = 'RdBu', mid = 0) +
+  theme_minimal()
+plot(predation_effect_all)
+writeRaster(mean(diff_stack[[-1]]), "./Analysis/map_rasters/predation_effect_ecosystem_c_raster.tif")
 
 ##
 
