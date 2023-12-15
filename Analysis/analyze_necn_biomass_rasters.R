@@ -77,12 +77,13 @@ for(i in 1:length(scenario_types)){
 names(diff_stack)
 
 ggplot() +
-  geom_spatraster(data = diff_stack) +
+  geom_spatraster(data = diff_stack[[1]]) +
   facet_wrap(~lyr)+
   scale_fill_continuous_divergingx(palette = 'RdBu', mid = 0) +
   theme_minimal()
 
-
+writeRaster(diff_stack, "./Analysis/map_rasters/ecosystem_c_all.tiff")
+writeRaster(mean(diff_stack[[-1]]), "./Analysis/map_rasters/ecosytem_c_mean.tiff", overwrite = TRUE)
 
 ##
 
