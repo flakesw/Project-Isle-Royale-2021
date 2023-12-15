@@ -3,13 +3,7 @@ library(tidyverse)
 library(tidyterra)
 library("colorspace")
 
-diverging_color_ramp <- function(ras){
-  the_palette_fc <- leaflet::colorNumeric(palette = "RdBu", 
-                                          domain = c(-max(abs(ras[]), na.rm = TRUE), max(abs(ras[]), na.rm = TRUE)),
-                                          reverse = TRUE)
-  the_colors <- the_palette_fc(seq(min(ras[], na.rm = TRUE), max(ras[], na.rm = TRUE), length.out = 50))
-
-}
+source("./Analysis/r_functions.R")
 
 
 scenario_folder <- "E:/ISRO LANDIS/Model runs"
@@ -17,7 +11,7 @@ scenarios <- list.dirs(scenario_folder, recursive = FALSE)
 
 scenario_types <- c("current","ccsm","canesm","miroc","mri_cgm")
 
-template <- raster("./Models/LANDIS inputs/input rasters/ecoregions.tif")
+template <- rast("./Models/LANDIS inputs/input rasters/ecoregions.tif")
 
 
 #------------------------------------------------
@@ -32,6 +26,8 @@ for(i in 1:length(scenario_types)){
   NAflag(pred_diff) <- 0
   plot(pred_diff, col = diverging_color_ramp(pred_diff))
   
+  pred_diff <- project_to_template(pred_diff, template)
+  
   if(i == 1) diff_stack <- pred_diff
   if(i > 1) diff_stack <- c(diff_stack, pred_diff)
   names(diff_stack[[i]]) <- scenario_types[i]
@@ -39,6 +35,8 @@ for(i in 1:length(scenario_types)){
 
 names(diff_stack)
 plot(diff_stack, col = diverging_color_ramp(diff_stack))
+writeRaster(diff_stack, "./Analysis/map_rasters/predation_effects_c_raster_all_clim.tif", overwrite = TRUE)
+
 
 ggplot() +
   geom_spatraster(data = diff_stack) +
@@ -47,12 +45,14 @@ ggplot() +
   theme_minimal()
 # ggsave()
 
+mean_pred_effect <- mean(diff_stack[[-1]]) %>% project_to_template(template)
+
 predation_effect_all <- ggplot() +
-  geom_spatraster(data = mean(diff_stack[[-1]])) +
+  geom_spatraster(data = mean_pred_effect) +
   scale_fill_continuous_divergingx(palette = 'RdBu', mid = 0) +
   theme_minimal()
 plot(predation_effect_all)
-writeRaster(mean(diff_stack[[-1]]), "./Analysis/map_rasters/predation_effect_ecosystem_c_raster.tif")
+writeRaster(mean_pred_effect, "./Analysis/map_rasters/predation_effect_ecosystem_c_raster.tif", overwrite = TRUE)
 
 ##
 
@@ -64,6 +64,8 @@ for(i in 1:length(scenario_types)){
   # plot(low_pred)
   
   pred_diff <- high_pred - low_pred
+  pred_diff <- project_to_template(pred_diff, template)
+  
   NAflag(pred_diff) <- 0
   plot(pred_diff, col = diverging_color_ramp(pred_diff))
   
