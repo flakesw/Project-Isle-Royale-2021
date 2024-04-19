@@ -35,8 +35,8 @@ stencil <- simplegeom(as(study_area, Class = "Spatial"))
 # here's the MACAv2-METDATA downscaled climate data, URL from the catalog
 fabric <- webdata(url='https://cida.usgs.gov/thredds/dodsC/macav2metdata_daily_future')
 
-#here's the U of Idaho METDATA historic data
-# fabric <- webdata(url = 'https://cida.usgs.gov/thredds/dodsC/UofIMETDATA')
+fabric <- webdata(url = "http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_macav2metdata_rhsmax_BNU-ESM_r1i1p1_rcp45_2006_2099_CONUS_daily.nc")
+
 
 # see what variables are available -- 
 # for MACA data, variables are identified by a concatenation of 
@@ -49,6 +49,7 @@ vars <- c("pr", "tasmax", "tasmin", "uas", "vas")
 
 #which model?
 model_name <- "MIROC-ESM-CHEM"
+model_name <- "CNRM-CM5"
 #which RCP?
 rcp <- "rcp85"
 

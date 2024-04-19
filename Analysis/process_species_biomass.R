@@ -11,10 +11,12 @@ theme_set(theme_bw())
 # scenario_folder <- "E:/ISRO LANDIS/Model runs"
 # scenario_folder <- "C:/Users/swflake/Documents/LANDIS inputs/"
 # scenario_folder <- "./Models/Model templates"
-scenario_folder <- "./Models/Model runs"
+scenario_folder <- "./Models/v2 model templates"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
 # `[`(!(grepl("canesm", .)))
 # scenarios <- scenarios[c(1, 4, 5, 6)]
+
+scenarios <- scenarios[1]
 
 #some helper functions
 read_plus <- function(flnm) {
@@ -105,7 +107,7 @@ pigl_biomass <- ggplot(data = filter(biomass_summaries, Species == "PIGL"),
 plot(pigl_biomass)
 # ggsave(file="abba.svg", plot=abba_biomass, width=5, height=4)
 
-beal_biomass <- ggplot(data = filter(biomass_summaries, Species == "BEAL2"), 
+beal_biomass <- ggplot(data = filter(biomass_summaries, Species == "PIMA"), 
                        mapping = aes(x = Time, y = Biomass/100, colour = browse)) + 
   geom_point(aes(shape = climate)) + 
   labs(title = paste("Yellow birch aboveground biomass"),

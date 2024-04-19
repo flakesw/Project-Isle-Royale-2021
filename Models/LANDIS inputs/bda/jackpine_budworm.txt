@@ -1,0 +1,74 @@
+LandisData "BDA Agent"
+
+BDAAgentName		jackpine_budworm
+BDPCalibrator		1
+SRDMode			mean
+
+>>----------------------------------
+>> BDA DISTURBANE REGIME PARAMETERS
+>>----------------------------------
+>>-------- Regional Outbreak Inputs -------------
+OutbreakPattern CyclicUniform<< CyclicNormal or CyclicUniform, or ClimateLibrary 
+MaxInterval       20
+MinInterval        10
+TimeSinceLastEpidemic 5 << years
+TemporalType variablepulse << pulse or variablepulse
+MinROS             0
+MaxROS             3
+
+>>-------- Dispersal Inputs ----------------------
+Dispersal		no		<<yes or no
+DispersalRate		1000		<<meters/year
+EpidemicThresh		0.5
+InitialEpicenterNum	0
+OutbreakEpicenterCoeff	0.01
+OutbreakEpicenterThresh 0.0
+SeedEpicenter		no		<<yes or no
+SeedEpicenterMax	10
+SeedEpicenterCoeff	0.5
+DispersalTemplate	MaxRadius	<<MaxRadius, 4N,
+					<<8N, 12N, or 24N
+
+>>-------- Neighborhood Resource Inputs -----------
+NeighborFlag	yes	<<yes or no
+NeighborSpeedUp	none	<<none, 2x, 3x, 
+			<<or 4x
+NeighborRadius	1000	<<meters
+NeighborShape	uniform	<<uniform, linear, 
+			<<or gaussian
+NeighborWeight	1
+
+>>-- Intensity Class Thresholds --
+>>IntensityClass1_BDP 	0.0 -- Hardwired value
+IntensityClass2_BDP 	0.25
+IntensityClass3_BDP 	0.5
+
+>>EcoregionModifiers
+>> not needed here; only one ecoregion
+>>Ecoregion	Modifier
+>>eco1		0.16
+>>eco2		-0.16
+
+DisturbanceModifiers
+
+
+ClimateModifiers
+>> Var 	Source 	Threshold 	Months 	Aggregation 	LagYears Modifier
+>>temp 	Library >30 		7 	Average 	0 	-99.0
+
+BDASpeciesParameters
+>> 								| Susceptibility 						 | Special
+>>Species 	MinorHost 	2ndHost 	MajorHost	| Class3 		Class2 			Class1 		 | Dead
+>>Name 		Age SRDProb  	Age SRDProb 	Age SRDProb 	| Age MortProb 		Age 	MortProb 	Age MortProb 	 | Fuel?
+>> -----------------------------------------------------------------------------
+PIBA2		0	.1	20	.8	60	1.0	  10	 0.06		20	   0.1		50	0.3	    no <<mortality is not very high during outbreaks (Gross 1992). It depends on tree dominance class, which cannot be represented here
+PIRE		0	0	20	.3	60	0.5	  10	 0.03		20	   0.05		50	0.15	    no <<red pine and black spruce are minor hosts that can be affect by "spillover" mortality but aren't primary food sources. Not great data here.
+PIMA		0	0	20	.3	60	0.5	  10	 0.03		20	   0.05		50	0.15	    no
+
+IgnoredSpecies
+LALA
+PIST
+PIMA
+ABBA
+PIGL
+
