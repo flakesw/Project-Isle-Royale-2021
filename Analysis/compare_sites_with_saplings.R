@@ -7,19 +7,20 @@ library(cowplot)
 source("./Analysis/r_functions.R")
 
 func_types <- data.frame(FunctionalGroupIndex = seq(1, 10),
-                         Type = c("Temperate conifer", 
+                         Type = c("Northern conifer", 
                                   "Boreal conifer",
-                                  "Temperate conifer",
+                                  "Temperate",
                                   "Boreal conifer",
                                   "Boreal conifer",
-                                  "Temperate hardwood",
+                                  "Northern hardwood",
                                   "Boreal hardwood",
-                                  "Temperate hardwood",
-                                  "Boreal hardwood",
-                                  "Temperate hardwood"))
+                                  "Temperate",
+                                  "Mesic shrubs",
+                                  "Mesic shrubs"))
 spp_table <- read.csv("./Models/LANDIS inputs/NECN files/NECN_Spp_Table_inv.csv") %>%
   left_join(func_types)
 spp_table[spp_table$SpeciesCode == "BEPA", "Type"] <- "Boreal hardwood"
+spp_table[spp_table$SpeciesCode == "FRNI", "Type"] <- "Boreal hardwood"
 spp_table[spp_table$SpeciesCode == "ABBA", "Type"] <- "Balsam fir"
 
 #what folder do all the runs to be analyzed live in?
@@ -111,9 +112,10 @@ sapling_comp <- ggplot(data = sapling_type,
   geom_point() +
   geom_smooth() +
   labs(y = "Number of cohorts", x = "Simulation Year") +
-  facet_wrap(facets = c("browse", "climate"), ncol = 5) + 
-  guides(colour=guide_legend(title="Functional Group"))
+  facet_wrap(facets = c("browse", "climate"), ncol = 5) #+ 
+  # guides(colour=guide_legend(title="Functional Group"))
 plot(sapling_comp)
+
 
 
 sapling_comp <- ggplot(data = sapling_type[sapling_type$climate != "Present Climate", ], 
