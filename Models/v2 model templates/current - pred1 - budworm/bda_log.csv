@@ -1,8 +1,0 @@
-Time,ROS,AgentName,CohortsKilled,DamagedSites,MeanSeverity,
-5, 3, jackpine_budworm, 1672, 295, 1.65, 
-23, 2, jackpine_budworm, 1122, 218, 1.16, 
-32, 1, spruce_budworm, 43383, 11640, 1, 
-40, 2, jackpine_budworm, 1075, 207, 1.11, 
-55, 3, jackpine_budworm, 1345, 248, 1.39, 
-71, 3, spruce_budworm, 122965, 32581, 2.04, 
-72, 3, jackpine_budworm, 1070, 232, 1.28, 

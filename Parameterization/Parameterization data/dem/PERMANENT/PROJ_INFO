@@ -1,6 +1,0 @@
-name: NAD83 / UTM zone 17N
-datum: nad83
-ellps: grs80
-proj: utm
-zone: 17
-no_defs: defined
