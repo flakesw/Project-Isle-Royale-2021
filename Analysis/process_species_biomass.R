@@ -8,10 +8,13 @@ library("terra")
 theme_set(theme_bw())
 
 #what folder do all the runs to be analyzed live in?
-# scenario_folder <- "E:/ISRO LANDIS/Model runs"
+scenario_folder <- "E:/ISRO LANDIS/Model runs"
 # scenario_folder <- "C:/Users/swflake/Documents/LANDIS inputs/"
 # scenario_folder <- "./Models/Model templates"
+
 scenario_folder <- "./Models/v2 model templates"
+# scenario_folder <- "./Models/Model runs"
+
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
 # `[`(!(grepl("canesm", .)))
 # scenarios <- scenarios[c(1, 4, 5, 6)]
@@ -100,21 +103,21 @@ plot(abba_biomass)
 pigl_biomass <- ggplot(data = filter(biomass_summaries, Species == "PIGL"), 
                        mapping = aes(x = Time, y = Biomass/100, colour = browse)) + 
   geom_point(aes(shape = climate)) + 
-  labs(title = paste("Balsam fir aboveground biomass"),
+  labs(title = paste("White spruce aboveground biomass"),
        subtitle = "by browse scenario and climate scenario",
        y = "Average AGB (Mg/ha)", x = "Timestep") + 
   geom_smooth(aes(linetype = climate))
 plot(pigl_biomass)
 # ggsave(file="abba.svg", plot=abba_biomass, width=5, height=4)
 
-beal_biomass <- ggplot(data = filter(biomass_summaries, Species == "PIMA"), 
+pima_biomass <- ggplot(data = filter(biomass_summaries, Species == "PIMA"), 
                        mapping = aes(x = Time, y = Biomass/100, colour = browse)) + 
   geom_point(aes(shape = climate)) + 
-  labs(title = paste("Yellow birch aboveground biomass"),
+  labs(title = paste("Black spruce aboveground biomass"),
        subtitle = "by browse scenario and climate scenario",
        y = "Average AGB (Mg/ha)", x = "Timestep") + 
   geom_smooth(aes(linetype = climate))
-plot(beal_biomass)
+plot(pima_biomass)
 ggsave(file="bepa.svg", plot=abba_biomass, width=5, height=4)
 
 

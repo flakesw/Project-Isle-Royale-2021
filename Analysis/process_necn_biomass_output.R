@@ -27,22 +27,6 @@ read_plus <- function(flnm) {
   
 }
 
-get_browse <- function(scenario){
-  list.files(scenario, pattern = "Scenario") %>%
-    pluck(1) %>%
-    as.character() %>%
-    strsplit(x = ., split = "[.]") %>%
-    pluck(1, 1)
-}
-
-get_climate <- function(scenario){
-  list.files(scenario, pattern = "NECN_Succession") %>%
-    pluck(1) %>%
-    as.character() %>%
-    strsplit(x = ., split = "[.]") %>%
-    pluck(1, 1)
-}
-
 scenario_type <- data.frame(run_name = character(length(scenarios)), 
                             browse = character(length(scenarios)),
                             climate = character(length(scenarios)))
@@ -60,12 +44,12 @@ scenario_type <- scenario_type %>%
   mutate(browse = factor(browse, levels = c("Low", "Medium", "High")),
          climate = factor(climate, levels = unique(climate)[c(3,2,1,4,5)]))
 
-# scenario_type$fire_model <- rep(c("fixed", "mixed"), each = 3)
-
 necn_summaries <- paste0(scenarios, "/NECN-succession-log.csv")  %>%
   purrr::map_df(~read_plus(.)) %>%
   mutate(TotalC = SOMTC + C_LiveLeaf + C_LiveFRoot + C_LiveWood + C_LiveCRoot + C_DeadWood +
            C_DeadCRoot + C_DeadLeaf_Struc + C_DeadLeaf_Meta + C_DeadFRoot_Struc + C_DeadFRoot_Meta,
+         TotalNetMineralization = SurfStrucNetMin + SurfMetaNetMin + SoilStrucNetMin + SoilMetaNetMin +
+           SOM1surfNetMin + SOM1soilNetMin + SOM2NetMin + SOM3NetMin,
          SimulationYear = Time + 2020) %>%
   left_join(scenario_type, c("run_name" = "run_name"))
 
@@ -311,7 +295,7 @@ surface_c_over_time <- ggplot(data = necn_summaries2,
   geom_point(alpha = 0.2, stroke = NA) + 
   labs(title = "Soil surface C",
        subtitle = "by browse and climate scenario",
-       y = "Average surface C (Mg/ha)", x = "Simulation Year") + 
+       y = "Average surface C (g/m2)", x = "Simulation Year") + 
   geom_smooth() + 
   theme(panel.grid.minor = element_blank()) + 
   facet_wrap(facets = "climate") + 
@@ -327,7 +311,7 @@ som1soil_c_over_time <- ggplot(data = necn_summaries2,
   geom_point(alpha = 0.2, stroke = NA) + 
   labs(title = "Soil surface C",
        subtitle = "by browse and climate scenario",
-       y = "Average surface C (Mg/ha)", x = "Simulation Year") + 
+       y = "Average surface C (g/m2)", x = "Simulation Year") + 
   geom_smooth() + 
   theme(panel.grid.minor = element_blank()) + 
   facet_wrap(facets = "climate") + 
@@ -343,7 +327,7 @@ som2_c_over_time <- ggplot(data = necn_summaries2,
   geom_point(alpha = 0.2, stroke = NA) + 
   labs(title = "Soil surface C",
        subtitle = "by browse and climate scenario",
-       y = "Average surface C (Mg/ha)", x = "Simulation Year") + 
+       y = "Average surface C (g/m2)", x = "Simulation Year") + 
   geom_smooth() + 
   theme(panel.grid.minor = element_blank()) + 
   facet_wrap(facets = "climate") + 
@@ -359,7 +343,7 @@ som3_c_over_time <- ggplot(data = necn_summaries2,
   geom_point(alpha = 0.2, stroke = NA) + 
   labs(title = "Soil surface C",
        subtitle = "by browse and climate scenario",
-       y = "Average surface C (Mg/ha)", x = "Simulation Year") + 
+       y = "Average surface C (g/m2)", x = "Simulation Year") + 
   geom_smooth() + 
   theme(panel.grid.minor = element_blank()) + 
   facet_wrap(facets = "climate") + 
@@ -369,7 +353,87 @@ shift_legend2(som3_c_over_time)
 plot(som3_c_over_time)
 ggsave(file="./Analysis/plots/som3c.svg", plot=som3_c_over_time, width=7, height=5)
 
+#N total over time
+total_n_over_time <- ggplot(data = necn_summaries2, 
+                              mapping = aes(x = SimulationYear, y = , colour = browse)) + 
+  geom_point(alpha = 0.2, stroke = NA) + 
+  labs(title = "Total ecosystem N",
+       subtitle = "by browse and climate scenario",
+       y = "Total ecosystem N (g/m2)", x = "Simulation Year") + 
+  geom_smooth() + 
+  theme(panel.grid.minor = element_blank()) + 
+  facet_wrap(facets = "climate") + 
+  guides(colour=guide_legend(title="Predation"))
+total_n_over_time <- tag_facet(total_n_over_time)
+shift_legend2(total_n_over_time)
+plot(total_n_over_time)
+ggsave(file="./Analysis/plots/totaln.svg", plot=total_n_over_time, width=7, height=5)
 
+#N surf over time
+surface_n_over_time <- ggplot(data = necn_summaries2, 
+                              mapping = aes(x = SimulationYear, y = N_SOM1surf, colour = browse)) + 
+  geom_point(alpha = 0.2, stroke = NA) + 
+  labs(title = "Soil surface N",
+       subtitle = "by browse and climate scenario",
+       y = "Average surface N (g/m2)", x = "Simulation Year") + 
+  geom_smooth() + 
+  theme(panel.grid.minor = element_blank()) + 
+  facet_wrap(facets = "climate") + 
+  guides(colour=guide_legend(title="Predation"))
+surface_n_over_time <- tag_facet(surface_n_over_time)
+shift_legend2(surface_n_over_time)
+plot(surface_n_over_time)
+ggsave(file="./Analysis/plots/surfn.svg", plot=surface_n_over_time, width=7, height=5)
+
+#N soil over time
+som1soil_n_over_time <- ggplot(data = necn_summaries2, 
+                               mapping = aes(x = SimulationYear, y = N_SOM1soil, colour = browse)) + 
+  geom_point(alpha = 0.2, stroke = NA) + 
+  labs(title = "Soil surface N",
+       subtitle = "by browse and climate scenario",
+       y = "Average surface N (g/m2)", x = "Simulation Year") + 
+  geom_smooth() + 
+  theme(panel.grid.minor = element_blank()) + 
+  facet_wrap(facets = "climate") + 
+  guides(colour=guide_legend(title="Predation"))
+som1soil_n_over_time <- tag_facet(som1soil_n_over_time)
+shift_legend2(som1soil_n_over_time)
+plot(som1soil_n_over_time)
+ggsave(file="./Analysis/plots/som1soiln.svg", plot=som1soil_n_over_time, width=7, height=5)
+
+#N SOM2 over time
+som2_n_over_time <- ggplot(data = necn_summaries2, 
+                           mapping = aes(x = SimulationYear, y = N_SOM2, colour = browse)) + 
+  geom_point(alpha = 0.2, stroke = NA) + 
+  labs(title = "Slow pool N",
+       subtitle = "by browse and climate scenario",
+       y = "Average slow N (g/m2)", x = "Simulation Year") + 
+  geom_smooth() + 
+  theme(panel.grid.minor = element_blank()) + 
+  facet_wrap(facets = "climate") + 
+  guides(colour=guide_legend(title="Predation"))
+som2_n_over_time <- tag_facet(som2_n_over_time)
+shift_legend2(som2_n_over_time)
+plot(som2_n_over_time)
+ggsave(file="./Analysis/plots/som2n.svg", plot=som2_n_over_time, width=7, height=5)
+
+#N SOM3 over time
+som3_n_over_time <- ggplot(data = necn_summaries2, 
+                           mapping = aes(x = SimulationYear, y = N_SOM3, colour = browse)) + 
+  geom_point(alpha = 0.2, stroke = NA) + 
+  labs(title = "Recalcitrant pool N",
+       subtitle = "by browse and climate scenario",
+       y = "Average recalcitrant N (g/m2)", x = "Simulation Year") + 
+  geom_smooth() + 
+  theme(panel.grid.minor = element_blank()) + 
+  facet_wrap(facets = "climate") + 
+  guides(colour=guide_legend(title="Predation"))
+som3_n_over_time <- tag_facet(som3_n_over_time)
+shift_legend2(som3_n_over_time)
+plot(som3_n_over_time)
+ggsave(file="./Analysis/plots/som3n.svg", plot=som3_n_over_time, width=7, height=5)
+
+#N leaching and volatilization
 n_loss_over_time <- ggplot(data = necn_summaries2, 
                              mapping = aes(x = SimulationYear, y = LeachedN + Nvol, color = browse)) + 
   geom_point(alpha = 0.2, stroke = NA) +
@@ -381,6 +445,19 @@ n_loss_over_time <- ggplot(data = necn_summaries2,
   facet_wrap(facets = "climate") + 
   guides(colour=guide_legend(title="Predation"))
 plot(n_loss_over_time)
+
+#N deposition
+n_dep_over_time <- ggplot(data = necn_summaries2, 
+                           mapping = aes(x = SimulationYear, y = TotalNdep, color = browse)) + 
+  geom_point(alpha = 0.2, stroke = NA) +
+  labs(title = "N loss (leaching and volatilization)",
+       subtitle = "by browse and climate scenario",
+       y = "N loss (g m-2 yr-1)", x = "Simulation Year") + 
+  geom_smooth() + 
+  theme(panel.grid.minor = element_blank()) + 
+  facet_wrap(facets = "climate") + 
+  guides(colour=guide_legend(title="Predation"))
+plot(n_dep_over_time)
 
 #NEE over time
 nee_over_time<- ggplot(data = necn_summaries2, mapping = aes(x = SimulationYear, y = NEEC, 

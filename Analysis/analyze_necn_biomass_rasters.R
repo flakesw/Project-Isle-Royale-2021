@@ -59,9 +59,9 @@ writeRaster(mean_pred_effect, "./Analysis/map_rasters/predation_effect_ecosystem
 
 #change in C over model runs
 for(i in 1:length(scenario_types)){
-  high_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred3"), scenarios)], "/biomass/TotalBiomass-80.img")))
+  high_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred3"), scenarios)], "/NECN/TotalC-80.img")))
   # plot(high_pred)
-  low_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred3"), scenarios)], "/biomass/TotalBiomass-0.img")))
+  low_pred <- mean(rast(paste0(scenarios[grepl(paste0(scenario_types[i]," - pred3"), scenarios)], "/NECN/TotalC-5.img")))
   # plot(low_pred)
   
   pred_diff <- high_pred - low_pred
@@ -83,8 +83,8 @@ ggplot() +
   scale_fill_continuous_divergingx(palette = 'RdBu', mid = 0) +
   theme_minimal()
 
-writeRaster(diff_stack, "./Analysis/map_rasters/ecosystem_c_all.tiff")
-writeRaster(mean(diff_stack[[-1]]), "./Analysis/map_rasters/ecosytem_c_mean.tiff", overwrite = TRUE)
+writeRaster(diff_stack, "./Analysis/map_rasters/ecosystem_total_all.tiff", overwrite = TRUE)
+writeRaster(mean(diff_stack[[-1]]), "./Analysis/map_rasters/ecosytem_total_mean.tiff", overwrite = TRUE)
 
 ##
 
