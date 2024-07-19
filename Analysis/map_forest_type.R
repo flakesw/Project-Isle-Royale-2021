@@ -65,17 +65,18 @@ scenario_type <- scenario_type %>%
   mutate(browse = factor(browse, levels = c("Low", "Medium", "High")),
          climate = factor(climate, levels = unique(climate)[c(3,2,1,4,5)]))
 
+
 func_types <- data.frame(FunctionalGroupIndex = seq(1, 10),
-                         Type = c("Northern", 
+                         Type = c("Northern hardwood/conifer",
                                   "Boreal conifer",
-                                  "Temperate",
+                                  "Temperate hardwood/conifer",
                                   "Boreal conifer",
                                   "Boreal conifer",
-                                  "Northern",
+                                  "Northern hardwood/conifer",
                                   "Boreal hardwood",
-                                  "Temperate",
-                                  "Mesic shrubs",
-                                  "Mesic shrubs"))
+                                  "Temperate hardwood/conifer",
+                                  "Shrubs",
+                                  "Shrubs"))
 spp_table <- read.csv("./Models/LANDIS inputs/NECN files/NECN_Spp_Table_inv.csv") %>%
   left_join(func_types)
 spp_table[spp_table$SpeciesCode == "BEPA", "Type"] <- "Boreal hardwood"
@@ -116,3 +117,5 @@ map2[]<-map[]
 levels(map2) = data.frame(value=c(1:5), desc=levels(as.factor(comm_mat_ft$Type)))
 coltab(map2) <- the_colors
 plot(map2)
+
+writeRaster(map2, "./Analysis/Plots/initial_landcover.tiff")

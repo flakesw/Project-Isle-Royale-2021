@@ -3,8 +3,10 @@
 library("tidyverse")
 library("terra")
 
-
+source("./Analysis/r_functions.R")
 theme_set(theme_bw())
+theme_update(panel.grid.minor = element_blank(),
+             strip.background = element_rect(fill = "white"))
 
 #what folder do all the runs to be analyzed live in?
 scenario_folder <- "E:/ISRO LANDIS/Model runs"
@@ -82,25 +84,27 @@ browsekill_summaries <- paste0(scenarios, "/browse-event-species-log.csv")  %>%
   left_join(regen_summaries, by = c("run_name", "Time", "SpeciesName")) %>%
   mutate(NetRegen = TotalCohorts - TotalCohortsKilled)
 
+
 func_types <- data.frame(FunctionalGroupIndex = seq(1, 10),
-                         Type = c("Temperate conifer", 
+                         Type = c("Northern hardwood/conifer",
                                   "Boreal conifer",
-                                  "Temperate conifer",
+                                  "Temperate hardwood/conifer",
                                   "Boreal conifer",
                                   "Boreal conifer",
-                                  "Temperate hardwood",
+                                  "Northern hardwood/conifer",
                                   "Boreal hardwood",
-                                  "Temperate hardwood",
-                                  "Boreal hardwood",
-                                  "Temperate hardwood"))
+                                  "Temperate hardwood/conifer",
+                                  "Shrubs",
+                                  "Shrubs"))
 spp_table <- read.csv("./Models/LANDIS inputs/NECN files/NECN_Spp_Table_inv.csv") %>%
   left_join(func_types)
 spp_table[spp_table$SpeciesCode == "BEPA", "Type"] <- "Boreal hardwood"
-spp_table[spp_table$SpeciesCode == "ABBA", "Type"] <- "Balsam fir"
+spp_table[spp_table$SpeciesCode == "FRNI", "Type"] <- "Boreal hardwood"
+# spp_table[spp_table$SpeciesCode == "ABBA", "Type"] <- "Balsam fir"
 
 biomass_summaries_means <- biomass_summaries %>%
   left_join(spp_table %>% select(SpeciesCode, Type), by = c("Species" = "SpeciesCode")) %>%
-  # filter(browse == "High") %>%
+  filter(browse == "High") %>%
   group_by(climate, Time, Species) %>%
   summarise(Biomass = mean(Biomass), #average over runs
             Type = Type[1]) %>%
@@ -109,52 +113,82 @@ biomass_summaries_means <- biomass_summaries %>%
 
 biomass_summaries_points <- biomass_summaries %>%
   left_join(spp_table %>% select(SpeciesCode, Type), by = c("Species" = "SpeciesCode")) %>%
-  # filter(browse == "High") %>%
+  filter(browse == "High") %>%
   group_by(run_name, climate, Time, Species) %>%
   summarise(Biomass = mean(Biomass), #average over runs
             Type = Type[1]) %>%
   group_by(run_name, climate, Time, Type) %>%
   summarise(Biomass = sum(Biomass)) #sum within functional type
 
+biomass_summaries_all <- biomass_summaries %>%
+  left_join(spp_table %>% select(SpeciesCode, Type), by = c("Species" = "SpeciesCode")) %>%
+  group_by(run_name, climate, browse, Time, Type) %>%
+  summarise(Biomass = sum(Biomass)) #sum within functional type
+
 biomass_summaries_pred <- biomass_summaries %>%
   left_join(spp_table %>% select(SpeciesCode, Type), by = c("Species" = "SpeciesCode")) %>%
-  filter(climate != "Present Climate") %>%
+  filter(climate == "Present Climate") %>%
   group_by(browse, Time, Species) %>%
   summarise(Biomass = mean(Biomass), #average over runs
             Type = Type[1]) %>%
   group_by(browse, Time, Type) %>%
   summarise(Biomass = sum(Biomass)) #sum within functional type
 
+biomass_summaries_pred_points <- biomass_summaries %>%
+  left_join(spp_table %>% select(SpeciesCode, Type), by = c("Species" = "SpeciesCode")) %>%
+  filter(climate == "Present Climate") %>%
+  group_by(run_name, browse, Time, Species) %>%
+  summarise(Biomass = mean(Biomass), #average over runs
+            Type = Type[1]) %>%
+  group_by(run_name, browse, Time, Type) %>%
+  summarise(Biomass = sum(Biomass)) #sum within functional type
+
 #----------------------------------
 # Make figures of tabular data
 #----------------------------------
 
-sp_comp <- ggplot(data = biomass_summaries_means, 
-                   mapping = aes(x = Time+2019, y = Biomass, fill = Type, color = Type)) + 
+sp_comp <- ggplot(data = biomass_summaries_points, 
+                   mapping = aes(x = Time+2019, y = Biomass, color = Type)) + 
   # geom_area(position = "stack") +
   geom_point() +
-  geom_line() +
+  geom_smooth() +
   labs(y = "Aboveground biomass (g m-2)", x = "Simulation Year") +
   facet_wrap(facets = "climate") + 
   guides(colour=guide_legend(title="Functional Group"))
 
-sp_comp <- tag_facet(sp_comp)
+# sp_comp <- tag_facet(sp_comp)
 sp_comp <- shift_legend2(sp_comp)
 plot(sp_comp)
 
-
-
-sp_comp <- ggplot(data = biomass_summaries_pred, 
-                  mapping = aes(x = Time+2019, y = Biomass, fill = Type, color = Type)) + 
+sp_comp_pred <- ggplot(data = biomass_summaries_pred_points, 
+                  mapping = aes(x = Time+2019, y = Biomass, color = Type)) + 
   # geom_area(position = "stack") +
-  geom_line() +
+  geom_smooth() +
+  geom_point()+
   labs(y = "Aboveground biomass (g m-2)", x = "Simulation Year") +
   facet_wrap(facets = "browse") + 
-  guides(colour=guide_legend(title="Functional Group"))
+  theme(legend.position = "none")
 
-sp_comp <- tag_facet(sp_comp)
-sp_comp <- shift_legend2(sp_comp)
-plot(sp_comp)
-
+# sp_comp_pred <- tag_facet(sp_comp_pred)
+plot(sp_comp_pred)
 
 
+c_grid <- cowplot::plot_grid(sp_comp, sp_comp_pred,
+                             align = "v", 
+                             nrow = 2, ncol = 1,
+                             labels = "auto",
+                             rel_heights = c(1,0.6))
+plot(c_grid)
+
+
+
+sp_comp_all <- ggplot(data = biomass_summaries_all, 
+                       mapping = aes(x = Time+2019, y = Biomass, color = Type)) + 
+  # geom_area(position = "stack") +
+  geom_smooth() +
+  geom_point()+
+  labs(y = "Aboveground biomass (g m-2)", x = "Simulation Year") +
+  facet_wrap(facets = "browse") + 
+  # theme(legend.position = "none")+
+  facet_wrap(facets = c("browse", "climate"), ncol = 5)
+plot(sp_comp_all)

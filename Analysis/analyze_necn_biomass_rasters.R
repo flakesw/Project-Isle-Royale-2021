@@ -4,7 +4,9 @@ library(tidyterra)
 library("colorspace")
 
 source("./Analysis/r_functions.R")
-
+theme_set(theme_bw())
+theme_update(panel.grid.minor = element_blank(),
+             strip.background = element_rect(fill = "white"))
 
 scenario_folder <- "E:/ISRO LANDIS/Model runs"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) 
