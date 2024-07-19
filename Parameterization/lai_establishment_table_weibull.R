@@ -38,7 +38,6 @@ seedlings <- fia$SEEDLING
 
 
 # Assigns parameters to each species group code --------------------------------
-#TODO is there somewhere else to find this data in a tidier format?
 
 hardwoods <- seq(from=25, to=43)
 hardwood.S <- c(0.75, 0.81, 0.74, 0.77, 0.77, 0.83, 0.86, 0.83, 0.88, 0.82, 0.83, 0.82, 0.795, 0.88, 0.9, 0.91, 0.861, 0.78, 0.833)

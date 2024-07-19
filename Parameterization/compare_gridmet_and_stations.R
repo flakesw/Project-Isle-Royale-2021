@@ -113,6 +113,7 @@ ggplot(data = station_all_wide, mapping = aes(x = Tmax_gridmet, y = Tmax_Windigo
   geom_abline(intercept = 0, slope = 1)
 
 station_all_wide$Tmax_mean <- rowMeans(station_all_wide[c("Tmax_Windigo", "Tmax_Ojibway")], na.rm = TRUE)
+hist(station_all_wide$Tmax_mean - station_all_wide$Tmax_gridmet)
 
 ggplot(data = station_all_wide, mapping = aes(x = Tmax_gridmet, y = Tmax_mean)) +
   geom_hex() +
@@ -124,12 +125,14 @@ ggplot(data = station_all_wide, mapping = aes(x = Tmin_PLIM4, y = Tmin_Windigo))
   geom_smooth() +
   geom_abline(intercept = 0, slope = 1)
 
-station_all_wide$Tmin_mean <- rowMeans(station_all_wide[c("Tmin_Windigo", "Tmin_Ojibway")], na.rm = TRUE)
+station_all_wide$Tmin_mean <- rowMeans(station_all_wide[c("Tmin_Windigo", "Tmin_Ojibway", "Tmin_ROAM4", "Tmin_PLIM4")], na.rm = TRUE)
+hist(station_all_wide$Tmin_mean - station_all_wide$Tmin_gridmet)
 
 ggplot(data = station_all_wide, mapping = aes(x = Tmin_gridmet, y = Tmin_mean)) +
   geom_hex() +
   geom_smooth() +
   geom_abline(intercept = 0, slope = 1)
+model <- 
 
 
 station_summ <- station %>%

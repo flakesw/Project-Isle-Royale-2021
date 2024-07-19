@@ -11,10 +11,15 @@ theme_set(theme_bw())
 scenario_folder <- "E:/ISRO LANDIS/Model runs"
 # scenario_folder <- "C:/Users/swflake/Documents/LANDIS inputs/"
 # scenario_folder <- "./Models/Model templates"
+
+scenario_folder <- "./Models/v2 model templates"
 # scenario_folder <- "./Models/Model runs"
+
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
 # `[`(!(grepl("canesm", .)))
 # scenarios <- scenarios[c(1, 4, 5, 6)]
+
+scenarios <- scenarios[1]
 
 #some helper functions
 read_plus <- function(flnm) {

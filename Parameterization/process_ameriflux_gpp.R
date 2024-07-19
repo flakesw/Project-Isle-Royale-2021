@@ -37,7 +37,7 @@ pander::pandoc.table(sites_dt[!is.na(DATA_START), .N, by = .(IGBP, DATA_POLICY)]
 
 crop_ls <- sites_dt[IGBP %in% c("CSH", "DBF", "DNF", "EBF", "ENF", "MF", "OSH", "SAV", "WET", "WSA") &
                       !is.na(DATA_START) &
-                      LOCATION_LAT > 41 &
+                      LOCATION_LAT >41 &
                       DATA_POLICY == "CCBY4.0",
                     .(SITE_ID, SITE_NAME, DATA_START, DATA_END)]
 pander::pandoc.table(crop_ls[c(1:10),])
