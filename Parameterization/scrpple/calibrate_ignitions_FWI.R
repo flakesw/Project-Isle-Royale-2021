@@ -57,8 +57,6 @@ short_isro$date_clean <- lubridate::parse_date_time(as.Date(short_isro$DISCOVERY
 short_isro_by_day <- aggregate(short_isro, by = list(short_isro$date_clean, short_isro$NWCG_CAUSE_CLASSIFICATION), FUN = length)[, c(1:3)] %>%
 rename(date = Group.1, cause = Group.2, n.fires = FOD_ID)
 
-hist(short_subset$fwi)
-
 all_fwi_data_merge_lightning <- dplyr::left_join(fwi_isro[, c("date", "fwi")], subset(short_by_day, cause == "Natural")) %>%
   dplyr::mutate(n.fires = replace_na(n.fires, 0)) %>%
   dplyr::filter(date > as.Date("1992-01-01"))
@@ -78,7 +76,7 @@ hist(all_fwi_data_merge_lightning$fwi)
 plot(n.fires ~ fwi, data = all_fwi_data_merge_accidental)
 
 area_region <- sf::st_area(region)
-area_isro <- sf::st_area(isro_poly)
+area_isro <- sf::st_area(poly_bound)
 scale_region_to_isro <- as.numeric(area_isro/ area_region)
 #-------------------------------------------------------------------------------
 # fitting  models
@@ -115,7 +113,7 @@ summary(lightning_poisson)
 accidental_poisson <- glm(as.numeric(n.fires)~as.numeric(fwi), data=all_fwi_data_merge_accidental, family = poisson(link = "log"))
 summary(accidental_poisson)
 
-#reduce the intercept for the poisson models to modify CA model to isro
+#reduce the intercept for the poisson models to modify regional model to isro
 coef(lightning_poisson)[1] + log(scale_region_to_isro)
 coef(accidental_poisson)[1] + log(scale_region_to_isro)
 
@@ -225,3 +223,4 @@ plot(predict(accidental_model) ~ all_fwi_data_merge_accidental$fwi)
 # comparisons
 #what day is the mean fire?
 mean(yday(short_by_day$date))
+

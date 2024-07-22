@@ -52,7 +52,7 @@ MaximumSpreadAreaB2	10.6 <<-2.5  <<effective wind speed
 >> Spread parameters <<<<<<<<<<<<<<<<<<<<<<<<<<<
 >> borrowed from TCSI, TODO revise with new spread data
 SpreadProbabilityB0 -2.8 <<-2.6
-SpreadProbabilityB1 0.0137766 <<FWI
+SpreadProbabilityB1 0.0207766 <<FWI
 SpreadProbabilityB2  0.5442314 << relativized fine fuels. 
 SpreadProbabilityB3 0.0907120 << effective wind speed.
 
@@ -65,7 +65,7 @@ SiteMortalityB2	0	<< Previous PET
 SiteMortalityB3	16 <<Effective wind speed
 SiteMortalityB4	0	<<Climatic water deficit
 SiteMortalityB5	0	<<Fine fuel (proportion)
-SiteMortalityB6	0.2 <<Ladder fuel (g m-2)
+SiteMortalityB6	0.3 <<Ladder fuel (g m-2)
 SiteMortalityB7	4.5 <<FWI
 
 >>>>>> Cohort mortality parameters <<<<<<<<<<<<<<<<<<<<< <<TODO borrowed from TCSI
@@ -74,7 +74,7 @@ CohortMortalityB1 -0.9 << The parameter fit for the relationship between bark th
 CohortMortalityB2  0.008 << The parameter fit for the relationship between site mortality and cohort mortality. 
 
 >>>>>>> Ladder fuel parameters <<<<<<<<<<<<<<<<<<<<<<<<<<
-LadderFuelMaxAge 28
+LadderFuelMaxAge 40
 
 LadderFuelSpeciesList <<TODO just conifers and shrubs at the moment -- revisit this
 ABBA
@@ -95,11 +95,11 @@ Suppression_CSV_File "../../LANDIS inputs/scrpple/Suppression_Input_Gannon.csv"
 
 >>>>>>>> Dead wood table <<<<<<<<<<<<<<<<<<
 DeadWoodTable
-ABBA		22
-LALA		33
-PIBA2		38
-PIGL		27
-PIMA		28
-PIST		29
-PIRE		34
-THOC2		34
+ABBA		40
+LALA		40
+PIBA2		40
+PIGL		40
+PIMA		40
+PIST		40
+PIRE		40
+THOC2		40

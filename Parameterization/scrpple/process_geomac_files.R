@@ -73,16 +73,35 @@ op_data_2022 <- sf::st_read("D:/Data/nifc_op_data/Operational_Data_Archive_2022/
 
 sf::write_sf(op_data_2022, "./Parameterization/Parameterization data/geomac_data/2022_perimeters_clean.shp")
 
-#none in this dataset from our study area
-daily_perims_2000_2018 <- sf::st_read("D:/Data/geomac_daily/Historic_Geomac_Perimeters_All_Years_2000_2018.gdb") %>%
-  sf::st_transform(crs = sf::st_crs(region)) %>%
-  sf::st_intersection(region) %>%
-  dplyr::rename_with(tolower) %>%
-  dplyr::mutate(gisacres = as.numeric(gisacres), perimeterd = as.Date(perimeterdatetime))
 
 
+#combined daily perimeter dataset (former GEOMAC dataset)
+geomac_dsn <- "D:/Data/geomac_daily/Historic_Geomac_Perimeters_All_Years_2000_2018.gdb"
+geomac_layers <- sf::st_layers(geomac_dsn)$name[-1]
 
+#import each layer and do some preprocessing
+daily_perims_2000_2018  <- purrr::map(geomac_layers,
+                             ~st_read(dsn=geomac_dsn,layer=.)%>%
+                               sf::st_transform(crs = sf::st_crs(region)) %>%
+                               sf::st_intersection(region) %>%
+                               dplyr::rename_with(tolower) %>%
+                               dplyr::mutate(gisacres = as.numeric(gisacres), 
+                                             perimeterd = ifelse(is.character(perimeterdatetime), 
+                                                                 as.character(as.Date(clock::year_month_day_parse(perimeterdatetime, format = c("%m/%d/%y", "%m/%d/%y %I:%M:%S %p")))),
+                                                                 as.character(as.Date(perimeterdatetime)))) %>%
+                               dplyr::rename(c(incidentna = incidentname, uniquefire = uniquefireidentifier)) %>%
+                               dplyr::select(c("incidentna", "perimeterd", "fireyear", "gisacres", "uniquefire", "comments")))
 
+op_data_2020$perimeterd <- as.character(op_data_2020$perimeterd)
+op_data_2021$perimeterd <- as.character(op_data_2021$perimeterd)
+op_data_2022$perimeterd <- as.character(op_data_2022$perimeterd)
+op_data_2020$fireyear <- as.integer(op_data_2020$fireyear)
+op_data_2021$fireyear <- as.integer(op_data_2021$fireyear)
+op_data_2022$fireyear <- as.integer(op_data_2022$fireyear)
+
+daily_perims_all <- bind_rows(daily_perims_2000_2018, op_data_2020, op_data_2021, op_data_2022)
+
+write_sf(daily_perims_all, "./Parameterization/Parameterization data/geomac_data/geomac_all_years.gpkg")
 
 #import all perimeter shapefiles in the folder, including cleaned up 2020 and 2021 data
 perims_file_list <- list.files(path = "./Parameterization/calibration data/geomac_all_years", pattern = "*.shp$", #the dollar sign matches *.shp at the end of the string
