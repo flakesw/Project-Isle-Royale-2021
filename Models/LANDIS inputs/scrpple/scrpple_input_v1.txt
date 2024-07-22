@@ -28,6 +28,7 @@ IgnitionDistribution Poisson << Poisson or ZeroInflatedPoisson
 >> Maximum fuels <<<<<<<<<<<<<<<<<<<<
 MaximumFineFuels 1000 <<Set to 1000 to match typical maximum fine fuels from LANDIS model, sf 2021-11-11; Originally 5400, Derived from Fuel Loadings with Jonathan Long
 MaximumLadderFuels 1250 
+MinumumCanFireIntensity 6
 
 >>>>>>> Prescribed Fire Parameters <<<<<<<<<<<<<<<<<<
 >> TODO update as part of management scenarios
