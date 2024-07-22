@@ -7,21 +7,22 @@ library(cowplot)
 source("./Analysis/r_functions.R")
 
 func_types <- data.frame(FunctionalGroupIndex = seq(1, 10),
-                         Type = c("Northern conifer", 
+                         Type = c("Northern hardwood/conifer",
                                   "Boreal conifer",
-                                  "Temperate",
+                                  "Temperate hardwood/conifer",
                                   "Boreal conifer",
                                   "Boreal conifer",
-                                  "Northern hardwood",
+                                  "Northern hardwood/conifer",
                                   "Boreal hardwood",
-                                  "Temperate",
-                                  "Mesic shrubs",
-                                  "Mesic shrubs"))
+                                  "Temperate hardwood/conifer",
+                                  "Shrubs",
+                                  "Shrubs"))
 spp_table <- read.csv("./Models/LANDIS inputs/NECN files/NECN_Spp_Table_inv.csv") %>%
   left_join(func_types)
 spp_table[spp_table$SpeciesCode == "BEPA", "Type"] <- "Boreal hardwood"
 spp_table[spp_table$SpeciesCode == "FRNI", "Type"] <- "Boreal hardwood"
-spp_table[spp_table$SpeciesCode == "ABBA", "Type"] <- "Balsam fir"
+# spp_table[spp_table$SpeciesCode == "ABBA", "Type"] <- "Balsam fir"
+
 
 #what folder do all the runs to be analyzed live in?
 scenario_folder <- "E:/ISRO LANDIS/Model runs"
@@ -105,7 +106,7 @@ sapling_type <- sapling_counts %>%
   mutate(timestep = as.numeric(timestep))
 
   
-
+#all combinations of scenarios
 sapling_comp <- ggplot(data = sapling_type, 
                   mapping = aes(x = timestep + 2020, y = count, color = Type)) + 
   # geom_area(position = "stack") +
@@ -118,15 +119,48 @@ plot(sapling_comp)
 
 
 
-sapling_comp <- ggplot(data = sapling_type[sapling_type$climate != "Present Climate", ], 
+# sapling_comp <- ggplot(data = sapling_type[sapling_type$climate != "Present Climate", ], 
+#                        mapping = aes(x = timestep + 2020, y = count, color = Type)) + 
+#   # geom_area(position = "stack") +
+#   geom_point() +
+#   geom_smooth() +
+#   labs(y = "Number of cohorts", x = "Simulation Year") +
+#   facet_wrap(facets = c("browse"), ncol = 5) + 
+#   guides(colour=guide_legend(title="Functional Group"))
+# plot(sapling_comp)
+
+sapling_comp_clim <- ggplot(data = sapling_type[sapling_type$browse == "High", ], 
+                  mapping = aes(x = timestep +2019, y = count, color = Type)) + 
+  # geom_area(position = "stack") +
+  geom_point() +
+  geom_smooth() +
+  labs(y = "Number of cohorts", x = "Simulation Year") +
+  facet_wrap(facets = "climate") + 
+  guides(colour=guide_legend(title="Functional Group"))
+
+# sp_comp <- tag_facet(sp_comp)
+sapling_comp_clim <- shift_legend2(sapling_comp_clim)
+plot(sapling_comp_clim)
+
+
+
+sapling_comp_pred <- ggplot(data = sapling_type[sapling_type$climate == "Present Climate", ], 
                        mapping = aes(x = timestep + 2020, y = count, color = Type)) + 
   # geom_area(position = "stack") +
   geom_point() +
   geom_smooth() +
   labs(y = "Number of cohorts", x = "Simulation Year") +
   facet_wrap(facets = c("browse"), ncol = 5) + 
-  guides(colour=guide_legend(title="Functional Group"))
-plot(sapling_comp)
+  guides(colour=guide_legend(title="Functional Group")) +
+  theme(legend.position = "none")
+plot(sapling_comp_pred)
 
 
+
+c_grid <- cowplot::plot_grid(sapling_comp_clim, sapling_comp_pred,
+                             align = "v", 
+                             nrow = 2, ncol = 1,
+                             labels = "auto",
+                             rel_heights = c(1,0.6))
+plot(c_grid)
 

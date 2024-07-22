@@ -499,7 +499,7 @@ c_inputs_over_time <- ggplot(data = necn_summaries2,
   geom_hline(yintercept = 0)
 c_inputs_over_time <- tag_facet(c_inputs_over_time)
 c_inputs_over_time <-shift_legend2(c_inputs_over_time)
-plot(c_inputs_over_time)
+plot(c_inputs_over_time)  
 
 
 #_--------------------
