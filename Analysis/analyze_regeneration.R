@@ -15,6 +15,10 @@ scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
 # `[`(!(grepl("canesm", .)))
 # scenarios <- scenarios[c(1, 4, 5, 6)]
 
+scenarios <- scenarios %>%
+  `[`(grep("ccsm|mri", .)) %>%
+  `[`(grep("pred1|pred3", .))
+
 #some helper functions
 read_plus <- function(flnm) {
   read_csv(flnm) %>% 
@@ -55,7 +59,7 @@ scenario_type <- scenario_type %>%
                                  ifelse(grepl(pattern = "ccsm", run_name), "Warm (CCSM4 4.5)", 
                                         ifelse(grepl(pattern = "mri_cgm", run_name), "Hot/Wet (MRI-CGCM3 8.5)", "Present Climate"))))) %>%
   mutate(browse = factor(browse, levels = c("Low", "Medium", "High")),
-         climate = factor(climate, levels = unique(climate)[c(3,2,1,4,5)]))
+         climate = factor(climate, levels = unique(climate)[c(1,2)])) #unique(climate)[c(3,2,1,4,5)]
 
 regen_summaries <- paste0(scenarios, "/NECN-reproduction-log.csv")  %>%
   purrr::map_df(~read_plus(.)) %>%

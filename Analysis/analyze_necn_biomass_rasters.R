@@ -10,7 +10,7 @@ theme_update(panel.grid.minor = element_blank(),
 
 # scenario_folder <- "E:/ISRO LANDIS/Model runs"
 scenario_folder <- "./Models/v2 model templates/"
-scenarios <- list.dirs(scenario_folder, recursive = FALSE) 
+scenarios <- list.dirs(scenario_folder, recursive = FALSE)[3]
 
 scenario_types <- c("current","ccsm","canesm","miroc","mri_cgm")
 

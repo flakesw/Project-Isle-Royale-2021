@@ -11,11 +11,12 @@ theme_update(panel.grid.minor = element_blank(),
 #what folder do all the runs to be analyzed live in?
 scenario_folder <- "E:/ISRO LANDIS/Model runs"
 # scenario_folder <- "C:/Users/swflake/Documents/LANDIS inputs/"
-# scenario_folder <- "./Models/Model templates"
+# scenario_folder <- "./Models/V2 Model templates"
 # scenario_folder <- "./Models/Model runs"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
 # `[`(!(grepl("canesm", .)))
 # scenarios <- scenarios[c(1, 4, 5, 6)]
+scenarios <- scenarios[c(1:5, 11:15, 16:20, 26:30)]
 
 #some helper functions
 read_plus <- function(flnm) {
@@ -104,7 +105,7 @@ spp_table[spp_table$SpeciesCode == "FRNI", "Type"] <- "Boreal hardwood"
 
 biomass_summaries_means <- biomass_summaries %>%
   left_join(spp_table %>% select(SpeciesCode, Type), by = c("Species" = "SpeciesCode")) %>%
-  filter(browse == "High") %>%
+  # filter(browse == "High") %>%
   group_by(climate, Time, Species) %>%
   summarise(Biomass = mean(Biomass), #average over runs
             Type = Type[1]) %>%
@@ -113,7 +114,7 @@ biomass_summaries_means <- biomass_summaries %>%
 
 biomass_summaries_points <- biomass_summaries %>%
   left_join(spp_table %>% select(SpeciesCode, Type), by = c("Species" = "SpeciesCode")) %>%
-  filter(browse == "High") %>%
+  # filter(browse == "High") %>%
   group_by(run_name, climate, Time, Species) %>%
   summarise(Biomass = mean(Biomass), #average over runs
             Type = Type[1]) %>%
@@ -188,7 +189,7 @@ sp_comp_all <- ggplot(data = biomass_summaries_all,
   geom_smooth() +
   geom_point()+
   labs(y = "Aboveground biomass (g m-2)", x = "Simulation Year") +
-  facet_wrap(facets = "browse") + 
-  # theme(legend.position = "none")+
-  facet_wrap(facets = c("browse", "climate"), ncol = 5)
+  theme(panel.grid.minor = element_blank()) + 
+  facet_wrap(facets = c("climate", "browse"))+ 
+  guides(colour=guide_legend(title="Vegetation type"))
 plot(sp_comp_all)

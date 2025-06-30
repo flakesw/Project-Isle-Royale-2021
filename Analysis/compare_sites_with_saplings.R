@@ -33,6 +33,12 @@ scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
 # `[`(!(grepl("canesm", .)))
 # scenarios <- scenarios[c(1, 4, 5, 6)]
 
+
+scenarios <- scenarios %>%
+  `[`(grep("ccsm|mri", .)) %>%
+  `[`(grep("pred1|pred3", .))
+
+
 #some helper functions
 read_plus <- function(flnm) {
   read_csv(flnm) %>% 
@@ -113,10 +119,9 @@ sapling_comp <- ggplot(data = sapling_type,
   geom_point() +
   geom_smooth() +
   labs(y = "Number of cohorts", x = "Simulation Year") +
-  facet_wrap(facets = c("browse", "climate"), ncol = 5) #+ 
+  facet_wrap(facets = c("climate", "browse"), ncol = 2) #+ 
   # guides(colour=guide_legend(title="Functional Group"))
 plot(sapling_comp)
-
 
 
 # sapling_comp <- ggplot(data = sapling_type[sapling_type$climate != "Present Climate", ], 

@@ -6,13 +6,14 @@ library(cowplot)
 source("./Analysis/r_functions.R")
 
 #what folder do all the runs to be analyzed live in?
-scenario_folder <- "E:/ISRO LANDIS/Model runs"
+# scenario_folder <- "E:/ISRO LANDIS/Model runs"
 # scenario_folder <- "C:/Users/swflake/Documents/LANDIS inputs/"
-# scenario_folder <- "./Models/Model templates"
+scenario_folder <- "./Models/V2 Model templates"
 # scenario_folder <- "./Models/Model runs"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE) #%>%
  # `[`(!(grepl("canesm", .)))
 # scenarios <- scenarios[c(1, 4, 5, 6)]
+scenarios <- scenarios[2]
 
 #some helper functions
 read_plus <- function(flnm) {

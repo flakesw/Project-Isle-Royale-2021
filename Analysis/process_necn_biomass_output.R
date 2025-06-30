@@ -14,10 +14,14 @@ source("./Analysis/r_functions.R")
 #what folder do all the runs to be analyzed live in?
 scenario_folder <- "E:/ISRO LANDIS/Model runs"
 # scenario_folder <- "C:/Users/swflake/Documents/LANDIS inputs/"
-# scenario_folder <- "./Models/Model templates"
+# scenario_folder <- "./Models/V2 Model templates"
 # scenario_folder <- "./Models/Model runs"
 scenarios <- list.dirs(scenario_folder, recursive = FALSE)
 # scenarios <- scenarios[c(5:7)]
+
+scenarios <- scenarios %>%
+  `[`(grep("ccsm|mri", .)) %>%
+  `[`(grep("pred1|pred3", .))
 
 #some helper functions
 read_plus <- function(flnm) {
@@ -33,16 +37,21 @@ scenario_type <- data.frame(run_name = character(length(scenarios)),
 
 scenario_type <- scenario_type %>%
   mutate(run_name = unlist(map(strsplit(scenarios, split = "/"), pluck(4, 1)))) %>%
-  mutate(browse = ifelse(grepl(pattern = "pred1", run_name), "Low", 
-                  ifelse(grepl(pattern = "pred2", run_name), "Medium",
-                  "High"))) %>%
+  # mutate(browse = ifelse(grepl(pattern = "pred1", run_name), "Low", 
+  #                 ifelse(grepl(pattern = "pred2", run_name), "Medium",
+  #                 "High"))) %>%
+  mutate(browse = ifelse(grepl(pattern = "pred1", run_name), "High", 
+                         ifelse(grepl(pattern = "pred2", run_name), "Medium",
+                                "Low"))) %>%
   # mutate(browse = c("Low pred", "Hi pred", "Low pred", "Hi pred")) %>%
   mutate(climate = ifelse(grepl(pattern = "miroc", run_name), "Very Hot (MIROC-ESM-CHEM 8.5)", 
                    ifelse(grepl(pattern = "canesm", run_name), "Hot/Dry (CanESM2 8.5)",
                    ifelse(grepl(pattern = "ccsm", run_name), "Warm (CCSM4 4.5)", 
                    ifelse(grepl(pattern = "mri_cgm", run_name), "Hot/Wet (MRI-CGCM3 8.5)", "Present Climate"))))) %>%
-  mutate(browse = factor(browse, levels = c("Low", "Medium", "High")),
-         climate = factor(climate, levels = unique(climate)[c(3,2,1,4,5)]))
+  # mutate(browse = factor(browse, levels = c("Low", "Medium", "High")),
+  #        climate = factor(climate, levels = unique(climate)[c(3,2,1,4,5)]))
+  mutate(browse = factor(browse, levels = c("Low", "High")),
+         climate = factor(climate, levels = unique(climate)[c(1,2)]))
 
 necn_summaries <- paste0(scenarios, "/NECN-succession-log.csv")  %>%
   purrr::map_df(~read_plus(.)) %>%
@@ -221,8 +230,8 @@ agb_over_time <- ggplot(data = necn_summaries2,
        x = "Simulation Year") + 
   geom_smooth() + 
   theme(panel.grid.minor = element_blank()) + 
-  facet_wrap(facets = "climate")+ 
-  guides(colour=guide_legend(title="Predation"))
+  facet_wrap(facets = c("climate", "browse"))+ 
+  guides(colour=guide_legend(title="Moose Population"))
 agb_over_time <- tag_facet(agb_over_time)
 agb_over_time <- shift_legend2(agb_over_time)
 plot(agb_over_time)
@@ -238,8 +247,8 @@ totalc_over_time <- ggplot(data = necn_summaries2, mapping = aes(x = SimulationY
        x = "Simulation Year") + 
   geom_smooth() + 
   theme(panel.grid.minor = element_blank()) + 
-  facet_wrap(facets = "climate") +
-  guides(colour=guide_legend(title="Predation"))
+  facet_wrap(facets = c("climate", "browse"))+ 
+  guides(colour=guide_legend(title="Moose Population"))
 totalc_over_time <- tag_facet(totalc_over_time)
 totalc_over_time <- shift_legend2(totalc_over_time)
 plot(totalc_over_time)
@@ -494,8 +503,10 @@ c_inputs_over_time <- ggplot(data = necn_summaries2,
        y = "Detrital inputs (g m-2 yr-1)", x = "Simulation Year") + 
   geom_smooth() + 
   theme(panel.grid.minor = element_blank()) + 
-  facet_wrap(facets = "climate") + 
-  guides(colour=guide_legend(title="Predation")) +
+  # facet_wrap(facets = "climate") + 
+  # guides(colour=guide_legend(title="Predation")) +
+  facet_wrap(facets = c("climate", "browse"))+ 
+  guides(colour=guide_legend(title="Moose Population")) +
   geom_hline(yintercept = 0)
 c_inputs_over_time <- tag_facet(c_inputs_over_time)
 c_inputs_over_time <-shift_legend2(c_inputs_over_time)
@@ -528,8 +539,10 @@ npp_over_time <- ggplot(data = necn_monthly,
        x = "Simulation Year") + 
   geom_smooth() +
   theme(panel.grid.minor = element_blank()) + 
-  facet_wrap(facets = "climate") + 
-  guides(colour=guide_legend(title="Predation"))
+  # facet_wrap(facets = "climate") + 
+  # guides(colour=guide_legend(title="Predation"))
+  facet_wrap(facets = c("climate", "browse"))+ 
+  guides(colour=guide_legend(title="Moose Population"))
 npp_over_time <- tag_facet(npp_over_time)
 npp_over_time <- shift_legend2(npp_over_time)
 plot(npp_over_time)

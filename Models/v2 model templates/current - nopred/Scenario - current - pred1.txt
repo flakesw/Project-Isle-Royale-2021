@@ -17,7 +17,7 @@ CellLength 60 << meters
 
 >> Disturbance Extensions Initialization File
 >> ---------------------- -------------------
-     	"Biomass Browse"	"../../LANDIS inputs/browse/BiomassBrowse_full_run - no pred.txt"
+>>     	"Biomass Browse"	"../../LANDIS inputs/browse/BiomassBrowse_full_run - no pred.txt"
 	"Base Wind"		"../../LANDIS inputs/other inputs/BaseWind.txt"
 >>	"Base BDA"		"../../LANDIS inputs/bda/base-BDA-input2.txt"
 
